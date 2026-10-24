@@ -10,13 +10,32 @@
     </div>
 
     <div class="shrink-0 space-y-2 border-t border-nav-line p-3">
-        <div class="flex items-center gap-3 rounded-lg px-2 py-1.5 {{ $tight }}">
-            <x-ui.avatar :name="__('shell.preview_user')" size="sm" class="ring-nav" />
-            <div class="min-w-0 flex-1 leading-tight sidebar-collapsed:hidden">
-                <p class="truncate text-[0.8125rem] font-medium text-white">{{ __('shell.preview_user') }}</p>
-                <p class="truncate text-[0.6875rem] text-nav-muted">{{ __('shell.preview_role') }}</p>
+        @auth
+            @php($primary = auth()->user()->loadedAssignments()->sortBy(fn ($a) => $a->scope_type->rank())->first())
+            <x-ui.dropdown align="top-start" width="w-60" :label="__('shell.account_menu')" class="w-full">
+                <x-slot:trigger class="flex w-full items-center gap-3 rounded-lg px-2 py-1.5 text-left hover:bg-nav-hover {{ $tight }}">
+                    <x-ui.avatar :name="auth()->user()->name" size="sm" class="ring-nav" />
+                    <span class="min-w-0 flex-1 leading-tight sidebar-collapsed:hidden">
+                        <span class="block truncate text-[0.8125rem] font-medium text-white">{{ auth()->user()->name }}</span>
+                        <span class="block truncate text-[0.6875rem] text-nav-muted">{{ $primary?->role->name ?? __('shell.no_role') }}</span>
+                    </span>
+                    <x-icon name="chevrons-up-down" class="size-4 text-nav-muted sidebar-collapsed:hidden" />
+                </x-slot:trigger>
+                <x-ui.dropdown-item icon="shield-check" :href="route('workspace.account')">{{ __('shell.account_security') }}</x-ui.dropdown-item>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <x-ui.dropdown-item icon="log-out" type="submit">{{ __('shell.sign_out') }}</x-ui.dropdown-item>
+                </form>
+            </x-ui.dropdown>
+        @else
+            <div class="flex items-center gap-3 rounded-lg px-2 py-1.5 {{ $tight }}">
+                <x-ui.avatar :name="__('shell.preview_user')" size="sm" class="ring-nav" />
+                <div class="min-w-0 flex-1 leading-tight sidebar-collapsed:hidden">
+                    <p class="truncate text-[0.8125rem] font-medium text-white">{{ __('shell.preview_user') }}</p>
+                    <p class="truncate text-[0.6875rem] text-nav-muted">{{ __('shell.preview_role') }}</p>
+                </div>
             </div>
-        </div>
+        @endauth
         <button type="button" x-on:click="$store.sidebar.toggle()"
                 class="flex h-9 w-full items-center gap-3 rounded-lg px-3 text-[0.8125rem] text-nav-muted transition-colors hover:bg-nav-hover hover:text-nav-fg {{ $tight }}"
                 :aria-expanded="(!$store.sidebar.collapsed).toString()">

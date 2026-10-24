@@ -15,6 +15,7 @@ use App\Models\ImportRow;
 use App\Models\PollingUnit;
 use App\Models\User;
 use App\Models\Ward;
+use App\Services\Audit\AuditLogger;
 use App\Services\Geography\PollingUnitRowValidator;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -32,6 +33,8 @@ use Throwable;
 final class ImportService
 {
     private const string LOCK = 'imports:apply:polling_units';
+
+    public function __construct(private readonly AuditLogger $audit) {}
 
     /**
      * @param  bool  $queue  false runs no background job (the caller drives validation, e.g. the CLI)
@@ -60,6 +63,8 @@ final class ImportService
             'is_sample' => $sample,
             'created_by' => $user?->getKey(),
         ])->save();
+
+        $this->audit->record('import.uploaded', $job, context: ['type' => $type->value, 'file' => $job->original_name, 'sha256' => $job->file_hash, 'sample' => $sample], actor: $user);
 
         if ($queue) {
             ValidateImport::dispatch($job->id);
@@ -162,6 +167,7 @@ final class ImportService
             'confirmed_by' => $user?->getKey(),
             'confirmed_at' => now(),
         ]);
+        $this->audit->record('import.confirmed', $job, context: ['valid_rows' => $job->valid_rows, 'invalid_rows' => $job->invalid_rows], actor: $user);
 
         if ($queue) {
             ApplyImport::dispatch($job->id);
@@ -175,6 +181,7 @@ final class ImportService
         }
 
         $job->update(['status' => ImportStatus::Cancelled]);
+        $this->audit->record('import.cancelled', $job);
     }
 
     public function apply(ImportJob $job): void
@@ -222,6 +229,7 @@ final class ImportService
                 'unchanged_count' => $counts['unchanged'],
                 'completed_at' => now(),
             ]);
+            $this->audit->as('import-worker', fn () => $this->audit->record('import.completed', $job, context: $counts));
         } catch (Throwable $exception) {
             report($exception);
             $this->fail($job, 'The import stopped part-way. Rows already applied are kept; re-importing the same file is safe.');

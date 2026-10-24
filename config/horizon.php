@@ -97,6 +97,7 @@ return [
     */
 
     'waits' => [
+        'redis:otp' => 5,
         'redis:ussd' => 5,
         'redis:sms-inbound' => 15,
         'redis:messaging' => 120,
@@ -202,10 +203,10 @@ return [
     */
 
     'defaults' => [
-        // Time-critical: USSD follow-ups and inbound SMS handling.
+        // Time-critical: one-time codes, USSD follow-ups and inbound SMS handling.
         'supervisor-realtime' => [
             'connection' => 'redis',
-            'queue' => ['ussd', 'sms-inbound'],
+            'queue' => ['otp', 'ussd', 'sms-inbound'],
             'balance' => 'simple',
             'maxProcesses' => 2,
             'memory' => 128,

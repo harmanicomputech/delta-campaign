@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /**
- * Builds the workspace navigation from config/navigation.php.
- *
- * Permission filtering is added in Phase 3, when roles and permissions exist.
+ * Builds the workspace navigation from config/navigation.php, showing only
+ * items the signed-in user is permitted to use. (Signed-out design-system
+ * previews show every item.)
  */
 final class Navigation
 {
@@ -23,8 +23,12 @@ final class Navigation
     {
         $groups = [];
 
+        $user = $this->request->user();
+
         foreach ((array) config('navigation', []) as $group) {
-            $items = array_map(fn (array $item): NavigationItem => $this->item($item), $group['items'] ?? []);
+            $visible = array_filter($group['items'] ?? [], fn (array $item): bool => (($item['production'] ?? true) || ! app()->isProduction())
+                && ($user === null || ($item['permission'] ?? null) === null || $user->can($item['permission'])));
+            $items = array_values(array_map(fn (array $item): NavigationItem => $this->item($item), $visible));
 
             if ($items !== []) {
                 $groups[] = ['label' => __($group['label']), 'items' => $items];

@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Database\Factories\WardFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Concerns\HasGeographicScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -22,6 +23,12 @@ class Ward extends Model
 {
     /** @use HasFactory<WardFactory> */
     use HasFactory;
+    use HasGeographicScope;
+
+    public static function geoColumns(): array
+    {
+        return ['district' => 'senatorial_district_id', 'lga' => 'lga_id', 'ward' => 'id', 'polling_unit' => null];
+    }
 
     protected $fillable = ['lga_id', 'code', 'name', 'is_sample'];
 

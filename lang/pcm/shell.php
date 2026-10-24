@@ -14,4 +14,8 @@ return [
     'preview_user' => 'Preview user',
     'preview_role' => 'Nobody sign in',
     'preview_banner' => 'Na preview of the workspace you dey see. Sign-in, roles and the main modules go come for later phases.',
+    'account_menu' => 'Account menu',
+    'account_security' => 'Account and security',
+    'sign_out' => 'Sign out',
+    'no_role' => 'Dem never give you role',
 ];

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Concerns\HasGeographicScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -18,6 +19,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Lga extends Model
 {
+    use HasGeographicScope;
+
+    public static function geoColumns(): array
+    {
+        return ['district' => 'senatorial_district_id', 'lga' => 'id', 'ward' => null, 'polling_unit' => null];
+    }
+
     protected $fillable = ['senatorial_district_id', 'slug', 'name', 'inec_code', 'headquarters'];
 
     public function getRouteKeyName(): string

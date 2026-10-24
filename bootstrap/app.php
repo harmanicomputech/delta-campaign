@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\HealthController;
 use App\Http\Middleware\AssignRequestId;
+use App\Http\Middleware\EnforceIdleLock;
+use App\Http\Middleware\EnsureAccountIsActive;
+use App\Http\Middleware\EnsureTwoFactorEnrolled;
+use App\Http\Middleware\RequirePinConfirmation;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Foundation\Application;
@@ -25,7 +29,19 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->prepend(AssignRequestId::class);
         $middleware->append(SecurityHeaders::class);
-        $middleware->web(append: [SetLocale::class]);
+        $middleware->web(append: [SetLocale::class, EnsureAccountIsActive::class]);
+
+        $middleware->alias([
+            'two-factor' => EnsureTwoFactorEnrolled::class,
+            'idle-lock' => EnforceIdleLock::class,
+            'pin.confirm' => RequirePinConfirmation::class,
+        ]);
+
+        // The workspace: signed in, second factor enrolled where required, and not idle-locked.
+        $middleware->group('workspace', ['web', 'auth', 'two-factor', 'idle-lock']);
+
+        $middleware->redirectGuestsTo(fn () => route('login'));
+        $middleware->redirectUsersTo(fn () => route('workspace.dashboard'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

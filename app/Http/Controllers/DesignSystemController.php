@@ -35,6 +35,14 @@ final class DesignSystemController extends Controller
         return view('pages.design-system.verify');
     }
 
+    /** Local developer SMS outbox: lets developers read one-time codes without logging them. */
+    public function outbox(): View
+    {
+        abort_unless(app()->environment('local', 'testing') && config('campaign.sms.driver') === 'outbox', 404);
+
+        return view('pages.design-system.outbox', ['messages' => \App\Services\Sms\Drivers\OutboxSmsGateway::messages()]);
+    }
+
     public function error(string $status): View
     {
         return view("errors.{$status}", ['exception' => new HttpException((int) $status)]);

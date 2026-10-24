@@ -1,0 +1,23 @@
+<?php
+
+return [
+    'good_morning' => 'Good morning',
+    'good_afternoon' => 'Good afternoon',
+    'good_evening' => 'Good evening',
+    'dashboard_intro' => 'Your areas, the modules you can use and your recent account activity.',
+    'no_roles_title' => 'No role assigned yet',
+    'no_roles_body' => 'Your account exists but has no role, so there is nothing to show. Ask your coordinator or an administrator to assign one.',
+    'set_pin_title' => 'Set a PIN',
+    'set_pin_body' => 'A PIN lets you unlock an idle session and confirm sensitive actions quickly, without waiting for an SMS.',
+    'set_pin_action' => 'Set your PIN',
+    'your_areas' => 'Your roles and areas',
+    'your_areas_help' => 'Everything you see is limited to these areas.',
+    'privileged' => 'Privileged',
+    'modules' => 'Your modules',
+    'modules_help' => 'Modules you can use now, and those still being delivered.',
+    'recent_sign_ins' => 'Recent account activity',
+    'security' => 'Security',
+    'review' => 'Review',
+    'ok' => 'OK',
+    'no_history' => 'No activity yet',
+];

@@ -11,9 +11,10 @@
 | - "route":      named route. Items without a route are not yet built and are
 |                 rendered as disabled "Planned" entries, never as dead links.
 | - "phase":      implementation phase that delivers the item.
-| - "permission": permission required to see the item (enforced from Phase 3).
+| - "permission": permission required to see the item.
 | - "icon":       Lucide icon name (resources/icons/<name>.svg).
 | - "mobile":     pin to the mobile bottom bar.
+| - "production": false hides the item in production (development tools).
 |
 */
 
@@ -22,7 +23,7 @@ return [
     [
         'label' => 'nav.groups.overview',
         'items' => [
-            ['label' => 'nav.dashboard', 'icon' => 'layout-dashboard', 'route' => 'design-system.shell', 'phase' => 1, 'permission' => null, 'mobile' => true],
+            ['label' => 'nav.dashboard', 'icon' => 'layout-dashboard', 'route' => 'workspace.dashboard', 'phase' => 3, 'permission' => 'dashboard.view', 'mobile' => true],
             ['label' => 'nav.command_centre', 'icon' => 'radar', 'route' => null, 'phase' => 6, 'permission' => 'command-centre.view'],
             ['label' => 'nav.approvals', 'icon' => 'stamp', 'route' => null, 'phase' => 6, 'permission' => 'approvals.view'],
         ],
@@ -67,11 +68,11 @@ return [
     [
         'label' => 'nav.groups.administration',
         'items' => [
-            ['label' => 'nav.geography', 'icon' => 'map', 'route' => null, 'phase' => 2, 'permission' => 'geography.view'],
-            ['label' => 'nav.users_roles', 'icon' => 'key-round', 'route' => null, 'phase' => 3, 'permission' => 'users.manage'],
-            ['label' => 'nav.audit_log', 'icon' => 'scroll-text', 'route' => null, 'phase' => 3, 'permission' => 'audit.view'],
+            ['label' => 'nav.geography', 'icon' => 'map', 'route' => null, 'phase' => 6, 'permission' => 'geography.view'],
+            ['label' => 'nav.users_roles', 'icon' => 'key-round', 'route' => 'workspace.users.index', 'phase' => 3, 'permission' => 'users.view'],
+            ['label' => 'nav.audit_log', 'icon' => 'scroll-text', 'route' => 'workspace.audit.index', 'phase' => 3, 'permission' => 'audit.view'],
             ['label' => 'nav.privacy', 'icon' => 'lock-keyhole', 'route' => null, 'phase' => 4, 'permission' => 'privacy.manage'],
-            ['label' => 'nav.design_system', 'icon' => 'palette', 'route' => 'design-system.index', 'phase' => 1, 'permission' => null],
+            ['label' => 'nav.design_system', 'icon' => 'palette', 'route' => 'design-system.index', 'phase' => 1, 'permission' => 'system.health', 'production' => false],
         ],
     ],
 

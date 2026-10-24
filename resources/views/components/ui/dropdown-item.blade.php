@@ -7,7 +7,7 @@
         @if ($active) <x-icon name="check" class="size-4 text-primary" /> @endif
     </a>
 @else
-    <button type="{{ $attributes->get('type', 'button') }}" role="menuitem" {{ $attributes->class($classes) }}>
+    <button type="{{ $attributes->get('type', 'button') }}" role="menuitem" {{ $attributes->except('type')->class($classes) }}>
         @if ($icon) <x-icon :name="$icon" class="size-4 {{ $danger ? '' : 'text-subtle' }}" /> @endif
         <span class="flex-1">{{ $slot }}</span>
         @if ($active) <x-icon name="check" class="size-4 text-primary" /> @endif

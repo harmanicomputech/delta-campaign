@@ -6,7 +6,7 @@
 @php
     $navigation = app(\App\Support\Navigation\Navigation::class);
     $groups = $navigation->groups();
-    $home ??= route('design-system.shell');
+    $home ??= auth()->check() ? route('workspace.dashboard') : route('design-system.shell');
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="light">

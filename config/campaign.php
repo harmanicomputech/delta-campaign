@@ -55,6 +55,60 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Data-protection keys
+    |--------------------------------------------------------------------------
+    |
+    | phone_hash: HMAC key for keyed phone-number hashes (duplicate detection and
+    | look-ups without storing numbers in clear). Rotating it requires re-hashing.
+    | field_encryption: AES-256 key for encrypted personal-data columns, kept
+    | separate from APP_KEY so session/cookie key rotation never touches data.
+    | Generate both with: php artisan campaign:keys
+    |
+    */
+
+    'keys' => [
+        'phone_hash' => env('PHONE_HASH_KEY'),
+        'field_encryption' => env('FIELD_ENCRYPTION_KEY'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Authentication
+    |--------------------------------------------------------------------------
+    */
+
+    'auth' => [
+        'otp_length' => 6,
+        'otp_ttl_seconds' => (int) env('AUTH_OTP_TTL', 300),
+        'otp_max_attempts' => 5,
+        'otp_resend_seconds' => 60,
+        'otp_per_phone_per_hour' => (int) env('AUTH_OTP_PER_PHONE_PER_HOUR', 5),
+        'otp_per_ip_per_hour' => (int) env('AUTH_OTP_PER_IP_PER_HOUR', 30),
+        'pin_length_min' => 4,
+        'pin_length_max' => 6,
+        'pin_max_attempts' => 5,
+        'pin_lockout_minutes' => 15,
+        'pin_confirm_minutes' => (int) env('AUTH_PIN_CONFIRM_MINUTES', 15),
+        'idle_lock_minutes' => (int) env('AUTH_IDLE_LOCK_MINUTES', 30),
+        'device_cookie' => 'device_id',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | SMS
+    |--------------------------------------------------------------------------
+    |
+    | "outbox" stores messages in the cache for the local developer outbox
+    | (/design-system/outbox) and never sends. "africastalking" sends for real.
+    |
+    */
+
+    'sms' => [
+        'driver' => env('SMS_DRIVER', 'outbox'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Geography and imports
     |--------------------------------------------------------------------------
     |

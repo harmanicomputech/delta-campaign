@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'title' => 'Audit log',
+    'intro' => 'Append-only, hash-chained record of security events and sensitive actions. Entries cannot be edited or deleted.',
+    'verify' => 'Verify chain',
+    'valid' => 'Chain verified',
+    'valid_detail' => ':count entries checked; the chain is intact up to #:id.',
+    'broken' => 'Chain broken',
+    'broken_detail' => 'Verification failed at entry #:id.',
+    'area' => 'Area',
+    'all_areas' => 'All areas',
+    'from' => 'From',
+    'to' => 'To',
+    'none' => 'No entries match',
+    'when' => 'When',
+    'action' => 'Action',
+    'actor' => 'Actor',
+    'subject' => 'Subject',
+    'entry' => 'Audit entry #:id',
+    'request' => 'Request ID',
+    'changes' => 'Changes',
+    'context' => 'Context',
+    'chain' => 'Hash chain',
+];

@@ -26,7 +26,10 @@
         role="group"
         aria-label="{{ $label ?? __('auth.code') }}"
     >
-        <input type="hidden" name="{{ $name }}" :value="value" {{ $attributes->whereStartsWith('x-model') }}>
+        <input type="hidden" name="{{ $name }}" :value="value" disabled x-bind:disabled="false" {{ $attributes->whereStartsWith('x-model') }}>
+        <noscript>
+            <input type="text" name="{{ $name }}" inputmode="numeric" autocomplete="one-time-code" maxlength="{{ $length }}" aria-label="{{ $label ?? __('auth.code') }}" class="form-control h-12 text-center text-lg tracking-[0.5em]">
+        </noscript>
         @for ($i = 0; $i < $length; $i++)
             <input
                 id="otp-{{ $i }}"
@@ -46,6 +49,7 @@
                 aria-label="{{ __('auth.code') }} {{ $i + 1 }}"
                 @if ($message) aria-invalid="true" @endif
                 class="form-control h-12 w-11 px-0 text-center text-lg font-semibold tabular sm:h-14 sm:w-12"
+                x-cloak
             >
         @endfor
     </div>

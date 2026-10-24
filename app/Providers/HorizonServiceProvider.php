@@ -4,19 +4,15 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Horizon\HorizonApplicationServiceProvider;
 
 class HorizonServiceProvider extends HorizonApplicationServiceProvider
 {
-    /**
-     * Register the Horizon gate.
-     *
-     * Horizon is open in the local environment only. Elsewhere access is denied
-     * until Phase 3 introduces the "system.horizon" permission for operators.
-     */
+    /** Horizon is open in the local environment; elsewhere it needs the system.horizon permission. */
     protected function gate(): void
     {
-        Gate::define('viewHorizon', fn ($user = null): bool => false);
+        Gate::define('viewHorizon', fn (?User $user = null): bool => $user?->hasPermission('system.horizon') ?? false);
     }
 }

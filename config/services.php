@@ -35,4 +35,13 @@ return [
         ],
     ],
 
+    'africastalking' => [
+        'username' => env('AFRICASTALKING_USERNAME', 'sandbox'),
+        'api_key' => env('AFRICASTALKING_API_KEY'),
+        'sender_id' => env('AFRICASTALKING_SMS_SENDER_ID'),
+        'ussd_service_code' => env('AFRICASTALKING_USSD_SERVICE_CODE'),
+        'webhook_secret' => env('AFRICASTALKING_WEBHOOK_SECRET'),
+        'timeout' => 10,
+    ],
+
 ];
