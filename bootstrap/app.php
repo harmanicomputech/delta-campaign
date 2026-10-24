@@ -29,6 +29,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->prepend(AssignRequestId::class);
         $middleware->append(SecurityHeaders::class);
+        // Low-data preference is set by the browser itself and holds no secret.
+        $middleware->encryptCookies(except: ['low_data']);
         $middleware->web(append: [SetLocale::class, EnsureAccountIsActive::class]);
 
         $middleware->alias([

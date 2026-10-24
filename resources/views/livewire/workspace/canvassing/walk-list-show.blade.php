@@ -1,5 +1,5 @@
 @php($tz = config('campaign.display_timezone'))
-<div>
+<div x-data x-init="@js($canRecord) && $store.sync.refreshLists()">
     <x-ui.page-header :title="$list->name" :eyebrow="__('canvassing.walk_list')">
         <x-slot:actions>
             <x-ui.badge :tone="$list->status->tone()" dot>{{ $list->status->label() }}</x-ui.badge>
@@ -35,7 +35,7 @@
         <ol class="divide-y divide-line">
             @foreach ($entries as $entry)
                 @php($last = $entry->contactAttempts->first())
-                <li wire:key="e-{{ $entry->id }}" x-data="{ open: false }" class="px-5 py-4">
+                <li wire:key="e-{{ $entry->id }}" x-data="{ open: false, queued: false }" class="px-5 py-4">
                     <div class="flex items-start gap-3">
                         <span @class(['mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold tabular-nums',
                             'bg-surface-sunken text-muted' => $entry->status->value === 'pending',
@@ -55,6 +55,7 @@
                             @elseif ($entry->status->value === 'skipped')
                                 <p class="mt-1 text-xs text-warning">{{ __('canvassing.skipped') }}</p>
                             @endif
+                            <p x-show="queued" x-cloak class="mt-1 inline-flex items-center gap-1 text-xs font-medium text-warning"><x-icon name="cloud-off" class="size-3.5" /> {{ __('sync.saved_on_device') }}</p>
                         </div>
                         @if ($canRecord)
                             <button type="button" x-on:click="open = !open" :aria-expanded="open" class="shrink-0 rounded-md border border-line px-2.5 py-1.5 text-xs font-medium text-muted hover:border-line-strong hover:text-fg">
@@ -68,7 +69,10 @@
                             <div class="grid grid-cols-2 gap-2 sm:grid-cols-3">
                                 @foreach ($outcomes as $value => $outcome)
                                     <button type="button"
-                                            x-on:click="$wire.record({{ $entry->id }}, '{{ $value }}', $uuid()).then(() => open = false)"
+                                            x-on:click="$store.sync.capture(
+                                                { entryId: {{ $entry->id }}, outcome: '{{ $value }}', notes: $refs.note{{ $entry->id }}.value, label: @js($entry->supporter?->full_name ?? $entry->label), listUuid: @js($list->uuid), listName: @js($list->name) },
+                                                (id) => $wire.record({{ $entry->id }}, '{{ $value }}', id),
+                                            ).then((result) => { open = false; queued = result === 'queued' })"
                                             wire:loading.attr="disabled" wire:target="record"
                                             @class(['flex min-h-11 items-center justify-center rounded-lg border px-3 py-2 text-sm font-medium transition-colors disabled:opacity-50',
                                                 'border-success/30 bg-success-soft text-success hover:border-success' => in_array($value, ['reached', 'registered'], true),
@@ -80,9 +84,9 @@
                             </div>
                             <div class="mt-2 flex flex-col gap-2 sm:flex-row sm:items-start">
                                 <label class="sr-only" for="note-{{ $entry->id }}">{{ __('canvassing.note') }}</label>
-                                <textarea id="note-{{ $entry->id }}" wire:model="notes.{{ $entry->id }}" rows="1" placeholder="{{ __('canvassing.note_placeholder') }}" class="form-control flex-1"></textarea>
+                                <textarea id="note-{{ $entry->id }}" x-ref="note{{ $entry->id }}" wire:model="notes.{{ $entry->id }}" rows="1" placeholder="{{ __('canvassing.note_placeholder') }}" class="form-control flex-1"></textarea>
                                 @if ($entry->status->value === 'pending')
-                                    <x-ui.button variant="ghost" size="sm" icon="skip-forward" wire:click="skip({{ $entry->id }})">{{ __('canvassing.skip') }}</x-ui.button>
+                                    <x-ui.button variant="ghost" size="sm" icon="skip-forward" wire:click="skip({{ $entry->id }})" x-bind:disabled="! $store.network.online">{{ __('canvassing.skip') }}</x-ui.button>
                                 @endif
                             </div>
                             <p class="mt-1.5 text-xs text-subtle">{{ __('canvassing.no_opinions') }}</p>

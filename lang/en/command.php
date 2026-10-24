@@ -4,6 +4,7 @@ return [
     'title' => 'Command centre',
     'intro' => 'Live field picture for your area. Figures are campaign records, not official results.',
     'live' => 'Live · updated :time',
+    'refresh' => 'Refresh',
     'masked' => 'Counts below :n are shown as “<:n” to protect individuals in small areas.',
     'supporters' => 'Supporters',
     'verified' => 'Verified',

@@ -56,6 +56,21 @@
 See `ARCHITECTURE.md` §8 (CSP with per-request nonce, HSTS, frame, referrer and permissions policies,
 request IDs, log redaction).
 
+## Offline field app (Phase 7)
+
+- The service worker caches only the offline shell (`/offline`), the manifest icons and fingerprinted
+  build assets. Signed-in pages, Livewire requests and API responses are never cached.
+- Walk lists assigned to the person, and contacts captured without a connection, are stored in
+  IndexedDB encrypted with AES-GCM under a per-device, **non-extractable** WebCrypto key. This protects
+  data at rest from casual inspection of the device; it does not protect against malware in the browser
+  or a person using the unlocked device.
+- Cached lists hold names and references only, never phone numbers. They are deleted on sign-out and when
+  a different person signs in on the device. Unsent captures stay (encrypted) until the same person syncs;
+  the server re-checks every item against the current assignment.
+- `/api/v1/sync` uses the normal workspace session (sign-in, second factor, idle lock) and CSRF
+  (`X-XSRF-TOKEN`). Items are idempotent on their client UUID, a UUID belonging to another person is
+  refused, captures older than 14 days are refused, and device times in the future are clamped.
+
 ## Known limitations
 
 - The audit chain is verified in full, synchronously. At millions of entries, verification will move to

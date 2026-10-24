@@ -122,6 +122,8 @@ class AppServiceProvider extends ServiceProvider
             Limit::perMinute(10)->by('verify-ip:'.$request->ip()),
             Limit::perMinute(6)->by('verify-session:'.$request->session()->getId()),
         ]);
+        // Offline sync batches: generous for field use, bounded per person.
+        RateLimiter::for('sync', fn (Request $request) => Limit::perMinute(30)->by((string) ($request->user()?->id ?? $request->ip())));
         RateLimiter::for('sensitive', fn (Request $request): Limit => Limit::perMinute(30)->by('sensitive:'.($request->user()?->getAuthIdentifier() ?? $request->ip())));
     }
 }

@@ -1,5 +1,5 @@
-<div wire:poll.60s.visible x-data="{ open: false }" x-on:keydown.escape.stop="open = false; $refs.trigger.focus()" class="relative">
-    <button type="button" x-ref="trigger" x-on:click="open = !open" :aria-expanded="open" aria-haspopup="true"
+<div @if ($poll) wire:poll.60s.visible @endif x-data="{ open: false }" x-on:keydown.escape.stop="open = false; $refs.trigger.focus()" class="relative">
+    <button type="button" x-ref="trigger" x-on:click="open = !open; open && ! @js($poll) && $wire.$refresh()" :aria-expanded="open" aria-haspopup="true"
             class="relative rounded-md p-2 text-muted hover:bg-surface-sunken hover:text-fg">
         <x-icon name="bell" class="size-[1.125rem]" />
         <span class="sr-only">{{ trans_choice('notifications.unread_count', $unread, ['count' => $unread]) }}</span>

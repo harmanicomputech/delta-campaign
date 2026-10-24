@@ -144,11 +144,21 @@ live updates use Livewire polling (60 s on the command centre and approvals, 3 s
 matching the metrics cache. Reverb can replace polling later without changing the screens.
 Content administration arrives with the CMS in Phase 10.
 
-## Phase 7 — PWA and offline synchronisation ☐
+## Phase 7 — PWA and offline synchronisation ☑
 
-- Manifest, service worker, offline shell, IndexedDB queue with local encryption
-- `/api/v1/sync` batch API with idempotency, partial failures and conflict handling
-- Foreground sync fallback, retry controls, low-data mode
+Completed 2026-10-24. Security model: `docs/SECURITY.md` (offline field app).
+
+- ☑ Installable app: manifest (standalone, maskable icon, shortcuts), icons generated from the existing neutral mark
+- ☑ Service worker (`/sw.js`, versioned from the Vite manifest): precaches the offline shell and build assets; pages are network-only with the offline shell as fallback; nothing personal is cached
+- ☑ Encrypted IndexedDB vault (AES-GCM, non-extractable device key) for assigned walk lists and the capture queue
+- ☑ One-tap capture works offline on the walk-list page and from the offline shell; "Saved on this device" feedback
+- ☑ `POST /api/v1/sync`: batches of up to 100, per-item results (`created`, `duplicate`, `conflict`, `rejected`, `error`), idempotent on client UUIDs; `GET /api/v1/sync/walk-lists` for the device cache
+- ☑ Sync triggers: on reconnect, on page load, every minute while items wait, and "Sync now"; items needing attention can be retried or discarded; sign-in/unlock prompts when the session ended
+- ☑ Low-data mode (follows the browser's Save-Data hint; per device) stops background polling
+- ☑ Tests: 294 passing; browser-verified install metadata, service-worker control, offline capture, offline shell, encrypted storage, automatic sync on reconnect
+
+**Limitations.** Offline capture covers canvassing contacts; other forms need a connection. Background
+Sync (service-worker sync events) is not relied on because support varies; sync runs whenever the app is open.
 
 ## Phase 8 — USSD and SMS ☐
 

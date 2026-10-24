@@ -9,9 +9,12 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-/** Top-bar bell: unread count and the latest notifications. Polls once a minute. */
+/** Top-bar bell: unread count and the latest notifications. Polls once a minute (not in low-data mode). */
 final class NotificationBell extends Component
 {
+    /** False in low-data mode: the count refreshes on page loads and when the bell is opened. */
+    public bool $poll = true;
+
     public function markAllRead(): void
     {
         $this->actor()->unreadNotifications()->update(['read_at' => now()]);

@@ -1,5 +1,5 @@
 @php($tz = config('campaign.display_timezone'))
-<div>
+<div x-data x-init="@js(auth()->user()->can('canvassing.record')) && $store.sync.refreshLists()">
     <x-ui.page-header :title="__('canvassing.title')" :description="__('canvassing.intro')">
         <x-slot:actions>
             @can('canvassing.manage')
@@ -7,6 +7,10 @@
             @endcan
         </x-slot:actions>
     </x-ui.page-header>
+
+    @can('canvassing.record')
+        <x-ui.alert tone="info" icon="cloud-off" class="mb-6" x-show="$store.sync.supported">{{ __('sync.offline_ready') }}</x-ui.alert>
+    @endcan
 
     <x-ui.card :padding="false">
         <div class="flex flex-col gap-3 border-b border-line px-5 py-3 sm:flex-row sm:items-center">

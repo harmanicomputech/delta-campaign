@@ -33,7 +33,7 @@
         </form>
     @endif
 
-    <form method="POST" action="{{ route('logout') }}" class="mt-6 text-center">
+    <form method="POST" action="{{ route('logout') }}" x-data x-on:submit.prevent="$store.sync.forgetLists().finally(() => $el.submit())" class="mt-6 text-center">
         @csrf
         <button type="submit" class="text-[0.8125rem] font-medium text-muted hover:text-fg">{{ __('auth.sign_out_instead') }}</button>
     </form>

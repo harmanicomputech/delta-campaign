@@ -1,4 +1,4 @@
-<div wire:poll.60s.visible>
+<div @unless (\App\Support\LowData::enabled()) wire:poll.60s.visible @endunless>
     <x-ui.page-header :title="__('approvals.title')" :description="__('approvals.intro')">
         <x-slot:actions>
             <x-ui.badge :tone="$total > 0 ? 'warning' : 'success'" dot>{{ trans_choice('approvals.waiting', $total, ['count' => number_format($total)]) }}</x-ui.badge>

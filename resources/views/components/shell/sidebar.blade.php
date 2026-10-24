@@ -22,7 +22,7 @@
                     <x-icon name="chevrons-up-down" class="size-4 text-nav-muted sidebar-collapsed:hidden" />
                 </x-slot:trigger>
                 <x-ui.dropdown-item icon="shield-check" :href="route('workspace.account')">{{ __('shell.account_security') }}</x-ui.dropdown-item>
-                <form method="POST" action="{{ route('logout') }}">
+                <form method="POST" action="{{ route('logout') }}" x-data x-on:submit.prevent="$store.sync.forgetLists().finally(() => $el.submit())">
                     @csrf
                     <x-ui.dropdown-item icon="log-out" type="submit">{{ __('shell.sign_out') }}</x-ui.dropdown-item>
                 </form>

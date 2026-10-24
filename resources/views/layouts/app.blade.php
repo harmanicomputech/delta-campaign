@@ -46,15 +46,9 @@
                         <x-ui.badge tone="accent" size="sm" class="mx-1 hidden sm:inline-flex">{{ __('shell.environment.'.app()->environment()) }}</x-ui.badge>
                     @endunless
 
-                    <span class="flex size-9 items-center justify-center" x-bind:title="$store.network.online ? @js(__('ui.online')) : @js(__('ui.offline'))">
-                        <span class="relative flex size-2.5">
-                            <span class="absolute inline-flex size-full rounded-full opacity-60" :class="$store.network.online ? 'bg-success' : 'animate-ping bg-danger'"></span>
-                            <span class="relative inline-flex size-2.5 rounded-full" :class="$store.network.online ? 'bg-success' : 'bg-danger'"></span>
-                        </span>
-                        <span class="sr-only" x-text="$store.network.online ? @js(__('ui.online')) : @js(__('ui.offline'))"></span>
-                    </span>
+                    <x-shell.sync-status />
 
-                    @auth <livewire:workspace.notifications.notification-bell /> @endauth
+                    @auth <livewire:workspace.notifications.notification-bell :poll="! \App\Support\LowData::enabled()" /> @endauth
                     <x-shell.locale-switcher />
                     <x-shell.theme-switcher />
                 </div>

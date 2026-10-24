@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\Api\V1\SyncController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ReauthenticationController;
 use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\DesignSystemController;
 use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\Pwa\PwaController;
 use App\Http\Controllers\Workspace\DashboardController;
 use App\Http\Controllers\Workspace\ExportDownloadController;
 use App\Http\Controllers\Workspace\ImportFilesController;
@@ -40,6 +42,13 @@ use Illuminate\Support\Facades\Route;
 | Public website (full site: Phase 10)
 */
 Route::view('/', 'pages.public.home')->name('home');
+
+/*
+| Installable app: manifest, service worker and offline shell (no personal data)
+*/
+Route::get('/manifest.webmanifest', [PwaController::class, 'manifest'])->name('pwa.manifest');
+Route::get('/sw.js', [PwaController::class, 'serviceWorker'])->name('pwa.sw');
+Route::get('/offline', [PwaController::class, 'offline'])->name('pwa.offline');
 
 Route::post('/locale', LocaleController::class)
     ->middleware('throttle:20,1')
@@ -112,6 +121,14 @@ Route::middleware('workspace')->prefix('workspace')->name('workspace.')->group(f
 
     Route::get('/privacy', PrivacyCentre::class)->middleware('pin.confirm')->name('privacy.index');
     Route::get('/privacy/requests/{request:uuid}', RequestShow::class)->middleware(['can:dsr.manage', 'pin.confirm'])->name('privacy.requests.show');
+});
+
+/*
+| Field-app sync API (same-origin session + CSRF; JSON)
+*/
+Route::middleware(['workspace', 'throttle:sync'])->prefix('api/v1')->name('api.v1.')->group(function (): void {
+    Route::post('/sync', [SyncController::class, 'store'])->name('sync');
+    Route::get('/sync/walk-lists', [SyncController::class, 'walkLists'])->name('sync.walk-lists');
 });
 
 /*

@@ -3,9 +3,12 @@
     $pct = fn (int $part, int $whole) => $whole > 0 ? (int) round($part / $whole * 100) : 0;
     $levelLabel = __('command.level_'.$currentLevel);
 @endphp
-<div wire:poll.60s.visible>
+<div @unless (\App\Support\LowData::enabled()) wire:poll.60s.visible @endunless>
     <x-ui.page-header :title="__('command.title')" :description="__('command.intro')">
         <x-slot:actions>
+            @if (\App\Support\LowData::enabled())
+                <x-ui.button variant="secondary" size="sm" icon="refresh-cw" wire:click="$refresh">{{ __('command.refresh') }}</x-ui.button>
+            @endif
             <span class="inline-flex items-center gap-2 text-xs text-subtle">
                 <span class="relative flex size-2"><span class="absolute inline-flex size-full animate-ping rounded-full bg-success opacity-60"></span><span class="relative inline-flex size-2 rounded-full bg-success"></span></span>
                 {{ __('command.live', ['time' => now()->timezone(config('campaign.display_timezone'))->format('H:i')]) }}
