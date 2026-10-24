@@ -31,6 +31,7 @@ return [
     'users_roles' => 'Users and roles',
     'audit_log' => 'Audit log',
     'privacy' => 'Data protection',
+    'settings' => 'Settings',
     'exports' => 'Exports',
     'design_system' => 'Design system',
     'planned' => 'E dey come',

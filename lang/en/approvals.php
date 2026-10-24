@@ -1,0 +1,21 @@
+<?php
+
+return [
+    'title' => 'Approvals',
+    'intro' => 'Everything waiting for your decision, limited to your role and area.',
+    'waiting' => '{0} Nothing waiting|{1} 1 waiting|[2,*] :count waiting',
+    'open' => 'Open',
+    'urgent' => 'Urgent',
+    'none' => 'Nothing needs a decision',
+    'queue_empty' => 'All clear',
+    'no_queues' => 'No approval queues for your role',
+    'no_queues_help' => 'Approval queues appear here when your role can decide on applications, records or requests.',
+    'volunteers' => 'Volunteer applications',
+    'supporters' => 'Supporters to verify',
+    'quality' => 'Contacts to review',
+    'tasks' => 'Escalated tasks',
+    'dsr' => 'Data-subject requests',
+    'imports' => 'Geography imports to confirm',
+    'due' => 'due :date',
+    'import_rows' => ':valid valid, :invalid invalid rows',
+];

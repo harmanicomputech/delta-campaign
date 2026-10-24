@@ -53,7 +53,7 @@ class User extends Authenticatable
     protected $fillable = ['name', 'email', 'locale'];
 
     /** Database defaults, mirrored so new models are complete before a refresh. */
-    protected $attributes = ['status' => 'active', 'locale' => 'en', 'pin_failed_attempts' => 0];
+    protected $attributes = ['status' => 'active', 'locale' => 'en', 'pin_failed_attempts' => 0, 'pin_hash' => null];
 
     protected $hidden = ['phone_encrypted', 'phone_hash', 'two_factor_secret', 'two_factor_recovery_codes', 'pin_hash', 'remember_token'];
 

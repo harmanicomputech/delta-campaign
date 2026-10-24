@@ -7,16 +7,23 @@ use App\Http\Controllers\DesignSystemController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\Workspace\DashboardController;
 use App\Http\Controllers\Workspace\ExportDownloadController;
+use App\Http\Controllers\Workspace\ImportFilesController;
 use App\Http\Controllers\Workspace\TaskEvidenceController;
 use App\Http\Middleware\EnsureDesignSystemEnabled;
 use App\Livewire\Workspace\Account\SecurityPage;
+use App\Livewire\Workspace\Approvals\ApprovalsInbox;
 use App\Livewire\Workspace\Audit\AuditLogIndex;
 use App\Livewire\Workspace\Canvassing\WalkListShow;
 use App\Livewire\Workspace\Canvassing\WalkListsIndex;
+use App\Livewire\Workspace\CommandCentre\CommandCentre;
 use App\Livewire\Workspace\Exports\ExportsIndex;
+use App\Livewire\Workspace\Geography\GeographyIndex;
+use App\Livewire\Workspace\Geography\ImportShow;
+use App\Livewire\Workspace\Geography\ImportsIndex;
 use App\Livewire\Workspace\Notifications\NotificationsIndex;
 use App\Livewire\Workspace\Privacy\PrivacyCentre;
 use App\Livewire\Workspace\Privacy\RequestShow;
+use App\Livewire\Workspace\Settings\SettingsPage;
 use App\Livewire\Workspace\Supporters\SupporterShow;
 use App\Livewire\Workspace\Supporters\SupportersIndex;
 use App\Livewire\Workspace\Tasks\TaskShow;
@@ -67,6 +74,18 @@ Route::middleware('auth')->group(function (): void {
 Route::middleware('workspace')->prefix('workspace')->name('workspace.')->group(function (): void {
     Route::get('/', DashboardController::class)->name('dashboard');
     Route::get('/account', SecurityPage::class)->name('account');
+
+    Route::get('/command-centre', CommandCentre::class)->middleware('can:command-centre.view')->name('command-centre');
+    Route::get('/approvals', ApprovalsInbox::class)->middleware('can:approvals.view')->name('approvals');
+    Route::get('/settings', SettingsPage::class)->middleware(['can:settings.manage', 'pin.confirm'])->name('settings');
+
+    Route::get('/geography', GeographyIndex::class)->middleware('can:geography.view')->name('geography');
+    Route::middleware('can:geography.import')->prefix('geography/imports')->name('geography.')->group(function (): void {
+        Route::get('/', ImportsIndex::class)->name('imports');
+        Route::get('/template.csv', [ImportFilesController::class, 'template'])->name('imports.template');
+        Route::get('/{import}', ImportShow::class)->name('imports.show');
+        Route::get('/{import}/issues.csv', [ImportFilesController::class, 'report'])->middleware('throttle:sensitive')->name('imports.report');
+    });
 
     Route::get('/users', UsersIndex::class)->middleware('can:users.view')->name('users.index');
     Route::get('/users/{user:uuid}', UserShow::class)->middleware('can:users.view')->name('users.show');

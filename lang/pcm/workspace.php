@@ -22,4 +22,8 @@ return [
     'review' => 'Check am',
     'ok' => 'OK',
     'no_history' => 'Nothing yet',
+    'my_tasks' => 'My work',
+    'open_count' => '{0} Nothing open|{1} 1 open|[2,*] :count open',
+    'no_tasks' => 'No work wey never finish. Well done.',
+    'walk_list' => 'Walk list',
 ];

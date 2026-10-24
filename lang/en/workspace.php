@@ -20,4 +20,8 @@ return [
     'review' => 'Review',
     'ok' => 'OK',
     'no_history' => 'No activity yet',
+    'my_tasks' => 'My tasks',
+    'open_count' => '{0} None open|{1} 1 open|[2,*] :count open',
+    'no_tasks' => 'No open tasks. Well done.',
+    'walk_list' => 'Walk list',
 ];

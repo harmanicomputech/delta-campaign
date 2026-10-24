@@ -24,8 +24,8 @@ return [
         'label' => 'nav.groups.overview',
         'items' => [
             ['label' => 'nav.dashboard', 'icon' => 'layout-dashboard', 'route' => 'workspace.dashboard', 'phase' => 3, 'permission' => 'dashboard.view', 'mobile' => true],
-            ['label' => 'nav.command_centre', 'icon' => 'radar', 'route' => null, 'phase' => 6, 'permission' => 'command-centre.view'],
-            ['label' => 'nav.approvals', 'icon' => 'stamp', 'route' => null, 'phase' => 6, 'permission' => 'approvals.view'],
+            ['label' => 'nav.command_centre', 'icon' => 'radar', 'route' => 'workspace.command-centre', 'phase' => 6, 'permission' => 'command-centre.view'],
+            ['label' => 'nav.approvals', 'icon' => 'stamp', 'route' => 'workspace.approvals', 'phase' => 6, 'permission' => 'approvals.view'],
         ],
     ],
 
@@ -69,10 +69,11 @@ return [
     [
         'label' => 'nav.groups.administration',
         'items' => [
-            ['label' => 'nav.geography', 'icon' => 'map', 'route' => null, 'phase' => 6, 'permission' => 'geography.view'],
+            ['label' => 'nav.geography', 'icon' => 'map', 'route' => 'workspace.geography', 'phase' => 6, 'permission' => 'geography.view'],
             ['label' => 'nav.users_roles', 'icon' => 'key-round', 'route' => 'workspace.users.index', 'phase' => 3, 'permission' => 'users.view'],
             ['label' => 'nav.audit_log', 'icon' => 'scroll-text', 'route' => 'workspace.audit.index', 'phase' => 3, 'permission' => 'audit.view'],
             ['label' => 'nav.privacy', 'icon' => 'lock-keyhole', 'route' => 'workspace.privacy.index', 'phase' => 4, 'permission' => 'privacy.manage'],
+            ['label' => 'nav.settings', 'icon' => 'settings', 'route' => 'workspace.settings', 'phase' => 6, 'permission' => 'settings.manage'],
             ['label' => 'nav.exports', 'icon' => 'download', 'route' => 'workspace.exports.index', 'phase' => 4, 'permission' => 'supporters.export'],
             ['label' => 'nav.design_system', 'icon' => 'palette', 'route' => 'design-system.index', 'phase' => 1, 'permission' => 'system.health', 'production' => false],
         ],

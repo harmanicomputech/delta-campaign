@@ -127,12 +127,22 @@ Completed 2026-10-24. Details: `docs/DATA_MODEL.md` (field operations).
 Notifications are in-app only (SMS/WhatsApp delivery of reminders arrives with the communications
 engine in Phase 9). Contact capture needs a connection until the PWA sync in Phase 7.
 
-## Phase 6 — Leadership and administration ☐
+## Phase 6 — Leadership and administration ☑
 
-*Dependency:* install `laravel/reverb`.
+Completed 2026-10-24.
 
-- Role-specific dashboards and command centre (drill-down, coverage, approvals, health, trends)
-- User management, approvals, import/export management, settings, content administration
+- ☑ Command centre (`command-centre.view`): area KPIs (supporters, verification, active volunteers, 7-day field contacts and reach, ward coverage), 30-day daily trends as two single-series charts with hover values and table view, drill-down district → LGA → ward with "up", escalations, decisions waiting and system health. Tampered drill parameters outside the viewer's scope are ignored
+- ☑ `AreaMetrics`: aggregate-only, scope-restricted counts, cached for 60 s; the summary is always the sum of the breakdown. Small numbers (1–4) are shown as "<5" to aggregate-only roles (e.g. analysts)
+- ☑ Approvals inbox (`approvals.view`): volunteer applications, supporters awaiting verification, contacts to review, escalated tasks, data-subject requests and geography imports, each limited to the person's permission and area
+- ☑ Role-aware dashboard: my tasks, walk lists and training for field roles; decisions waiting and an area snapshot for leaders
+- ☑ Settings (`settings.manage`, recent PIN): validated against `config/settings.php`, audited, with change history
+- ☑ Geography browser (`geography.view`, scope-limited) with polling-unit search; imports UI (`geography.import`): upload starts validation, preview with row filters and issue report, confirm (recent PIN) or cancel, CSV template, background apply with live status
+- ☑ Tests: 284 passing; browser-verified dashboard, command centre drill-down and chart hover, approvals, geography, import upload → preview → confirm → applied, mobile layouts
+
+**Deviation.** `laravel/reverb` cannot be installed in this environment (GitHub downloads blocked), so
+live updates use Livewire polling (60 s on the command centre and approvals, 3 s on running imports),
+matching the metrics cache. Reverb can replace polling later without changing the screens.
+Content administration arrives with the CMS in Phase 10.
 
 ## Phase 7 — PWA and offline synchronisation ☐
 
