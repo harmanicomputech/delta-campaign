@@ -53,13 +53,20 @@ screenshots; 24/24 browser interaction checks passing.
 - **Provisional brand**: replace tokens when approved assets arrive.
 - **Page weight**: workspace pages repeat inline SVG icons (about 130 KB of HTML before gzip on the dashboard). An SVG sprite is planned if Phase 7 low-bandwidth measurements show it matters.
 
-## Phase 2 — Database and geographic management ☐
+## Phase 2 — Database and geographic management ☑
 
-- Geography schema (districts, LGAs, wards, polling units) with PostGIS columns, constraints, indexes
-- Seed 3 districts and 25 LGAs from the brief; **no fabricated** ward/PU codes
-- Staged CSV importer (queued): preview, row validation, duplicate detection, error report,
-  import history, idempotent re-import
-- Geography browser UI; tests for import and re-import
+Completed 2026-10-24. Details: `docs/GEOGRAPHY_IMPORT.md`, `docs/DATA_MODEL.md`.
+
+- ☑ Geography schema with PostGIS (generated `location` column, GiST index), pg_trgm name search, FK/unique/check constraints
+- ☑ Triggers that maintain denormalised `lga_id`/`senatorial_district_id` and cascade moves
+- ☑ Seeded 3 districts / 25 LGAs (idempotent), with no invented codes. SAMPLE wards/PUs via `SampleDataSeeder` (non-production only)
+- ☑ Staged importer: private storage + hash, streaming CSV, row validation, in-file and cross-data duplicate detection, warnings, error report (formula-safe), preview counts, confirm/cancel, re-validation at apply, chunked transactions, single-apply lock, idempotent re-import, never-delete policy
+- ☑ Queued jobs (`imports` queue on `redis-long`), verified end-to-end through Horizon
+- ☑ `geography:import` CLI
+- ☑ Tests: schema integrity, triggers, spatial queries, import lifecycle and rules (30 tests)
+
+**Limitations.** No official ward/PU data has been loaded (none supplied). The import UI arrives with the
+administration screens (Phase 6). Polling-unit moves between wards are deliberately manual.
 
 ## Phase 3 — Authentication, permissions and audit ☐
 

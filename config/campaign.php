@@ -54,6 +54,27 @@ return [
     */
 
     /*
+    |--------------------------------------------------------------------------
+    | Geography and imports
+    |--------------------------------------------------------------------------
+    |
+    | Coordinates outside the bounding box are rejected on import. The box is
+    | deliberately generous around Delta State's extent.
+    |
+    */
+
+    'geography' => [
+        'bounds' => ['min_lat' => 4.8, 'max_lat' => 6.8, 'min_lng' => 4.9, 'max_lng' => 7.0],
+    ],
+
+    'imports' => [
+        'disk' => env('IMPORTS_DISK', 'local'),
+        'max_rows' => (int) env('IMPORTS_MAX_ROWS', 50_000),
+        'max_file_kb' => (int) env('IMPORTS_MAX_FILE_KB', 10_240),
+        'chunk' => 500,
+    ],
+
+    /*
     | Proxies (load balancers) whose X-Forwarded-* headers are trusted.
     | Comma-separated IPs/CIDRs, or "*" only when behind a private load balancer.
     */
