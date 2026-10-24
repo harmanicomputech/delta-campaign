@@ -7,6 +7,7 @@ namespace Tests\Feature\Authorization;
 use App\Enums\OtpPurpose;
 use App\Enums\ScopeType;
 use App\Enums\UserStatus;
+use App\Livewire\Workspace\Users\UsersIndex;
 use App\Models\AuditLog;
 use App\Models\OtpChallenge;
 use App\Models\Role;
@@ -111,7 +112,8 @@ final class UserAdministrationTest extends TestCase
 
         $this->admin->revoke($actor, $target->activeAssignments()->firstOrFail());
 
-        $this->get('/workspace/users')->assertForbidden();
+        // A new request reloads the account, exactly as in production.
+        $this->signIn($target->fresh())->get('/workspace/users')->assertForbidden();
         $this->assertTrue(AuditLog::query()->where('action', 'user.role_revoked')->exists());
     }
 
@@ -179,7 +181,7 @@ final class UserAdministrationTest extends TestCase
         $ward = $this->ward('udu');
         $this->signIn($actor);
 
-        Livewire::test(\App\Livewire\Workspace\Users\UsersIndex::class)
+        Livewire::test(UsersIndex::class)
             ->set('name', 'Sample Volunteer')
             ->set('phone', '08034440000')
             ->set('roleId', $this->role('volunteer')->id)
@@ -203,5 +205,17 @@ final class UserAdministrationTest extends TestCase
 
         $this->assertThrows(fn () => $this->admin->completePhoneChange($actor, $b, $challenge, '0803 999 0001', (string) $code), ValidationException::class);
         $this->assertInstanceOf(OtpChallenge::class, $challenge);
+    }
+
+    public function test_the_create_admin_command_bootstraps_a_super_admin_idempotently(): void
+    {
+        $this->artisan('campaign:create-admin', ['phone' => '0803 000 0009', 'name' => 'Sample Admin'])->assertSuccessful();
+        $this->artisan('campaign:create-admin', ['phone' => '0803 000 0009', 'name' => 'Sample Admin'])->assertSuccessful();
+        $this->artisan('campaign:create-admin', ['phone' => '123', 'name' => 'Bad'])->assertFailed();
+
+        $user = User::findByPhone('08030000009');
+        $this->assertTrue($user->hasRole('super_admin'));
+        $this->assertSame(1, $user->activeAssignments()->count());
+        $this->assertTrue(AuditLog::query()->where('action', 'user.super_admin_granted')->where('actor_label', 'console')->exists());
     }
 }

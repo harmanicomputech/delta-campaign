@@ -68,17 +68,26 @@ Completed 2026-10-24. Details: `docs/GEOGRAPHY_IMPORT.md`, `docs/DATA_MODEL.md`.
 **Limitations.** No official ward/PU data has been loaded (none supplied). The import UI arrives with the
 administration screens (Phase 6). Polling-unit moves between wards are deliberately manual.
 
-## Phase 3 — Authentication, permissions and audit ☐
+## Phase 3 — Authentication, permissions and audit ☑
 
-*Dependency:* install `laravel/sanctum` (blocked by this session's network policy; see audit).
-*Also:* replace the skeleton `users` migration with the phone-based identity schema; gate Horizon with a permission.
+Completed 2026-10-24. Details: `docs/SECURITY.md`.
 
-- Phone OTP sign-in (hashed OTPs, expiry, attempts, rate limits, non-enumerating responses)
-- TOTP second factor for privileged roles; PIN re-entry
-- Roles, permissions, scoped role assignments, `GeoScope` + `visibleTo()`
-- Session list/revocation, device registry, suspension, recovery, login history, suspicious-login alerts
-- Append-only, hash-chained audit log with DB triggers and `audit:verify`
-- Security and geographic-isolation tests
+- ☑ Users converted to phone identity (encrypted number, keyed hash); dedicated `PHONE_HASH_KEY` / `FIELD_ENCRYPTION_KEY` (`campaign:keys`)
+- ☑ Phone sign-in with one-time codes: hashed, expiring, attempt-capped, single-use, rate-limited, non-enumerating
+- ☑ TOTP second factor (RFC 6238) enforced for privileged roles; QR enrolment; recovery codes
+- ☑ PIN re-entry, idle lock, sensitive-area confirmation (`pin.confirm`)
+- ☑ Sessions (device-aware database sessions) and devices: list, revoke, sign out everywhere; new-device SMS alerts
+- ☑ Suspension/reactivation, administrator-assisted phone recovery, login history
+- ☑ 12 roles / 61 permissions; scoped assignments; `GeoScope` + `visibleTo()`; anti-escalation rules
+- ☑ Append-only, hash-chained audit log with triggers, `audit:verify`, `audit:checkpoint`; imports now audited
+- ☑ SMS gateway contract with Africa's Talking and developer-outbox drivers; queued transactional SMS (`otp` queue)
+- ☑ Workspace dashboard, account security, users and roles, audit log UI; permission-filtered navigation
+- ☑ Tests: 190 passing (sign-in flow, non-enumeration, TOTP vectors, sessions, idle lock, PIN, scope isolation incl. URL manipulation and search, anti-escalation, audit tamper detection, crypto, SMS driver)
+- ☑ Browser: real sign-in through the queue and outbox, 2FA enrolment, user creation, suspension, PIN, audit verification; desktop and 390 px, no overflow or JS errors
+
+**Decisions.** Sanctum was not installed (GitHub downloads are blocked in this environment); the PWA and
+API use same-origin session authentication, which Sanctum is not needed for. **Limitations.** See
+`docs/SECURITY.md`.
 
 ## Phase 4 — Supporters and data protection ☐
 

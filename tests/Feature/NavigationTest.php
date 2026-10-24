@@ -44,7 +44,7 @@ final class NavigationTest extends TestCase
     {
         $urls = array_column(app(Navigation::class)->paletteItems(), 'url');
 
-        $this->assertContains(route('design-system.shell'), $urls);
+        $this->assertContains(route('workspace.dashboard'), $urls);
         $this->assertNotContains('', $urls);
     }
 

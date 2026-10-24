@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Services\Sms\Drivers\OutboxSmsGateway;
 use Illuminate\Contracts\View\View;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -40,7 +41,7 @@ final class DesignSystemController extends Controller
     {
         abort_unless(app()->environment('local', 'testing') && config('campaign.sms.driver') === 'outbox', 404);
 
-        return view('pages.design-system.outbox', ['messages' => \App\Services\Sms\Drivers\OutboxSmsGateway::messages()]);
+        return view('pages.design-system.outbox', ['messages' => OutboxSmsGateway::messages()]);
     }
 
     public function error(string $status): View

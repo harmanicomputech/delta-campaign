@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Enums\LoginEventType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -17,7 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $user_agent
  * @property string|null $device_id
  * @property array<string, mixed>|null $context
- * @property \Illuminate\Support\Carbon $created_at
+ * @property Carbon $created_at
  */
 class LoginEvent extends Model
 {

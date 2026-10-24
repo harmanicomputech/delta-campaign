@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Audit;
 
+use App\Livewire\Workspace\Audit\AuditLogIndex;
 use App\Models\AuditLog;
 use App\Models\User;
 use App\Services\Audit\AuditChainVerifier;
@@ -11,6 +12,7 @@ use App\Services\Audit\AuditLogger;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Livewire\Livewire;
 use Tests\Concerns\InteractsWithAccounts;
 use Tests\TestCase;
 
@@ -42,9 +44,11 @@ final class AuditLogTest extends TestCase
     {
         $entry = $this->audit->record('test.immutable');
 
-        $this->assertThrows(fn () => DB::table('audit_logs')->where('id', $entry->id)->update(['action' => 'x']), QueryException::class, 'append-only');
-        $this->assertThrows(fn () => DB::table('audit_logs')->where('id', $entry->id)->delete(), QueryException::class, 'append-only');
-        $this->assertThrows(fn () => DB::statement('TRUNCATE audit_logs'), QueryException::class, 'append-only');
+        // Each attempt in its own savepoint: a rejected statement aborts the enclosing transaction.
+        $this->assertThrows(fn () => DB::transaction(fn () => DB::table('audit_logs')->where('id', $entry->id)->update(['action' => 'x'])), QueryException::class, 'append-only');
+        $this->assertThrows(fn () => DB::transaction(fn () => DB::table('audit_logs')->where('id', $entry->id)->delete()), QueryException::class, 'append-only');
+        $this->assertThrows(fn () => DB::transaction(fn () => DB::statement('TRUNCATE audit_logs')), QueryException::class, 'append-only');
+        $this->assertSame('test.immutable', AuditLog::query()->findOrFail($entry->id)->action);
     }
 
     public function test_tampering_by_a_superuser_is_detected(): void
@@ -120,7 +124,7 @@ final class AuditLogTest extends TestCase
         $this->signIn($dpo)->get('/workspace/audit')->assertOk()->assertSee('test.visible');
         $this->assertTrue(AuditLog::query()->where('action', 'audit.viewed')->where('actor_id', $dpo->id)->exists());
 
-        \Livewire\Livewire::test(\App\Livewire\Workspace\Audit\AuditLogIndex::class)
+        Livewire::test(AuditLogIndex::class)
             ->call('verifyChain')
             ->assertSet('verification.valid', true);
     }

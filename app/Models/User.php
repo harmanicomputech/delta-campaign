@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 
@@ -34,14 +35,14 @@ use InvalidArgumentException;
  * @property string $locale
  * @property string|null $two_factor_secret
  * @property list<string>|null $two_factor_recovery_codes
- * @property \Illuminate\Support\Carbon|null $two_factor_confirmed_at
+ * @property Carbon|null $two_factor_confirmed_at
  * @property string|null $pin_hash
  * @property int $pin_failed_attempts
- * @property \Illuminate\Support\Carbon|null $pin_locked_until
- * @property \Illuminate\Support\Carbon|null $pin_set_at
- * @property \Illuminate\Support\Carbon|null $last_login_at
+ * @property Carbon|null $pin_locked_until
+ * @property Carbon|null $pin_set_at
+ * @property Carbon|null $last_login_at
  * @property string|null $last_login_ip
- * @property \Illuminate\Support\Carbon|null $suspended_at
+ * @property Carbon|null $suspended_at
  * @property string|null $suspension_reason
  */
 class User extends Authenticatable

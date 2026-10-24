@@ -10,6 +10,8 @@ use App\Livewire\Concerns\PicksScope;
 use App\Livewire\Concerns\WithTableState;
 use App\Models\Role;
 use App\Models\User;
+use App\Rules\NigerianMobileNumber;
+use App\Services\Users\AuthorizationDenied;
 use App\Services\Users\UserAdministration;
 use App\Support\Crypto\PhoneHasher;
 use Illuminate\Contracts\View\View;
@@ -56,7 +58,7 @@ final class UsersIndex extends Component
 
         $this->validate([
             'name' => ['required', 'string', 'min:2', 'max:120'],
-            'phone' => ['required', 'string', new \App\Rules\NigerianMobileNumber],
+            'phone' => ['required', 'string', new NigerianMobileNumber],
             'roleId' => ['required', 'integer'],
         ], [], ['roleId' => 'role']);
 
@@ -76,7 +78,7 @@ final class UsersIndex extends Component
 
         try {
             $user = $admin->create($this->actor(), $this->name, $this->phone, $role, $role->scope_level, $scopeId);
-        } catch (\App\Services\Users\AuthorizationDenied $e) {
+        } catch (AuthorizationDenied $e) {
             $this->addError('scope', $e->getMessage());
 
             return;

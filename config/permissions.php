@@ -103,6 +103,14 @@ return [
         ],
     ],
 
+    /*
+    | Self-service permissions act only on the holder's own work (assigned tasks,
+    | own canvassing, own training, own polling-unit reports). They grant no power
+    | over other people or data, so they are ignored by the anti-escalation rule
+    | that an assigner must hold every permission of the role they grant.
+    */
+    'self_service' => ['tasks.work', 'canvassing.record', 'training.take', 'election.report'],
+
     'roles' => [
         'super_admin' => [
             'name' => 'Super administrator',

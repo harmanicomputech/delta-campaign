@@ -18,7 +18,7 @@
         </x-ui.alert>
     @endif
 
-    <div class="grid gap-6 xl:grid-cols-[minmax(0,1fr)_400px]">
+    <div class="grid gap-6 xl:grid-cols-[minmax(0,1fr)_400px] [&>*]:min-w-0">
         <div class="space-y-6">
             <x-ui.card :title="__('workspace.your_areas')" :description="__('workspace.your_areas_help')">
                 @if ($assignments->isEmpty())

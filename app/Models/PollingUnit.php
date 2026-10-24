@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Concerns\HasGeographicScope;
 use Database\Factories\PollingUnitFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Models\Concerns\HasGeographicScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -27,6 +27,7 @@ class PollingUnit extends Model
 {
     /** @use HasFactory<PollingUnitFactory> */
     use HasFactory;
+
     use HasGeographicScope;
 
     public static function geoColumns(): array

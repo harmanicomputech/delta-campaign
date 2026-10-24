@@ -11,6 +11,7 @@ use App\Services\Authentication\PinService;
 use App\Services\Authentication\SignInService;
 use App\Services\Authentication\TwoFactorService;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -97,9 +98,9 @@ final class SecurityPage extends Component
         return app(SignInService::class)->sessions($this->user());
     }
 
-    /** @return \Illuminate\Database\Eloquent\Collection<int, Device> */
+    /** @return Collection<int, Device> */
     #[Computed]
-    public function devices(): \Illuminate\Database\Eloquent\Collection
+    public function devices(): Collection
     {
         return $this->user()->devices()->whereNull('revoked_at')->orderByDesc('last_seen_at')->get();
     }

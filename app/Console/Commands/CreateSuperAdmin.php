@@ -42,9 +42,11 @@ final class CreateSuperAdmin extends Command
             $user = User::findByPhone($e164) ?? (new User(['name' => (string) $this->argument('name')]))->setPhone($e164);
             $user->save();
 
-            RoleAssignment::query()->firstOrCreate(
-                ['user_id' => $user->id, 'role_id' => $role->id, 'scope_type' => ScopeType::State, 'scope_id' => null, 'revoked_at' => null],
-            );
+            $hasRole = $user->activeAssignments()->where('role_id', $role->id)->exists();
+
+            if (! $hasRole) {
+                RoleAssignment::query()->create(['user_id' => $user->id, 'role_id' => $role->id, 'scope_type' => ScopeType::State, 'scope_id' => null]);
+            }
 
             $audit->as('console', fn () => $audit->record('user.super_admin_granted', $user, context: ['via' => 'campaign:create-admin']));
 

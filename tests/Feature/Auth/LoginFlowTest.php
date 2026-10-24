@@ -13,7 +13,9 @@ use App\Models\OtpChallenge;
 use App\Models\User;
 use App\Services\Authentication\OtpService;
 use App\Services\Authentication\Totp;
+use App\Services\Sms\Drivers\OutboxSmsGateway;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Tests\Concerns\InteractsWithAccounts;
 use Tests\TestCase;
 
@@ -97,7 +99,7 @@ final class LoginFlowTest extends TestCase
         $this->assertSame($registered->getStatusCode(), $unregistered->getStatusCode());
         $this->assertSame($registered->headers->get('Location'), $unregistered->headers->get('Location'));
         // Compare the page content (Livewire injects its assets only once per test process).
-        $normalise = fn (string $html): string => (string) preg_replace(['/\+234 ••• ••• \d{4}/u', '/name="_token" value="[^"]+"/'], '', \Illuminate\Support\Str::between($html, '<main', '</main>'));
+        $normalise = fn (string $html): string => (string) preg_replace(['/\+234 ••• ••• \d{4}/u', '/name="_token" value="[^"]+"/'], '', Str::between($html, '<main', '</main>'));
         $this->assertSame($normalise($verifyRegistered->getContent()), $normalise($verifyUnregistered->getContent()));
         $this->assertSame(0, $this->messagesTo('+2348099999999'), 'Nothing is sent to unregistered numbers.');
     }
@@ -245,7 +247,7 @@ final class LoginFlowTest extends TestCase
         $this->post('/login/verify', ['code' => $this->lastCodeSentTo(self::PHONE)]);
 
         $this->assertTrue(LoginEvent::query()->where('event', LoginEventType::NewDevice)->exists());
-        $this->assertStringContainsString('New sign-in', collect(\App\Services\Sms\Drivers\OutboxSmsGateway::messages())->first()['message']);
+        $this->assertStringContainsString('New sign-in', collect(OutboxSmsGateway::messages())->first()['message']);
     }
 
     public function test_signing_out_ends_the_session(): void

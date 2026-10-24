@@ -6,13 +6,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * Append-only (enforced by database triggers). Write through App\Services\Audit\AuditLogger only.
  *
  * @property int $id
  * @property string $uuid
- * @property \Illuminate\Support\Carbon $occurred_at
+ * @property Carbon $occurred_at
  * @property int|null $actor_id
  * @property string|null $actor_label
  * @property string $action

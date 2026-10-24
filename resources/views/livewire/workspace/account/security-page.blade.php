@@ -1,7 +1,7 @@
 <div>
     <x-ui.page-header :title="__('account.title')" :description="__('account.intro')" />
 
-    <div class="grid gap-6 xl:grid-cols-2">
+    <div class="grid gap-6 xl:grid-cols-2 [&>*]:min-w-0">
         <div class="space-y-6">
             <x-ui.card :title="__('account.profile')">
                 <dl class="grid gap-4 text-sm sm:grid-cols-2">

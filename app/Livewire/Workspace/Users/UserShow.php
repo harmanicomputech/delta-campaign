@@ -10,6 +10,7 @@ use App\Models\AuditLog;
 use App\Models\OtpChallenge;
 use App\Models\RoleAssignment;
 use App\Models\User;
+use App\Rules\NigerianMobileNumber;
 use App\Services\Authentication\SignInService;
 use App\Services\Users\AuthorizationDenied;
 use App\Services\Users\UserAdministration;
@@ -105,7 +106,7 @@ final class UserShow extends Component
 
     public function sendPhoneCode(UserAdministration $admin): void
     {
-        $this->validate(['newPhone' => ['required', 'string', new \App\Rules\NigerianMobileNumber]], [], ['newPhone' => 'new number']);
+        $this->validate(['newPhone' => ['required', 'string', new NigerianMobileNumber]], [], ['newPhone' => 'new number']);
 
         $this->attempt(function () use ($admin): void {
             $this->phoneChallengeId = $admin->beginPhoneChange($this->actor(), $this->user, $this->newPhone)->id;

@@ -26,7 +26,7 @@
         </x-ui.alert>
     @endunless
 
-    <div class="grid gap-6 xl:grid-cols-[minmax(0,1fr)_420px]">
+    <div class="grid gap-6 xl:grid-cols-[minmax(0,1fr)_420px] [&>*]:min-w-0">
         <div class="space-y-6">
             <x-ui.card :title="__('users.roles')" :description="__('users.roles_help')" :padding="false">
                 <x-slot:actions>

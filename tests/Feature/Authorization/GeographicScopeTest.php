@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Authorization;
 
 use App\Enums\ScopeType;
+use App\Livewire\Workspace\Users\UsersIndex;
 use App\Models\Lga;
 use App\Models\PollingUnit;
 use App\Models\User;
@@ -131,7 +132,7 @@ final class GeographicScopeTest extends TestCase
         $outside = User::factory()->phone('+2348077777777')->withRole('ward_coordinator', $this->sapeleWard->id)->create();
         $this->signIn($viewer);
 
-        Livewire::test(\App\Livewire\Workspace\Users\UsersIndex::class)
+        Livewire::test(UsersIndex::class)
             ->set('search', '08077777777')->assertDontSee($outside->name)
             ->set('search', $outside->name)->assertDontSee($outside->maskedPhone());
     }

@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Enums\ScopeType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property ScopeType $scope_type
  * @property int|null $scope_id
  * @property int|null $assigned_by
- * @property \Illuminate\Support\Carbon|null $revoked_at
+ * @property Carbon|null $revoked_at
  * @property-read Role $role
  * @property-read User $user
  */

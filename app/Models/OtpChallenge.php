@@ -8,6 +8,7 @@ use App\Enums\OtpPurpose;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property string $id
@@ -16,10 +17,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property OtpPurpose $purpose
  * @property string $code_hash
  * @property int $attempts
- * @property \Illuminate\Support\Carbon $expires_at
- * @property \Illuminate\Support\Carbon|null $consumed_at
+ * @property Carbon $expires_at
+ * @property Carbon|null $consumed_at
  * @property string|null $ip
- * @property \Illuminate\Support\Carbon $created_at
+ * @property Carbon $created_at
  */
 class OtpChallenge extends Model
 {

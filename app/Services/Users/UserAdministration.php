@@ -17,12 +17,14 @@ use App\Services\Authentication\OtpService;
 use App\Services\Authentication\SignInService;
 use App\Support\Crypto\PhoneHasher;
 use App\Support\Phone\NigerianPhoneNumber;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 /**
  * Account lifecycle and role assignment, with anti-escalation rules:
- * an actor may only grant roles whose permissions they hold themselves, at the
+ * an actor may only grant roles whose permissions they hold themselves (apart
+ * from self-service permissions, see config/permissions.php), at the
  * role's geographic level, inside their own scope; privileged roles need
  * roles.assign-privileged.
  */
@@ -50,7 +52,7 @@ final class UserAdministration
             $user->save();
 
             $assignment = $this->persistAssignment($actor, $user, $role, $scopeType, $scopeId);
-            $this->audit->record('user.created', $user, ['name' => $name], ['role' => $role->slug, 'scope' => $assignment->scopeLabel()]);
+            $this->audit->record('user.created', $user, ['name' => $name], ['role' => $role->slug, 'scope' => $assignment->scopeLabel()], $actor);
 
             return $user;
         });
@@ -78,7 +80,7 @@ final class UserAdministration
 
         return DB::transaction(function () use ($actor, $user, $role, $scopeType, $scopeId): RoleAssignment {
             $assignment = $this->persistAssignment($actor, $user, $role, $scopeType, $scopeId);
-            $this->audit->record('user.role_assigned', $user, null, ['role' => $role->slug, 'scope' => $assignment->scopeLabel(), 'assignment_id' => $assignment->id]);
+            $this->audit->record('user.role_assigned', $user, null, ['role' => $role->slug, 'scope' => $assignment->scopeLabel(), 'assignment_id' => $assignment->id], $actor);
             $user->flushAuthorizationCache();
 
             return $assignment;
@@ -97,7 +99,7 @@ final class UserAdministration
 
         DB::transaction(function () use ($actor, $assignment): void {
             $assignment->forceFill(['revoked_at' => now(), 'revoked_by' => $actor->id])->save();
-            $this->audit->record('user.role_revoked', $assignment->user, null, ['role' => $assignment->role->slug, 'scope' => $assignment->scopeLabel(), 'assignment_id' => $assignment->id]);
+            $this->audit->record('user.role_revoked', $assignment->user, null, ['role' => $assignment->role->slug, 'scope' => $assignment->scopeLabel(), 'assignment_id' => $assignment->id], $actor);
         });
 
         // Permissions change immediately: sessions are re-authorised on every request.
@@ -119,7 +121,7 @@ final class UserAdministration
                 'suspended_by' => $actor->id,
                 'suspension_reason' => mb_substr($reason, 0, 500),
             ])->save();
-            $this->audit->record('user.suspended', $user, null, ['reason' => $reason]);
+            $this->audit->record('user.suspended', $user, null, ['reason' => $reason], $actor);
         });
 
         $this->sessions->revokeAllSessions($user, by: $actor);
@@ -130,7 +132,7 @@ final class UserAdministration
         $this->assertCanManage($actor, $user);
 
         $user->forceFill(['status' => UserStatus::Active, 'suspended_at' => null, 'suspended_by' => null, 'suspension_reason' => null])->save();
-        $this->audit->record('user.reactivated', $user);
+        $this->audit->record('user.reactivated', $user, actor: $actor);
     }
 
     /** Account recovery, step 1: send a confirmation code to the person's new number. */
@@ -159,10 +161,10 @@ final class UserAdministration
 
         $old = $user->phone;
 
-        DB::transaction(function () use ($user, $e164): void {
+        DB::transaction(function () use ($actor, $user, $e164): void {
             $user->setPhone($e164)->save();
             $user->forceFill(['two_factor_secret' => null, 'two_factor_confirmed_at' => null, 'two_factor_recovery_codes' => null, 'pin_hash' => null])->save();
-            $this->audit->record('user.phone_changed', $user, null, ['new_last4' => substr($e164, -4)]);
+            $this->audit->record('user.phone_changed', $user, null, ['new_last4' => substr($e164, -4)], $actor);
         });
 
         $this->sessions->revokeAllSessions($user, by: $actor);
@@ -199,9 +201,9 @@ final class UserAdministration
     /**
      * Roles the actor may grant, i.e. whose permissions they hold.
      *
-     * @return \Illuminate\Support\Collection<int, Role>
+     * @return Collection<int, Role>
      */
-    public function assignableRoles(User $actor): \Illuminate\Support\Collection
+    public function assignableRoles(User $actor): Collection
     {
         if (! $actor->hasPermission('roles.assign')) {
             return collect();
@@ -216,7 +218,11 @@ final class UserAdministration
                 return $actor->hasRole('super_admin');
             }
 
-            return collect($role->permissionSlugs())->every(fn (string $slug): bool => $actor->hasPermission($slug));
+            $selfService = (array) config('permissions.self_service');
+
+            return collect($role->permissionSlugs())
+                ->reject(fn (string $slug): bool => in_array($slug, $selfService, true))
+                ->every(fn (string $slug): bool => $actor->hasPermission($slug));
         })->values();
     }
 

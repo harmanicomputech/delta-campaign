@@ -7,6 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * A browser/PWA install a user has signed in from, identified by a random
@@ -18,9 +19,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $name
  * @property string|null $user_agent
  * @property string|null $last_ip
- * @property \Illuminate\Support\Carbon $first_seen_at
- * @property \Illuminate\Support\Carbon $last_seen_at
- * @property \Illuminate\Support\Carbon|null $revoked_at
+ * @property Carbon $first_seen_at
+ * @property Carbon $last_seen_at
+ * @property Carbon|null $revoked_at
  */
 class Device extends Model
 {
