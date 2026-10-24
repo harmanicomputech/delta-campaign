@@ -23,7 +23,11 @@ final class ApplyImport implements ShouldQueue
 
     public function __construct(public readonly string $importJobId)
     {
-        $this->onConnection('redis-long')->onQueue('imports');
+        // Long-running: use the connection whose retry_after exceeds the job timeout.
+        if (config('queue.default') === 'redis') {
+            $this->onConnection('redis-long');
+        }
+        $this->onQueue('imports');
     }
 
     public function handle(ImportService $imports): void

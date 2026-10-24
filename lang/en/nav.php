@@ -28,6 +28,7 @@ return [
     'users_roles' => 'Users & roles',
     'audit_log' => 'Audit log',
     'privacy' => 'Data protection',
+    'exports' => 'Exports',
     'design_system' => 'Design system',
     'planned' => 'Planned',
     'planned_phase' => 'Planned · Phase :phase',

@@ -32,7 +32,7 @@ return [
     [
         'label' => 'nav.groups.people',
         'items' => [
-            ['label' => 'nav.supporters', 'icon' => 'users', 'route' => null, 'phase' => 4, 'permission' => 'supporters.view', 'mobile' => true],
+            ['label' => 'nav.supporters', 'icon' => 'users', 'route' => 'workspace.supporters.index', 'phase' => 4, 'permission' => 'supporters.view', 'mobile' => true],
             ['label' => 'nav.volunteers', 'icon' => 'hand-heart', 'route' => null, 'phase' => 5, 'permission' => 'volunteers.view'],
             ['label' => 'nav.polling_agents', 'icon' => 'shield-check', 'route' => null, 'phase' => 11, 'permission' => 'polling-agents.view'],
         ],
@@ -71,7 +71,8 @@ return [
             ['label' => 'nav.geography', 'icon' => 'map', 'route' => null, 'phase' => 6, 'permission' => 'geography.view'],
             ['label' => 'nav.users_roles', 'icon' => 'key-round', 'route' => 'workspace.users.index', 'phase' => 3, 'permission' => 'users.view'],
             ['label' => 'nav.audit_log', 'icon' => 'scroll-text', 'route' => 'workspace.audit.index', 'phase' => 3, 'permission' => 'audit.view'],
-            ['label' => 'nav.privacy', 'icon' => 'lock-keyhole', 'route' => null, 'phase' => 4, 'permission' => 'privacy.manage'],
+            ['label' => 'nav.privacy', 'icon' => 'lock-keyhole', 'route' => 'workspace.privacy.index', 'phase' => 4, 'permission' => 'privacy.manage'],
+            ['label' => 'nav.exports', 'icon' => 'download', 'route' => 'workspace.exports.index', 'phase' => 4, 'permission' => 'supporters.export'],
             ['label' => 'nav.design_system', 'icon' => 'palette', 'route' => 'design-system.index', 'phase' => 1, 'permission' => 'system.health', 'production' => false],
         ],
     ],

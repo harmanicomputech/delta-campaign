@@ -89,13 +89,24 @@ Completed 2026-10-24. Details: `docs/SECURITY.md`.
 API use same-origin session authentication, which Sanctum is not needed for. **Limitations.** See
 `docs/SECURITY.md`.
 
-## Phase 4 — Supporters and data protection ☐
+## Phase 4 — Supporters and data protection ☑
 
-- Supporter registration, phone verification, source tracking, dedupe on keyed hash
-- Channel-specific consent with notice versions; withdrawal; suppression list
-- Verification, corrections, follow-ups, scoped exports (queued, audited)
-- Data-subject requests (access, rectification, erasure) workflow for the DPO; retention jobs
-- NDPA compliance assessment draft (`docs/DATA_PROTECTION.md`) for legal review
+Completed 2026-10-24. Details: `docs/DATA_PROTECTION.md` (draft NDPA assessment), `docs/DATA_MODEL.md`.
+
+- ☑ Supporter registry: minimal fields, encrypted phone with keyed-hash dedupe, trigger-derived geography, 18+ attestation, sample flag
+- ☑ Consent per channel and purpose, append-only (trigger), tied to privacy-notice versions; consent refused while no notice is published; only explicit grants recorded
+- ☑ Suppression list keyed by hash (survives erasure); opt-outs lifted only by new consent; erasure only by the person's own new consent; objections only by the DPO
+- ☑ Verification and rejection with history; audited corrections with optimistic locking; audited number reveal (permission + recent PIN)
+- ☑ Follow-ups with encrypted notes ("asked not to be contacted" suppresses everything at once); trigram duplicate detection and merge
+- ☑ Data-subject requests: reference, deadline, SMS acknowledgement, immediate effect for withdrawal, objection, restriction and erasure, identity verification, access package, completion and rejection
+- ☑ Erasure by anonymisation (check constraint), legal hold, weekly retention job (`privacy:apply-retention`)
+- ☑ Queued, scoped, masked, formula-safe exports; permission re-checked in the job; signed, requester-only, PIN-confirmed downloads; 24-hour expiry and pruning
+- ☑ Settings service (audited) with `config/settings.php`
+- ☑ UI: supporters list and record, exports, data-protection centre (requests, suppression, notices, retention), request page
+- ☑ Tests: 232 passing; browser-verified registration, reveal, follow-up, correction, erasure request, suppression lookup, queued export and download, mobile layouts
+
+**Limitations.** The privacy notice is a placeholder pending DPO and legal approval. Public self-service
+(web registration with a one-time code, preferences) arrives in Phase 10; USSD and SMS in Phase 8.
 
 ## Phase 5 — Volunteers, canvassing and tasks ☐
 

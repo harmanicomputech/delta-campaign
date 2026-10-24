@@ -109,6 +109,25 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Data protection
+    |--------------------------------------------------------------------------
+    |
+    | retention_months: supporter records are anonymised this long after their
+    | last renewal (consent or contact), unless under legal hold.
+    | dsr_response_days: data-subject request deadline (subject to legal review).
+    |
+    */
+
+    'privacy' => [
+        'retention_months' => (int) env('SUPPORTER_RETENTION_MONTHS', 36),
+        'dsr_response_days' => (int) env('DSR_RESPONSE_DAYS', 30),
+        'export_ttl_hours' => (int) env('EXPORT_TTL_HOURS', 24),
+        'exports_disk' => env('EXPORTS_DISK', 'local'),
+        'duplicate_similarity' => 0.55,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Geography and imports
     |--------------------------------------------------------------------------
     |

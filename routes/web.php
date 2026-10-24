@@ -6,9 +6,15 @@ use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\DesignSystemController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\Workspace\DashboardController;
+use App\Http\Controllers\Workspace\ExportDownloadController;
 use App\Http\Middleware\EnsureDesignSystemEnabled;
 use App\Livewire\Workspace\Account\SecurityPage;
 use App\Livewire\Workspace\Audit\AuditLogIndex;
+use App\Livewire\Workspace\Exports\ExportsIndex;
+use App\Livewire\Workspace\Privacy\PrivacyCentre;
+use App\Livewire\Workspace\Privacy\RequestShow;
+use App\Livewire\Workspace\Supporters\SupporterShow;
+use App\Livewire\Workspace\Supporters\SupportersIndex;
 use App\Livewire\Workspace\Users\UserShow;
 use App\Livewire\Workspace\Users\UsersIndex;
 use Illuminate\Support\Facades\Route;
@@ -56,6 +62,15 @@ Route::middleware('workspace')->prefix('workspace')->name('workspace.')->group(f
     Route::get('/users/{user:uuid}', UserShow::class)->middleware('can:users.view')->name('users.show');
 
     Route::get('/audit', AuditLogIndex::class)->middleware(['can:audit.view', 'pin.confirm'])->name('audit.index');
+
+    Route::get('/supporters', SupportersIndex::class)->middleware('can:supporters.view')->name('supporters.index');
+    Route::get('/supporters/{supporter:uuid}', SupporterShow::class)->middleware('can:supporters.view')->name('supporters.show');
+
+    Route::get('/exports', ExportsIndex::class)->name('exports.index');
+    Route::get('/exports/{export}/download', ExportDownloadController::class)->middleware(['signed', 'pin.confirm', 'throttle:sensitive'])->name('exports.download');
+
+    Route::get('/privacy', PrivacyCentre::class)->middleware('pin.confirm')->name('privacy.index');
+    Route::get('/privacy/requests/{request:uuid}', RequestShow::class)->middleware(['can:dsr.manage', 'pin.confirm'])->name('privacy.requests.show');
 });
 
 /*
