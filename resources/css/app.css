@@ -310,4 +310,18 @@
         scrollbar-width: thin;
         scrollbar-color: rgb(255 255 255 / 0.12) transparent;
     }
+
+    /* Long-form text rendered from Markdown (training modules, CMS pages). */
+    .rich-text {
+        @apply text-[0.9375rem] leading-7 text-fg;
+        & > * + * { @apply mt-4; }
+        & h2 { @apply mt-8 font-display text-lg font-semibold tracking-tight; }
+        & h3 { @apply mt-6 text-base font-semibold; }
+        & ul { @apply list-disc space-y-1.5 pl-5; }
+        & ol { @apply list-decimal space-y-1.5 pl-5; }
+        & a { @apply font-medium text-primary underline underline-offset-2; }
+        & strong { @apply font-semibold; }
+        & blockquote { @apply border-l-2 border-primary pl-4 text-muted; }
+        & code { @apply rounded bg-surface-sunken px-1 py-0.5 font-mono text-[0.8125rem]; }
+    }
 }

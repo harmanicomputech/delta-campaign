@@ -51,6 +51,7 @@ class ContactAttempt extends Model
             'follow_up_at' => 'datetime',
             'occurred_at' => 'datetime',
             'reviewed_at' => 'datetime',
+            'recorded_offline' => 'boolean',
         ];
     }
 
@@ -58,6 +59,12 @@ class ContactAttempt extends Model
     public function supporter(): BelongsTo
     {
         return $this->belongsTo(Supporter::class);
+    }
+
+    /** @return BelongsTo<WalkListEntry, $this> */
+    public function walkListEntry(): BelongsTo
+    {
+        return $this->belongsTo(WalkListEntry::class);
     }
 
     /** @return BelongsTo<User, $this> */

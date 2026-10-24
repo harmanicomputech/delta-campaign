@@ -54,6 +54,7 @@
                         <span class="sr-only" x-text="$store.network.online ? @js(__('ui.online')) : @js(__('ui.offline'))"></span>
                     </span>
 
+                    @auth <livewire:workspace.notifications.notification-bell /> @endauth
                     <x-shell.locale-switcher />
                     <x-shell.theme-switcher />
                 </div>

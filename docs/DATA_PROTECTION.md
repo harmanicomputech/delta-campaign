@@ -26,6 +26,9 @@
 | Consent decisions | `consent_records` | Proof of consent and withdrawal | Legal obligation / accountability | Append-only (database trigger), keyed hash |
 | Suppression list | `suppressions` | Never contact people who opted out or asked for erasure | Legal obligation | Keyed hash only |
 | Follow-up notes | `contact_attempts.notes_encrypted` | Coordination | Consent | Encrypted; cleared on erasure |
+| Volunteer applications | `volunteers` | Recruit and coordinate volunteers | Consent | Encrypted phone, keyed hash; area-scoped; skills and availability as fixed choices only |
+| Canvassing outcomes | `contact_attempts` (walk lists) | Coordinate door-to-door work | Consent / legitimate interest (to confirm) | Contact status only, never opinions; notes encrypted; "do not contact" suppresses at once |
+| Task evidence | `task_evidence`, private storage | Proof of completed field work | Legitimate interest | Images/PDF only, SHA-256 fingerprint, downloads audited; must not show identifiable supporters without consent |
 | Staff accounts | `users` | Authentication and accountability | Contract / legitimate interest | Encrypted phone, TOTP for privileged roles, audited |
 | Login history, audit log | `login_events`, `audit_logs` | Security and accountability | Legitimate interest / legal obligation | Append-only audit log with hash chain |
 | Data-subject requests | `data_subject_requests` | Fulfil rights | Legal obligation | Encrypted contact number, DPO only |

@@ -17,6 +17,7 @@ return [
     'supporters' => 'Supporters',
     'volunteers' => 'Volunteers',
     'polling_agents' => 'Polling agents',
+    'training' => 'Training',
     'tasks' => 'Work wey dey ground',
     'canvassing' => 'Door-to-door',
     'events' => 'Events',

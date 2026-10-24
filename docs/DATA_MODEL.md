@@ -42,3 +42,24 @@ insert/update (so they cannot be forged), and cascaded when a ward moves LGA or 
 | `export_jobs` | Queued, scoped exports with expiry and download count |
 | `workflow_transitions` | Generic status history |
 | `system_settings` | Audited runtime settings (`config/settings.php`) |
+
+## Field operations (Phase 5)
+
+Area-scoped tables (`volunteers`, `walk_lists`, `tasks`) carry `senatorial_district_id`, `lga_id`,
+`ward_id` and `polling_unit_id`, filled by the generic `sync_location_geography()` trigger from the
+most specific location given.
+
+| Table | Notes |
+| --- | --- |
+| `volunteers` | Name, encrypted phone and unique keyed hash, status (`applied`, `approved`, `rejected`, `suspended`, `inactive`), skills and availability (enum values only), linked `user_id` once approved, decision and reason, `version`, sample flag. Trigram name index |
+| `training_modules` | Slug, title, summary, Markdown body, audience (`all`, `volunteer`, `polling_agent`), language, pass mark, `published_at` |
+| `quiz_questions` | Prompt, 2–6 options, `correct_index` (hidden from serialisation) |
+| `training_attempts` | Score, passed, answers, completion time |
+| `walk_lists` | Name, ward, assignee, status (`draft` → `assigned` → `in_progress` → `completed`, or `archived`), due date, briefing notes |
+| `walk_list_entries` | Ordered stops: a street/landmark label or a supporter; `pending`, `visited` or `skipped` |
+| `contact_attempts` | Gains `walk_list_entry_id`, `device_id`, `recorded_offline` |
+| `tasks` | Title, description, priority, status, due date, assignee, optional area (none = statewide), escalation level, reminder and completion times, `version`. Trigram title index |
+| `task_comments`, `task_events` | Comments and the full event history (created, assigned, status, evidence, escalation, reminders, due changes) |
+| `task_evidence` | Private-disk path, original name, MIME type, size, SHA-256 |
+| `notifications` | Laravel database notifications (title, body, icon, internal URL) |
+

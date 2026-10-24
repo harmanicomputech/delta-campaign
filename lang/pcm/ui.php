@@ -17,6 +17,8 @@ return [
     'no_results' => 'We no see any page wey match.',
     'command_hint' => 'Use ↑ ↓ to move, Enter to open, Esc to close',
     'close' => 'Close',
+    'save' => 'Save',
+    'saved' => 'We don save am',
     'cancel' => 'Cancel',
     'confirm' => 'Confam',
     'dismiss' => 'Comot am',

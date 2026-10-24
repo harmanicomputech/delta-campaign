@@ -11,7 +11,7 @@
 | - "route":      named route. Items without a route are not yet built and are
 |                 rendered as disabled "Planned" entries, never as dead links.
 | - "phase":      implementation phase that delivers the item.
-| - "permission": permission required to see the item.
+| - "permission": permission required to see the item (a list means any of them).
 | - "icon":       Lucide icon name (resources/icons/<name>.svg).
 | - "mobile":     pin to the mobile bottom bar.
 | - "production": false hides the item in production (development tools).
@@ -33,7 +33,8 @@ return [
         'label' => 'nav.groups.people',
         'items' => [
             ['label' => 'nav.supporters', 'icon' => 'users', 'route' => 'workspace.supporters.index', 'phase' => 4, 'permission' => 'supporters.view', 'mobile' => true],
-            ['label' => 'nav.volunteers', 'icon' => 'hand-heart', 'route' => null, 'phase' => 5, 'permission' => 'volunteers.view'],
+            ['label' => 'nav.volunteers', 'icon' => 'hand-heart', 'route' => 'workspace.volunteers.index', 'phase' => 5, 'permission' => 'volunteers.view'],
+            ['label' => 'nav.training', 'icon' => 'graduation-cap', 'route' => 'workspace.training.index', 'phase' => 5, 'permission' => ['training.take', 'training.manage']],
             ['label' => 'nav.polling_agents', 'icon' => 'shield-check', 'route' => null, 'phase' => 11, 'permission' => 'polling-agents.view'],
         ],
     ],
@@ -41,8 +42,8 @@ return [
     [
         'label' => 'nav.groups.field',
         'items' => [
-            ['label' => 'nav.tasks', 'icon' => 'list-checks', 'route' => null, 'phase' => 5, 'permission' => 'tasks.view', 'mobile' => true],
-            ['label' => 'nav.canvassing', 'icon' => 'map-pinned', 'route' => null, 'phase' => 5, 'permission' => 'canvassing.view'],
+            ['label' => 'nav.tasks', 'icon' => 'list-checks', 'route' => 'workspace.tasks.index', 'phase' => 5, 'permission' => ['tasks.view', 'tasks.work'], 'mobile' => true],
+            ['label' => 'nav.canvassing', 'icon' => 'map-pinned', 'route' => 'workspace.canvassing.index', 'phase' => 5, 'permission' => ['canvassing.view', 'canvassing.record'], 'mobile' => true],
             ['label' => 'nav.events', 'icon' => 'calendar-days', 'route' => null, 'phase' => 10, 'permission' => 'events.view'],
         ],
     ],

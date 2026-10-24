@@ -27,7 +27,7 @@ final class Navigation
 
         foreach ((array) config('navigation', []) as $group) {
             $visible = array_filter($group['items'] ?? [], fn (array $item): bool => (($item['production'] ?? true) || ! app()->isProduction())
-                && ($user === null || ($item['permission'] ?? null) === null || $user->can($item['permission'])));
+                && ($user === null || ($item['permission'] ?? null) === null || $user->canAny((array) $item['permission'])));
             $items = array_values(array_map(fn (array $item): NavigationItem => $this->item($item), $visible));
 
             if ($items !== []) {
@@ -90,7 +90,8 @@ final class Navigation
             label: __((string) $item['label']),
             icon: (string) $item['icon'],
             url: $exists ? route($route) : null,
-            active: $exists && $this->request->routeIs($route),
+            // An index route also stays highlighted on its detail pages (workspace.tasks.index → workspace.tasks.*).
+            active: $exists && $this->request->routeIs($route, ...(str_ends_with($route, '.index') ? [substr($route, 0, -5).'*'] : [])),
             phase: (int) ($item['phase'] ?? 0),
             mobile: (bool) ($item['mobile'] ?? false),
         );

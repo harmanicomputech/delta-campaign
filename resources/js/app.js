@@ -2,8 +2,11 @@ import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.e
 import { registerStores } from './stores';
 import commandPalette from './components/command-palette';
 import qrCode from './components/qr-code';
+import { uuid } from './support/uuid';
 
 registerStores(Alpine);
+
+Alpine.magic('uuid', () => uuid);
 
 Alpine.data('commandPalette', commandPalette);
 Alpine.data('qrCode', qrCode);

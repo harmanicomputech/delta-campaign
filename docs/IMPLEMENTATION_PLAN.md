@@ -108,12 +108,24 @@ Completed 2026-10-24. Details: `docs/DATA_PROTECTION.md` (draft NDPA assessment)
 **Limitations.** The privacy notice is a placeholder pending DPO and legal approval. Public self-service
 (web registration with a one-time code, preferences) arrives in Phase 10; USSD and SMS in Phase 8.
 
-## Phase 5 — Volunteers, canvassing and tasks ☐
+## Phase 5 — Volunteers, canvassing and tasks ☑
 
-- Volunteer applications, approvals, assignments, skills/availability, training and quizzes
-- Walk lists, contact attempts and outcomes, follow-ups, data-quality review
-- Tasks: priority, due dates, comments, evidence, reassignment, escalation, overdue reminders
-- Notifications
+Completed 2026-10-24. Details: `docs/DATA_MODEL.md` (field operations).
+
+- ☑ Volunteer applications (deduplicated by phone hash), approval creating a ward-scoped account with the `volunteer` role and a welcome SMS, rejection, suspension (role revoked; account suspended and signed out only if it was the only role), reactivation, ward reassignment, skills and availability; full status history
+- ☑ Training modules (Markdown, HTML stripped) with quizzes, pass marks, audiences, drafts and publishing; answers never sent to learners; best results per person
+- ☑ Walk lists per ward with street/landmark stops and optional supporters not contacted in 14 days; assignment only to people who can canvass in the ward
+- ☑ One-tap contact capture, idempotent on a device-generated UUID (ready for Phase 7 offline sync); future device times clamped; "asked not to be contacted" withdraws consent at once; repeat contacts within 60 minutes flagged; coordinator data-quality queue
+- ☑ Tasks with area (statewide tasks visible only statewide), priority, due date, optimistic locking, comments, SHA-256-fingerprinted evidence on private storage with audited downloads, assignment within scope, manual escalation and full event history
+- ☑ Hourly `tasks:process-overdue`: daily reminder to the assignee; escalation by priority grace period (urgent 2 h, high 12 h, normal 24 h, low 72 h) to managers of the ward, then LGA, district and state, skipping levels with nobody in post
+- ☑ In-app notifications (database channel): top-bar bell polling once a minute, notification centre; only internal links followed
+- ☑ Navigation items accept "any of" permissions; detail pages keep their section highlighted
+- ☑ `SampleFieldOperationsSeeder`: SAMPLE coordinators, volunteers, training, a walk list and tasks
+- ☑ Tests: 273 passing (scope isolation for every new list and detail page); browser-verified approval, training authoring view, task creation, assignment, comments, evidence upload, notification bell, mobile one-tap capture, task start and quiz
+
+**Limitations.** Training content is SAMPLE only and must be replaced by campaign-approved material.
+Notifications are in-app only (SMS/WhatsApp delivery of reminders arrives with the communications
+engine in Phase 9). Contact capture needs a connection until the PWA sync in Phase 7.
 
 ## Phase 6 — Leadership and administration ☐
 

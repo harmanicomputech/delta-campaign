@@ -7,16 +7,26 @@ use App\Http\Controllers\DesignSystemController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\Workspace\DashboardController;
 use App\Http\Controllers\Workspace\ExportDownloadController;
+use App\Http\Controllers\Workspace\TaskEvidenceController;
 use App\Http\Middleware\EnsureDesignSystemEnabled;
 use App\Livewire\Workspace\Account\SecurityPage;
 use App\Livewire\Workspace\Audit\AuditLogIndex;
+use App\Livewire\Workspace\Canvassing\WalkListShow;
+use App\Livewire\Workspace\Canvassing\WalkListsIndex;
 use App\Livewire\Workspace\Exports\ExportsIndex;
+use App\Livewire\Workspace\Notifications\NotificationsIndex;
 use App\Livewire\Workspace\Privacy\PrivacyCentre;
 use App\Livewire\Workspace\Privacy\RequestShow;
 use App\Livewire\Workspace\Supporters\SupporterShow;
 use App\Livewire\Workspace\Supporters\SupportersIndex;
+use App\Livewire\Workspace\Tasks\TaskShow;
+use App\Livewire\Workspace\Tasks\TasksIndex;
+use App\Livewire\Workspace\Training\TrainingIndex;
+use App\Livewire\Workspace\Training\TrainingModuleShow;
 use App\Livewire\Workspace\Users\UserShow;
 use App\Livewire\Workspace\Users\UsersIndex;
+use App\Livewire\Workspace\Volunteers\VolunteerShow;
+use App\Livewire\Workspace\Volunteers\VolunteersIndex;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -65,6 +75,18 @@ Route::middleware('workspace')->prefix('workspace')->name('workspace.')->group(f
 
     Route::get('/supporters', SupportersIndex::class)->middleware('can:supporters.view')->name('supporters.index');
     Route::get('/supporters/{supporter:uuid}', SupporterShow::class)->middleware('can:supporters.view')->name('supporters.show');
+
+    // Field operations. Components check "view in scope OR assigned to me" themselves.
+    Route::get('/volunteers', VolunteersIndex::class)->middleware('can:volunteers.view')->name('volunteers.index');
+    Route::get('/volunteers/{volunteer:uuid}', VolunteerShow::class)->middleware('can:volunteers.view')->name('volunteers.show');
+    Route::get('/training', TrainingIndex::class)->name('training.index');
+    Route::get('/training/{module}', TrainingModuleShow::class)->name('training.show');
+    Route::get('/canvassing', WalkListsIndex::class)->name('canvassing.index');
+    Route::get('/canvassing/{list}', WalkListShow::class)->name('canvassing.show');
+    Route::get('/tasks', TasksIndex::class)->name('tasks.index');
+    Route::get('/tasks/{task}', TaskShow::class)->name('tasks.show');
+    Route::get('/tasks/{task}/evidence/{evidence:uuid}', TaskEvidenceController::class)->middleware('throttle:sensitive')->name('tasks.evidence');
+    Route::get('/notifications', NotificationsIndex::class)->name('notifications');
 
     Route::get('/exports', ExportsIndex::class)->name('exports.index');
     Route::get('/exports/{export}/download', ExportDownloadController::class)->middleware(['signed', 'pin.confirm', 'throttle:sensitive'])->name('exports.download');
