@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import { bunny } from 'laravel-vite-plugin/fonts';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
@@ -8,14 +7,13 @@ export default defineConfig({
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.js'],
             refresh: true,
-            fonts: [
-                bunny('Instrument Sans', {
-                    weights: [400, 500, 600],
-                }),
-            ],
         }),
         tailwindcss(),
     ],
+    build: {
+        // Never inline fonts/images as data: URIs; they are cached as separate files and keep the CSP strict.
+        assetsInlineLimit: 0,
+    },
     server: {
         watch: {
             ignored: ['**/storage/framework/views/**'],

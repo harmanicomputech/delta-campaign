@@ -1,0 +1,37 @@
+<?php
+
+// Nigerian Pidgin — DRAFT. Must be reviewed by a native speaker before launch.
+
+return [
+    'groups' => [
+        'overview' => 'Overview',
+        'people' => 'Pipul',
+        'field' => 'Field work',
+        'communications' => 'Messages and tori',
+        'election_day' => 'Election day',
+        'administration' => 'Admin',
+    ],
+    'dashboard' => 'Dashboard',
+    'command_centre' => 'Command centre',
+    'approvals' => 'Approvals',
+    'supporters' => 'Supporters',
+    'volunteers' => 'Volunteers',
+    'polling_agents' => 'Polling agents',
+    'tasks' => 'Work wey dey ground',
+    'canvassing' => 'Door-to-door',
+    'events' => 'Events',
+    'messaging' => 'Send message',
+    'content' => 'Content',
+    'rapid_response' => 'Quick response',
+    'ussd_simulator' => 'USSD simulator',
+    'incidents' => 'Wahala report',
+    'results' => 'Result papers',
+    'geography' => 'Places',
+    'users_roles' => 'Users and roles',
+    'audit_log' => 'Audit log',
+    'privacy' => 'Data protection',
+    'design_system' => 'Design system',
+    'planned' => 'E dey come',
+    'planned_phase' => 'E dey come · Phase :phase',
+    'more' => 'More',
+];

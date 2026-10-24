@@ -70,7 +70,17 @@ return [
             'queue' => env('REDIS_QUEUE', 'default'),
             'retry_after' => (int) env('REDIS_QUEUE_RETRY_AFTER', 90),
             'block_for' => null,
-            'after_commit' => false,
+            'after_commit' => true,
+        ],
+
+        // Long-running jobs (imports, exports, evidence packs): retry_after must exceed the job timeout.
+        'redis-long' => [
+            'driver' => 'redis',
+            'connection' => env('REDIS_QUEUE_CONNECTION', 'default'),
+            'queue' => 'imports',
+            'retry_after' => (int) env('REDIS_LONG_QUEUE_RETRY_AFTER', 1900),
+            'block_for' => null,
+            'after_commit' => true,
         ],
 
         'deferred' => [

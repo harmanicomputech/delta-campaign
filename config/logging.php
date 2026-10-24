@@ -1,5 +1,7 @@
 <?php
 
+use App\Support\Logging\RedactSensitiveData;
+use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -63,6 +65,7 @@ return [
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'replace_placeholders' => true,
+            'processors' => [RedactSensitiveData::class],
         ],
 
         'daily' => [
@@ -71,6 +74,19 @@ return [
             'level' => env('LOG_LEVEL', 'debug'),
             'max_files' => env('LOG_DAILY_DAYS', 14),
             'replace_placeholders' => true,
+            'processors' => [RedactSensitiveData::class],
+        ],
+
+        // Structured JSON lines on stdout, for container log collection (staging/production).
+        'json' => [
+            'driver' => 'monolog',
+            'level' => env('LOG_LEVEL', 'info'),
+            'handler' => StreamHandler::class,
+            'handler_with' => [
+                'stream' => 'php://stdout',
+            ],
+            'formatter' => JsonFormatter::class,
+            'processors' => [PsrLogMessageProcessor::class, RedactSensitiveData::class],
         ],
 
         'monthly' => [
@@ -110,7 +126,7 @@ return [
                 'stream' => 'php://stderr',
             ],
             'formatter' => env('LOG_STDERR_FORMATTER'),
-            'processors' => [PsrLogMessageProcessor::class],
+            'processors' => [PsrLogMessageProcessor::class, RedactSensitiveData::class],
         ],
 
         'syslog' => [

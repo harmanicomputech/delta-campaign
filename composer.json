@@ -1,10 +1,14 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "harmanicomputech/delta-campaign",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
-    "license": "MIT",
+    "description": "Campaign operations platform: public website, staff workspaces, PWA, USSD and SMS on one Laravel application.",
+    "keywords": [
+        "laravel",
+        "livewire",
+        "campaign-operations"
+    ],
+    "license": "proprietary",
     "require": {
         "php": "^8.3",
         "laravel/framework": "^13.17",

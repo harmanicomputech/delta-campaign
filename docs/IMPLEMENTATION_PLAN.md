@@ -13,22 +13,45 @@ Legend: ☐ not started · ◐ in progress · ☑ done
 - ☑ Architecture and design direction — `docs/ARCHITECTURE.md`
 - ☑ Phased plan — this document
 
-## Phase 1 — Laravel foundations and premium design system ◐
+## Phase 1 — Laravel foundations and premium design system ☑
 
-- Laravel 13 configured for PostgreSQL + PostGIS, Redis cache/queue, database sessions
-- Horizon installed with domain queue supervisors
-- Docker: `Dockerfile` (PHP 8.4-FPM + Nginx), `compose.yaml` (app, worker, scheduler, PostGIS, Redis)
-- Vite + Tailwind 4 design tokens, light/dark themes, self-hosted fonts, icon component
-- Blade + Livewire + Alpine component library (buttons, inputs, selects, tables, badges, alerts,
-  modals, slide-overs, dropdowns, tabs, toasts, empty/skeleton states, page header, breadcrumbs,
-  command palette)
-- Application shell: collapsible sidebar, mobile drawer + bottom bar, top bar, breadcrumbs
-- Authentication screen designs (phone entry, OTP) — functional in Phase 3
-- Dashboard shell with real system-health data
-- Security headers, request IDs, redacting/structured logs, branded error pages
-- English and Nigerian Pidgin (`pcm`) locale switching for shell strings
-- GitHub Actions CI; initial feature tests
-- `.env.example`, `README.md`
+Completed 2026-10-24.
+
+| Deliverable | Where | Verified by |
+| --- | --- | --- |
+| Laravel 13 on PostgreSQL 16 + PostGIS 3.4; Redis cache/queue; database sessions | `config/*.php`, `.env.example`, `database/migrations/*enable_postgis*` | `DatabaseTest` (PostGIS geography query) |
+| Horizon with `realtime`, `messaging`, `default` and `bulk` supervisors; `redis-long` connection for long jobs | `config/horizon.php`, `config/queue.php` | `/health` queue check |
+| Design tokens: provisional brand, light/dark/system themes, self-hosted Inter + Fraunces | `resources/css/app.css` | Browser screenshots in both themes |
+| Component library (≈30 components) and Lucide icon pipeline | `resources/views/components/ui`, `scripts/` | `/design-system`, Playwright interaction checks |
+| Workspace shell: collapsible sidebar, mobile drawer + bottom bar, breadcrumbs, command palette, offline indicator, toasts | `resources/views/layouts/app.blade.php`, `components/shell` | Playwright at 1440/834/390 px |
+| Central navigation with "Planned · Phase N" entries | `config/navigation.php`, `App\Support\Navigation` | `NavigationTest` |
+| Auth screen designs (phone, OTP) and auth layout | `pages/design-system/{sign-in,verify}` | Browser |
+| Dashboard shell with live system status (Livewire, lazy, polling) | `pages/design-system/shell`, `App\Livewire\System\HealthStatusPanel` | `HealthStatusPanelTest`, browser |
+| Public layout + holding page | `layouts/public`, `pages/public/home` | `PublicPagesTest` |
+| Security headers + nonce CSP, request IDs, structured JSON logs with redaction | `app/Http/Middleware`, `app/Support/Logging` | `SecurityHeadersTest`, `RedactSensitiveDataTest` |
+| `/health` readiness endpoint (no session, no internal details) | `HealthController`, `Services/Health` | `HealthEndpointTest` |
+| Branded error pages (403/404/419/429/500/503) with request reference | `resources/views/errors` | `PublicPagesTest` |
+| English + Pidgin locale switching | `lang/{en,pcm}`, `SetLocale`, `LocaleController` | `LocaleTest` (including key parity) |
+| Nigerian mobile number normalisation + validation rule | `App\Support\Phone`, `App\Rules` | `NigerianPhoneNumberTest`, `SampleFormTest` |
+| Docker image (web/horizon/scheduler roles) and compose stack | `Dockerfile`, `compose.yaml`, `docker/` | `docker compose config`; image build runs in CI |
+| CI: Pint, PHPUnit (PHP 8.3/8.4, PostGIS, Redis), audits, Docker build | `.github/workflows/ci.yml` | Workflow YAML validated; first run pending push |
+
+**Results at completion:** 81 tests / 203 assertions passing; Pint clean; `composer audit` and
+`npm audit` clean; no console errors, CSP violations or horizontal overflow across 31 page/viewport/theme
+screenshots; 24/24 browser interaction checks passing.
+
+### Known limitations (Phase 1)
+
+- **Docker image not built locally** (no Docker daemon in the development environment). The CI `docker` job is its first real build.
+- **CI has not run yet.** It runs on the first push to GitHub.
+- **No authentication yet.** Workspace pages are previews under `/design-system`, unavailable in production. Real `/login` and dashboards come in Phase 3.
+- **Default `users` migration** from the Laravel skeleton is still present. It will be replaced by the phone-based identity schema in Phase 3 (nothing has been deployed, so this is safe).
+- **CSP allows `'unsafe-eval'`** (Alpine) and inline style attributes; see `ARCHITECTURE.md` §8.
+- **Static analysis (Larastan) not installed.** The package is hosted on GitHub, which this session's network policy blocks. Scheduled for Phase 12, or earlier in a session with access.
+- **Pest not used**: Pest 5 needs PHP 8.4 and the development environment has 8.3; PHPUnit 12 is used throughout.
+- **Pidgin strings are drafts** pending native-speaker review.
+- **Provisional brand**: replace tokens when approved assets arrive.
+- **Page weight**: workspace pages repeat inline SVG icons (about 130 KB of HTML before gzip on the dashboard). An SVG sprite is planned if Phase 7 low-bandwidth measurements show it matters.
 
 ## Phase 2 — Database and geographic management ☐
 
@@ -41,6 +64,7 @@ Legend: ☐ not started · ◐ in progress · ☑ done
 ## Phase 3 — Authentication, permissions and audit ☐
 
 *Dependency:* install `laravel/sanctum` (blocked by this session's network policy; see audit).
+*Also:* replace the skeleton `users` migration with the phone-based identity schema; gate Horizon with a permission.
 
 - Phone OTP sign-in (hashed OTPs, expiry, attempts, rate limits, non-enumerating responses)
 - TOTP second factor for privileged roles; PIN re-entry

@@ -1,9 +1,313 @@
+/* =============================================================================
+   Campaign Operations Platform — design tokens and base styles
+   -----------------------------------------------------------------------------
+   PROVISIONAL BRAND. No approved brand assets have been supplied. The brand
+   and accent scales below are the only place brand colour is defined; swap
+   them here and every surface follows. See docs/DESIGN_SYSTEM.md.
+   ============================================================================= */
+
 @import 'tailwindcss';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/fraunces';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../vendor/livewire/livewire/src/Features/SupportPagination/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
+@source '../../config/navigation.php';
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+/* Desktop sidebar collapsed state, set on <html> before first paint. */
+@custom-variant sidebar-collapsed (&:where([data-sidebar='collapsed'] *));
+
+/* ---------------------------------------------------------------------------
+   1. Primitive scales ("static": always emitted as CSS variables, so the
+      semantic tokens and inline swatches can reference any step)
+   --------------------------------------------------------------------------- */
+@theme static {
+    --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-display: 'Fraunces Variable', ui-serif, Georgia, serif;
+    --font-mono: ui-monospace, 'SFMono-Regular', 'JetBrains Mono', Menlo, monospace;
+
+    /* Brand — provisional "Delta green" */
+    --color-brand-50: #eef8f2;
+    --color-brand-100: #d6efe0;
+    --color-brand-200: #afdfc3;
+    --color-brand-300: #7fc9a1;
+    --color-brand-400: #4aad7c;
+    --color-brand-500: #23915f;
+    --color-brand-600: #0f7a4b;
+    --color-brand-700: #0c623d;
+    --color-brand-800: #0b4e32;
+    --color-brand-900: #0a402a;
+    --color-brand-950: #052418;
+
+    /* Accent — provisional restrained gold */
+    --color-accent-50: #fdf8ec;
+    --color-accent-100: #f9eccb;
+    --color-accent-200: #f2d792;
+    --color-accent-300: #eabd57;
+    --color-accent-400: #e2a52f;
+    --color-accent-500: #c98a1a;
+    --color-accent-600: #a86c13;
+    --color-accent-700: #865113;
+    --color-accent-800: #6f4216;
+    --color-accent-900: #5e3817;
+    --color-accent-950: #361c08;
+
+    /* Ink — neutral with a faint green undertone */
+    --color-ink-25: #fbfcfb;
+    --color-ink-50: #f5f7f6;
+    --color-ink-100: #eceeed;
+    --color-ink-200: #dde1df;
+    --color-ink-300: #c3c9c6;
+    --color-ink-400: #98a19d;
+    --color-ink-500: #6d7772;
+    --color-ink-600: #525b57;
+    --color-ink-700: #3e4642;
+    --color-ink-800: #292f2c;
+    --color-ink-850: #202522;
+    --color-ink-900: #181c1a;
+    --color-ink-950: #0e1210;
+
+    --radius-xs: 0.25rem;
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --radius-2xl: 1.25rem;
+
+    --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+
+    --animate-shimmer: shimmer 1.6s linear infinite;
+    --animate-fade-in: fade-in 160ms var(--ease-out-soft);
+
+    @keyframes shimmer {
+        from { background-position: 200% 0; }
+        to { background-position: -200% 0; }
+    }
+
+    @keyframes fade-in {
+        from { opacity: 0; transform: translateY(2px); }
+        to { opacity: 1; transform: none; }
+    }
+}
+
+/* ---------------------------------------------------------------------------
+   2. Semantic tokens (switch per theme)
+   --------------------------------------------------------------------------- */
+:root {
+    color-scheme: light;
+
+    --c-canvas: var(--color-ink-50);
+    --c-surface: #ffffff;
+    --c-surface-raised: #ffffff;
+    --c-surface-sunken: var(--color-ink-100);
+    --c-surface-hover: var(--color-ink-50);
+    --c-line: var(--color-ink-200);
+    --c-line-strong: var(--color-ink-300);
+    --c-fg: var(--color-ink-900);
+    --c-muted: var(--color-ink-600);
+    --c-subtle: var(--color-ink-500);
+
+    --c-primary: var(--color-brand-600);
+    --c-primary-hover: var(--color-brand-700);
+    --c-primary-soft: var(--color-brand-50);
+    --c-primary-soft-fg: var(--color-brand-800);
+    --c-on-primary: #ffffff;
+    --c-ring: var(--color-brand-500);
+
+    --c-success: #157347;
+    --c-success-soft: #e8f6ee;
+    --c-warning: #a15c07;
+    --c-warning-soft: #fdf3e1;
+    --c-danger: #c0392b;
+    --c-danger-hover: #a12f23;
+    --c-danger-soft: #fdecea;
+    --c-info: #1f5fbf;
+    --c-info-soft: #e8f0fc;
+
+    /* Navigation chrome is dark in both themes. */
+    --c-nav: var(--color-brand-950);
+    --c-nav-fg: #d7e6dd;
+    --c-nav-muted: #86a596;
+    --c-nav-hover: rgb(255 255 255 / 0.06);
+    --c-nav-active: rgb(255 255 255 / 0.1);
+    --c-nav-line: rgb(255 255 255 / 0.08);
+
+    --shadow-color: 150 20% 10%;
+    --sh-xs: 0 1px 2px hsl(var(--shadow-color) / 0.06);
+    --sh-sm: 0 1px 2px hsl(var(--shadow-color) / 0.06), 0 1px 3px hsl(var(--shadow-color) / 0.08);
+    --sh-md: 0 2px 4px hsl(var(--shadow-color) / 0.05), 0 6px 16px -4px hsl(var(--shadow-color) / 0.12);
+    --sh-lg: 0 4px 8px hsl(var(--shadow-color) / 0.05), 0 18px 40px -8px hsl(var(--shadow-color) / 0.2);
+}
+
+[data-theme='dark'] {
+    color-scheme: dark;
+
+    --c-canvas: var(--color-ink-950);
+    --c-surface: var(--color-ink-900);
+    --c-surface-raised: var(--color-ink-850);
+    --c-surface-sunken: #0a0d0c;
+    --c-surface-hover: var(--color-ink-850);
+    --c-line: rgb(255 255 255 / 0.08);
+    --c-line-strong: rgb(255 255 255 / 0.15);
+    --c-fg: #ecf0ee;
+    --c-muted: var(--color-ink-300);
+    --c-subtle: var(--color-ink-400);
+
+    --c-primary: var(--color-brand-500);
+    --c-primary-hover: var(--color-brand-400);
+    --c-primary-soft: rgb(35 145 95 / 0.14);
+    --c-primary-soft-fg: var(--color-brand-200);
+    --c-on-primary: #ffffff;
+    --c-ring: var(--color-brand-400);
+
+    --c-success: #4cc38a;
+    --c-success-soft: rgb(76 195 138 / 0.12);
+    --c-warning: #f0b45a;
+    --c-warning-soft: rgb(240 180 90 / 0.12);
+    --c-danger: #f07167;
+    --c-danger-hover: #f48b82;
+    --c-danger-soft: rgb(240 113 103 / 0.13);
+    --c-info: #79a7f2;
+    --c-info-soft: rgb(121 167 242 / 0.13);
+
+    --c-nav: #08110d;
+    --c-nav-line: rgb(255 255 255 / 0.06);
+
+    --shadow-color: 0 0% 0%;
+    --sh-sm: 0 1px 2px hsl(var(--shadow-color) / 0.4);
+    --sh-md: 0 4px 16px -4px hsl(var(--shadow-color) / 0.55);
+    --sh-lg: 0 20px 48px -12px hsl(var(--shadow-color) / 0.7);
+}
+
+@theme inline {
+    --color-canvas: var(--c-canvas);
+    --color-surface: var(--c-surface);
+    --color-surface-raised: var(--c-surface-raised);
+    --color-surface-sunken: var(--c-surface-sunken);
+    --color-surface-hover: var(--c-surface-hover);
+    --color-line: var(--c-line);
+    --color-line-strong: var(--c-line-strong);
+    --color-fg: var(--c-fg);
+    --color-muted: var(--c-muted);
+    --color-subtle: var(--c-subtle);
+
+    --color-primary: var(--c-primary);
+    --color-primary-hover: var(--c-primary-hover);
+    --color-primary-soft: var(--c-primary-soft);
+    --color-primary-soft-fg: var(--c-primary-soft-fg);
+    --color-on-primary: var(--c-on-primary);
+    --color-ring: var(--c-ring);
+
+    --color-success: var(--c-success);
+    --color-success-soft: var(--c-success-soft);
+    --color-warning: var(--c-warning);
+    --color-warning-soft: var(--c-warning-soft);
+    --color-danger: var(--c-danger);
+    --color-danger-hover: var(--c-danger-hover);
+    --color-danger-soft: var(--c-danger-soft);
+    --color-info: var(--c-info);
+    --color-info-soft: var(--c-info-soft);
+
+    --color-nav: var(--c-nav);
+    --color-nav-fg: var(--c-nav-fg);
+    --color-nav-muted: var(--c-nav-muted);
+    --color-nav-hover: var(--c-nav-hover);
+    --color-nav-active: var(--c-nav-active);
+    --color-nav-line: var(--c-nav-line);
+
+    --shadow-xs: var(--sh-xs);
+    --shadow-sm: var(--sh-sm);
+    --shadow-md: var(--sh-md);
+    --shadow-lg: var(--sh-lg);
+}
+
+/* ---------------------------------------------------------------------------
+   3. Base
+   --------------------------------------------------------------------------- */
+@layer base {
+    html {
+        -webkit-text-size-adjust: 100%;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-feature-settings: 'cv11', 'ss01';
+    }
+
+    body {
+        @apply bg-canvas text-fg font-sans text-sm leading-6;
+    }
+
+    ::selection {
+        background: color-mix(in srgb, var(--c-primary) 22%, transparent);
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--c-ring);
+        outline-offset: 2px;
+        border-radius: 0.25rem;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+}
+
+/* ---------------------------------------------------------------------------
+   4. Shared component primitives
+   --------------------------------------------------------------------------- */
+@layer components {
+    /* Text inputs, selects and textareas share one look. */
+    .form-control {
+        @apply block w-full rounded-md border border-line-strong bg-surface px-3 py-2 text-sm text-fg shadow-xs
+            placeholder:text-subtle transition-[border-color,box-shadow] duration-150
+            hover:border-ink-400 dark:hover:border-white/25
+            focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15
+            disabled:cursor-not-allowed disabled:bg-surface-sunken disabled:text-subtle;
+        min-height: 2.5rem;
+    }
+
+    .form-control[aria-invalid='true'] {
+        @apply border-danger focus:border-danger focus:ring-danger/15;
+    }
+
+    .skeleton {
+        @apply rounded-md;
+        background: linear-gradient(
+            90deg,
+            var(--c-surface-sunken) 0%,
+            color-mix(in srgb, var(--c-surface-sunken) 55%, var(--c-surface)) 50%,
+            var(--c-surface-sunken) 100%
+        );
+        background-size: 200% 100%;
+        animation: var(--animate-shimmer);
+    }
+
+    .tabular {
+        font-variant-numeric: tabular-nums;
+    }
+
+    /* Hairline scrollbars for dense panels. */
+    .scroll-thin {
+        scrollbar-width: thin;
+        scrollbar-color: var(--c-line-strong) transparent;
+    }
+
+    .nav-scroll {
+        scrollbar-width: thin;
+        scrollbar-color: rgb(255 255 255 / 0.12) transparent;
+    }
 }

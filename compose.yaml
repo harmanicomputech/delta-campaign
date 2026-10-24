@@ -1,0 +1,86 @@
+# Local/staging-like stack: docker compose up --build
+# Copy .env.example to .env first. DB_HOST and REDIS_HOST are overridden below.
+name: campaign-platform
+
+x-app: &app
+  build:
+    context: .
+    target: runtime
+  image: campaign-platform:local
+  env_file: .env
+  environment:
+    APP_ENV: ${APP_ENV:-staging}
+    APP_DEBUG: "false"
+    LOG_CHANNEL: json
+    DB_HOST: postgres
+    REDIS_HOST: redis
+  depends_on:
+    postgres:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+  restart: unless-stopped
+
+services:
+  web:
+    <<: *app
+    environment:
+      APP_ENV: ${APP_ENV:-staging}
+      APP_DEBUG: "false"
+      LOG_CHANNEL: json
+      DB_HOST: postgres
+      REDIS_HOST: redis
+      ROLE: web
+    ports:
+      - "${APP_PORT:-8080}:8080"
+
+  horizon:
+    <<: *app
+    environment:
+      APP_ENV: ${APP_ENV:-staging}
+      APP_DEBUG: "false"
+      LOG_CHANNEL: json
+      DB_HOST: postgres
+      REDIS_HOST: redis
+      ROLE: horizon
+
+  scheduler:
+    <<: *app
+    environment:
+      APP_ENV: ${APP_ENV:-staging}
+      APP_DEBUG: "false"
+      LOG_CHANNEL: json
+      DB_HOST: postgres
+      REDIS_HOST: redis
+      ROLE: scheduler
+
+  postgres:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-campaign}
+      POSTGRES_USER: ${DB_USERNAME:-campaign}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+  redis-data:

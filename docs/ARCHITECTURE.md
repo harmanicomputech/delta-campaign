@@ -144,7 +144,11 @@ needs and the phase that delivers it; items for modules not yet built render as 
 - `GET /up` (liveness) and `GET /health` (readiness: database, PostGIS, Redis, cache, queue), with
   appropriate HTTP status codes.
 - Security headers are applied by middleware (CSP, HSTS in production, frame, referrer and
-  permissions policies).
+  permissions policies). The CSP is nonce-based (a fresh nonce per request), with two documented
+  relaxations: `'unsafe-eval'` in `script-src`, which Alpine's standard build needs, and
+  `style-src-attr 'unsafe-inline'`, for style attributes set by Livewire morphing and transitions.
+  Livewire's CSP-safe build, which would remove `'unsafe-eval'`, is to be evaluated in Phase 12.
+  Horizon's dashboard is excluded from the CSP because it ships its own inline assets.
 - CI: Pint, PHPUnit on PostgreSQL+PostGIS and Redis services, Vite build, `composer audit`,
   `npm audit`.
 
