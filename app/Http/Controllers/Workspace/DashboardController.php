@@ -9,6 +9,7 @@ use App\Models\Task;
 use App\Models\TrainingModule;
 use App\Models\User;
 use App\Models\WalkList;
+use App\Services\Election\AgentService;
 use App\Services\Reporting\ApprovalQueues;
 use App\Services\Reporting\AreaMetrics;
 use App\Services\Volunteers\TrainingService;
@@ -52,6 +53,7 @@ final class DashboardController extends Controller
             'assignments' => $user->loadedAssignments(),
             'recentLogins' => $user->loginEvents()->latest('created_at')->limit(5)->get(),
             'work' => $work,
+            'agentAssignment' => $user->can('election.report') ? app(AgentService::class)->activeAssignmentFor($user) : null,
             'queues' => $user->can('approvals.view') ? $approvals->for($user, 0) : [],
             'snapshot' => $snapshot,
             'maskSnapshot' => ! $user->can('supporters.view'),

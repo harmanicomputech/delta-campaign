@@ -25,5 +25,8 @@ Schedule::command('messaging:tick')->everyMinute()->onOneServer()->withoutOverla
 // Public website
 Schedule::command('content:publish-due')->everyMinute()->onOneServer()->withoutOverlapping();
 
+// Election day
+Schedule::command('evidence:verify')->dailyAt('04:15')->onOneServer()->withoutOverlapping();
+
 // Queues
 Schedule::command('horizon:snapshot')->everyFiveMinutes();

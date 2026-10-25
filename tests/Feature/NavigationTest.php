@@ -13,6 +13,8 @@ final class NavigationTest extends TestCase
 {
     public function test_items_for_unbuilt_modules_have_no_link(): void
     {
+        // Every module is built now; a planned item is added to check how one would render.
+        config()->set('navigation.0.items.99', ['label' => 'nav.dashboard', 'icon' => 'circle', 'route' => null, 'phase' => 13, 'permission' => null]);
         $items = collect(app(Navigation::class)->groups())->flatMap(fn (array $group): array => $group['items']);
 
         $planned = $items->filter(fn (NavigationItem $item): bool => $item->isPlanned());

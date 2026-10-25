@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Livewire\Workspace\CommandCentre;
 
+use App\Models\Election;
 use App\Models\Lga;
 use App\Models\SenatorialDistrict;
 use App\Models\Task;
 use App\Models\User;
+use App\Services\Election\ElectionMetrics;
 use App\Services\Reporting\ApprovalQueues;
 use App\Services\Reporting\AreaMetrics;
 use Illuminate\Contracts\View\View;
@@ -80,6 +82,9 @@ final class CommandCentre extends Component
             'parentName' => $this->parentName($level),
             'atTop' => $this->level === '' || $level === $metrics->startLevel($scope),
             'queues' => $actor->can('approvals.view') ? $approvals->for($actor, 3) : [],
+            'election' => ($election = Election::active()) && $actor->canAny(['results.view', 'incidents.view'])
+                ? ['model' => $election, 'summary' => app(ElectionMetrics::class)->summary($election, $actor->geoScope($actor->can('results.view') ? 'results.view' : 'incidents.view'))]
+                : null,
             'escalations' => $actor->can('tasks.view') ? Task::query()->visibleTo($actor, 'tasks.view')->open()->where('escalation_level', '>', 0)
                 ->with(['ward:id,name', 'lga:id,name'])->orderByDesc('escalated_at')->limit(5)->get() : collect(),
         ])->title(__('command.title'))->layoutData(['breadcrumbs' => [__('nav.groups.overview') => null, __('command.title') => null]]);

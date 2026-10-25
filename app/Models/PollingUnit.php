@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
@@ -66,6 +67,12 @@ class PollingUnit extends Model
     public function senatorialDistrict(): BelongsTo
     {
         return $this->belongsTo(SenatorialDistrict::class);
+    }
+
+    /** @return HasMany<AgentAssignment, $this> */
+    public function agentAssignments(): HasMany
+    {
+        return $this->hasMany(AgentAssignment::class);
     }
 
     /**

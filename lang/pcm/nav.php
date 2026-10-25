@@ -26,6 +26,8 @@ return [
     'rapid_response' => 'Quick response',
     'contact_inbox' => 'Message box',
     'ussd_simulator' => 'USSD simulator',
+    'my_polling_unit' => 'My polling unit',
+    'election_day' => 'Election day',
     'incidents' => 'Wahala report',
     'results' => 'Result papers',
     'geography' => 'Places',

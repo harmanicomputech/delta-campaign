@@ -24,4 +24,7 @@ return [
     'open_count' => '{0} None open|{1} 1 open|[2,*] :count open',
     'no_tasks' => 'No open tasks. Well done.',
     'walk_list' => 'Walk list',
+    'agent_today' => 'Polling agent: :unit',
+    'agent_arrived' => 'Arrival recorded. Open to report turnout, incidents and the result.',
+    'agent_not_arrived' => 'Open when you reach the polling unit.',
 ];

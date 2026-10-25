@@ -50,7 +50,7 @@ final class MessagingTest extends TestCase
     {
         parent::setUp();
         $this->seedSupporterContext();
-        $this->travelTo(now()->timezone('Africa/Lagos')->setTime(12, 0)->utc()); // Outside quiet hours.
+        $this->travelTo(now()->timezone('Africa/Lagos')->addDay()->setTime(12, 0)->utc()); // Outside quiet hours, after the notice was published.
         $this->director = User::factory()->withRole('state_director')->withTwoFactor()->create(['name' => 'Sample Director']);
         $this->dg = User::factory()->withRole('dg')->withTwoFactor()->create(['name' => 'Sample DG']);
         $this->template = app(TemplateService::class)->save(User::factory()->withRole('super_admin')->create(), [

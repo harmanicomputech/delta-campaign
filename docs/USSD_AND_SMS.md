@@ -44,6 +44,7 @@ Keywords are case-insensitive; extra words after them are ignored.
 | `START` (`UNSTOP`, `YES`) | anyone | Grants SMS campaign updates (self-service; lifts their own opt-out) | Confirmation |
 | `HELP` (`INFO`) | anyone | — | Command list |
 | `REPORT <polling-unit code> <message>` | active staff with `election.report` or `tasks.work`, for a unit in their area | A high-priority task at that polling unit for the area's coordinators | Reference |
+| `ARRIVED`, `TURNOUT`, `INCIDENT`, `RESULT` | polling agents with an active assignment | Election-day reports (see `docs/ELECTION_DAY.md`) | Confirmation or format help |
 | anything else | known staff / unknown number | Recorded as unrecognised | Help text / no reply |
 
 Example: `REPORT 25-15-07-012 Voting materials arrived late`

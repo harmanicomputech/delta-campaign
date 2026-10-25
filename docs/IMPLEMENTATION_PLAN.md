@@ -205,11 +205,26 @@ Completed 2026-10-25. Details: `docs/PUBLIC_SITE.md`.
 **Changes.** The super-administrator exemption from content self-approval was removed: no one approves
 their own content, project records, rapid-response cases or message campaigns.
 
-## Phase 11 — Election-day operations ☐
+## Phase 11 — Election-day operations ☑
 
-- Agent assignment, check-ins, checklists, turnout observations, incidents
-- Evidence storage with hashes; SMS fallback; result documents with arithmetic validation
-- Discrepancy review, official-source comparison, evidence packs, command-centre views
+Completed 2026-10-25. Details: `docs/ELECTION_DAY.md`.
+
+- ☑ Election setup (`election.setup`, new permission): parties copied from the official ballot, configurable opening checklist and turnout times, one active election at a time
+- ☑ Polling-agent assignment by coordinators in their area (primary/backup); grants and revokes a polling-unit-scoped role; SMS on assignment
+- ☑ Agent app: arrival with optional location and distance check, opening checklist, turnout observations, incidents with photos, result sheet with live arithmetic hints and a required photo; idempotent client UUIDs
+- ☑ Structured SMS fallback: `ARRIVED`, `TURNOUT`, `INCIDENT`, `RESULT`, agent `HELP`; retry-safe
+- ☑ Incident management: severity-ordered queue, acknowledge / escalate / resolve / dismiss / reopen in area, alerts for high and critical incidents
+- ☑ Evidence: originals kept unchanged with SHA-256, immutable records, audited access, daily integrity check (`evidence:verify`)
+- ☑ Results: arithmetic validation, conflict detection, verification by a second person (photo required), official figures only from cited INEC sources, field-by-field comparison and discrepancy list
+- ☑ Evidence packs: ZIP with CSVs, originals, hash manifest and "not official" notice; signed, PIN-protected, audited, 24-hour expiry
+- ☑ Reporting: election-day hub (coverage, incidents, verified vs official tallies, discrepancies), command-centre strip, dashboard card for agents; all scope-limited
+- ☑ SAMPLE training election with placeholder parties (SPA/SPB/SPC) and illustrative reports
+- ☑ Tests: 413 passing; browser-verified agent flow on a phone (arrival with location, checklist, turnout, incident with photo, result with live arithmetic warning), incident triage, verification, official figures and discrepancy, evidence pack build, mobile layouts
+
+**Fixes.** Time-dependent messaging tests (Phase 9) travelled to "today 12:00", which falls before the
+privacy notice is published once the real time is past noon; they now use the next day.
+
+**Limitations.** Offline election reporting uses the SMS fallback rather than the PWA queue.
 
 ## Phase 12 — Security, performance and launch readiness ☐
 

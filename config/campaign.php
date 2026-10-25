@@ -185,6 +185,18 @@ return [
 
     'trusted_proxies' => env('TRUSTED_PROXIES', ''),
 
+    /*
+    | Election day. Evidence is kept on private storage with its SHA-256.
+    */
+    'election' => [
+        'evidence_disk' => env('EVIDENCE_DISK', 'local'),
+        'evidence_max_kb' => (int) env('EVIDENCE_MAX_KB', 15360),
+        'evidence_mimes' => ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'application/pdf'],
+        // Arrival further than this from the polling unit's recorded location is flagged (not blocked).
+        'checkin_distance_warning_m' => (int) env('CHECKIN_DISTANCE_WARNING_M', 800),
+        'pack_ttl_hours' => 24,
+    ],
+
     'security' => [
         'hsts' => (bool) env('SECURITY_HSTS_ENABLED', false),
         'csp_report_uri' => env('SECURITY_CSP_REPORT_URI'),

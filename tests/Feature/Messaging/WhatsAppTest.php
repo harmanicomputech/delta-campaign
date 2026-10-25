@@ -24,7 +24,7 @@ final class WhatsAppTest extends TestCase
     {
         parent::setUp();
         $this->seedSupporterContext();
-        $this->travelTo(now()->timezone('Africa/Lagos')->setTime(12, 0)->utc());
+        $this->travelTo(now()->timezone('Africa/Lagos')->addDay()->setTime(12, 0)->utc());
         config(['services.whatsapp.app_secret' => 'test-app-secret', 'services.whatsapp.verify_token' => 'test-verify']);
     }
 

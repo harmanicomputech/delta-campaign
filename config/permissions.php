@@ -85,6 +85,7 @@ return [
             'ussd.simulate' => 'Use the USSD simulator',
         ],
         'election' => [
+            'election.setup' => 'Set up elections: parties from the official ballot and the opening checklist',
             'polling-agents.view' => 'View polling-agent assignments in scope',
             'polling-agents.manage' => 'Assign polling agents in scope',
             'election.report' => 'Submit election-day reports for my assigned polling unit',
@@ -130,7 +131,7 @@ return [
                 'users.view', 'audit.view', 'supporters.view', 'supporters.export', 'volunteers.view', 'volunteers.approve',
                 'tasks.view', 'tasks.manage', 'canvassing.view', 'events.view', 'messaging.view', 'messaging.approve',
                 'content.view', 'content.review', 'content.publish', 'projects.approve', 'rapid-response.view', 'rapid-response.approve',
-                'polling-agents.view', 'incidents.view', 'results.view', 'evidence.view', 'evidence.export',
+                'polling-agents.view', 'incidents.view', 'results.view', 'evidence.view', 'evidence.export', 'election.setup',
             ],
         ],
         'state_director' => [
@@ -144,7 +145,7 @@ return [
                 'supporters.verify', 'supporters.export', 'volunteers.view', 'volunteers.manage', 'volunteers.approve',
                 'training.manage', 'tasks.view', 'tasks.manage', 'canvassing.view', 'canvassing.manage', 'events.view',
                 'events.manage', 'messaging.view', 'messaging.create', 'messaging.approve', 'content.view', 'contact.manage', 'polling-agents.view',
-                'polling-agents.manage', 'incidents.view', 'incidents.manage', 'results.view', 'results.verify', 'evidence.view',
+                'polling-agents.manage', 'incidents.view', 'incidents.manage', 'results.view', 'results.verify', 'results.official', 'evidence.view',
                 'evidence.export', 'ussd.simulate',
             ],
         ],

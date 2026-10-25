@@ -139,5 +139,7 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('webhooks', fn (Request $request) => Limit::perMinute(12000)->by($request->ip()));
         RateLimiter::for('sync', fn (Request $request) => Limit::perMinute(30)->by((string) ($request->user()?->id ?? $request->ip())));
         RateLimiter::for('sensitive', fn (Request $request): Limit => Limit::perMinute(30)->by('sensitive:'.($request->user()?->getAuthIdentifier() ?? $request->ip())));
+        // Evidence thumbnails load several at once on review screens; still capped per person.
+        RateLimiter::for('evidence', fn (Request $request): Limit => Limit::perMinute(120)->by('evidence:'.($request->user()?->getAuthIdentifier() ?? $request->ip())));
     }
 }

@@ -24,6 +24,7 @@ use App\Services\Tasks\TaskService;
  *   START (UNSTOP, YES)                               receive SMS updates again
  *   HELP (INFO)                                       list commands
  *   REPORT <polling-unit code> <message>              field report from registered staff
+ *   ARRIVED / TURNOUT / INCIDENT / RESULT             polling-agent reports (ElectionSmsCommands)
  *
  * Keywords are case-insensitive and may be followed by extra words.
  */
@@ -35,7 +36,7 @@ final class InboundSmsProcessor
 
     public const array HELP = ['HELP', 'INFO'];
 
-    public function __construct(private readonly ConsentService $consent, private readonly TaskService $tasks) {}
+    public function __construct(private readonly ConsentService $consent, private readonly TaskService $tasks, private readonly ElectionSmsCommands $election) {}
 
     public function process(InboundSms $sms, string $from): void
     {
@@ -50,8 +51,9 @@ final class InboundSmsProcessor
         [$status, $result, $reply, $taskId] = match (true) {
             in_array($keyword, self::STOP, true) => $this->stop($sms),
             in_array($keyword, self::START, true) => $this->start($sms),
-            in_array($keyword, self::HELP, true) => ['processed', 'help', __('sms.help'), null],
+            in_array($keyword, self::HELP, true) => ['processed', 'help', $user?->hasPermission('election.report') ? __('sms.election_help') : __('sms.help'), null],
             $keyword === 'REPORT' => $this->report($text, $user),
+            in_array($keyword, ElectionSmsCommands::KEYWORDS, true) => [...$this->election->handle($keyword, $text, $user, (string) ($sms->provider_id ?? 'local-'.$sms->id)), null],
             // Unknown text from someone we know gets the help text; from an unknown number, no reply (no cost, no spam loop).
             default => ['ignored', 'unrecognised', $user ? __('sms.help') : null, null],
         };

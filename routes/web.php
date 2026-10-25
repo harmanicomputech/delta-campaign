@@ -9,6 +9,8 @@ use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\PublicSite\PublicPagesController;
 use App\Http\Controllers\Pwa\PwaController;
 use App\Http\Controllers\Workspace\DashboardController;
+use App\Http\Controllers\Workspace\EvidenceFileController;
+use App\Http\Controllers\Workspace\EvidencePackDownloadController;
 use App\Http\Controllers\Workspace\ExportDownloadController;
 use App\Http\Controllers\Workspace\ImportFilesController;
 use App\Http\Controllers\Workspace\RapidResponseEvidenceController;
@@ -24,6 +26,15 @@ use App\Livewire\Workspace\Contact\ContactInbox;
 use App\Livewire\Workspace\Content\ContentEditor;
 use App\Livewire\Workspace\Content\ContentIndex;
 use App\Livewire\Workspace\Content\ContentShow;
+use App\Livewire\Workspace\Election\AgentHome;
+use App\Livewire\Workspace\Election\AgentsIndex;
+use App\Livewire\Workspace\Election\ElectionSetupPage;
+use App\Livewire\Workspace\Election\EvidencePacksIndex;
+use App\Livewire\Workspace\Election\IncidentShow;
+use App\Livewire\Workspace\Election\IncidentsIndex;
+use App\Livewire\Workspace\Election\OperationsHub;
+use App\Livewire\Workspace\Election\ResultsIndex;
+use App\Livewire\Workspace\Election\UnitShow;
 use App\Livewire\Workspace\Events\EventCheckIn;
 use App\Livewire\Workspace\Events\EventEditor;
 use App\Livewire\Workspace\Events\EventShow;
@@ -181,6 +192,21 @@ Route::middleware('workspace')->prefix('workspace')->name('workspace.')->group(f
     Route::get('/rapid-response/{case}', CaseShow::class)->middleware('can:rapid-response.view')->name('rapid-response.show');
     Route::get('/rapid-response/{case}/evidence/{note}', RapidResponseEvidenceController::class)->middleware(['can:rapid-response.view', 'throttle:sensitive'])->whereNumber('note')->name('rapid-response.evidence');
     Route::get('/inbox', ContactInbox::class)->middleware('can:contact.manage')->name('contact.index');
+
+    // Election day
+    Route::get('/my-polling-unit', AgentHome::class)->middleware('can:election.report')->name('election.agent');
+    Route::prefix('election-day')->name('election.')->group(function (): void {
+        Route::get('/', OperationsHub::class)->name('hub');
+        Route::get('/setup', ElectionSetupPage::class)->middleware('can:election.setup')->name('setup');
+        Route::get('/agents', AgentsIndex::class)->middleware('can:polling-agents.view')->name('agents');
+        Route::get('/incidents', IncidentsIndex::class)->middleware('can:incidents.view')->name('incidents.index');
+        Route::get('/incidents/{incident}', IncidentShow::class)->middleware('can:incidents.view')->name('incidents.show');
+        Route::get('/results', ResultsIndex::class)->middleware('can:results.view')->name('results');
+        Route::get('/units/{unit}', UnitShow::class)->name('units.show');
+        Route::get('/evidence-packs', EvidencePacksIndex::class)->middleware('can:evidence.export')->name('packs');
+        Route::get('/evidence-packs/{pack}/download', EvidencePackDownloadController::class)->middleware(['signed', 'pin.confirm', 'can:evidence.export', 'throttle:sensitive'])->name('packs.download');
+        Route::get('/evidence/{evidence}', EvidenceFileController::class)->middleware('throttle:evidence')->name('evidence');
+    });
 
     Route::get('/ussd-simulator', UssdSimulator::class)->middleware('can:ussd.simulate')->name('ussd-simulator');
 

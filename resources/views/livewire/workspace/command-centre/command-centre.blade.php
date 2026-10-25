@@ -20,6 +20,19 @@
         <x-ui.alert tone="info" class="mb-6">{{ __('command.masked', ['n' => \App\Livewire\Workspace\CommandCentre\CommandCentre::SMALL_NUMBER]) }}</x-ui.alert>
     @endif
 
+    @if ($election)
+        @php($es = $election['summary'])
+        <a href="{{ route('workspace.election.hub') }}" class="mb-6 flex flex-col gap-3 rounded-xl border border-line bg-surface px-5 py-4 shadow-xs hover:border-primary sm:flex-row sm:items-center sm:gap-6">
+            <span class="flex items-center gap-2 font-semibold text-fg"><x-icon name="vote" class="size-5 text-primary" /> {{ $election['model']->name }}</span>
+            <span class="grid flex-1 grid-cols-2 gap-x-6 gap-y-1 text-sm sm:grid-cols-4">
+                <span><span class="font-semibold text-fg tabular-nums">{{ number_format($es['arrived']) }}</span> <span class="text-muted">{{ __('command.election_arrived', ['units' => number_format($es['units'])]) }}</span></span>
+                <span><span class="font-semibold text-fg tabular-nums">{{ number_format($es['results']) }}</span> <span class="text-muted">{{ __('command.election_results') }}</span></span>
+                <span><span class="font-semibold text-fg tabular-nums">{{ number_format($es['verified']) }}</span> <span class="text-muted">{{ __('command.election_verified') }}</span></span>
+                <span @class(['text-danger' => $es['incidents_critical'] > 0])><span class="font-semibold tabular-nums">{{ number_format($es['incidents_open']) }}</span> <span class="{{ $es['incidents_critical'] > 0 ? '' : 'text-muted' }}">{{ __('command.election_incidents', ['critical' => $es['incidents_critical']]) }}</span></span>
+            </span>
+        </a>
+    @endif
+
     <div class="mb-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 2xl:grid-cols-5 [&>*]:min-w-0">
         <x-ui.stat :label="__('command.supporters')" :value="$f($summary['supporters'])" icon="users" :hint="__('command.new_this_week', ['count' => $f($summary['new_supporters'])])" />
         <x-ui.stat :label="__('command.verified')" :value="$pct($summary['verified'], $summary['supporters']).'%'" icon="shield-check" :hint="__('command.of_supporters', ['count' => $f($summary['verified'])])" />

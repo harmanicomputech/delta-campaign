@@ -42,4 +42,8 @@ return [
     'open_inbox' => 'Open inbox',
     'escalations' => 'Latest escalations',
     'no_escalations' => 'No escalated tasks',
+    'election_arrived' => 'agents arrived (of :units units)',
+    'election_results' => 'result sheets in',
+    'election_verified' => 'verified by campaign',
+    'election_incidents' => 'open incidents (:critical critical)',
 ];

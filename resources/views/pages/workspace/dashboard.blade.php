@@ -18,6 +18,15 @@
         </x-ui.alert>
     @endif
 
+    @if ($agentAssignment)
+        <a href="{{ route('workspace.election.agent') }}" class="mb-6 flex items-center gap-4 rounded-xl border border-primary bg-primary-soft px-5 py-4 hover:shadow-sm">
+            <x-icon name="vote" class="size-6 shrink-0 text-primary" />
+            <span class="min-w-0 flex-1"><span class="block font-semibold text-fg">{{ __('workspace.agent_today', ['unit' => $agentAssignment->pollingUnit->name]) }}</span>
+                <span class="block text-sm text-muted">{{ $agentAssignment->pollingUnit->code }} · {{ $agentAssignment->arrived_at ? __('workspace.agent_arrived') : __('workspace.agent_not_arrived') }}</span></span>
+            <x-icon name="arrow-right" class="size-5 text-primary" />
+        </a>
+    @endif
+
     @if ($work)
         <div class="mb-6 grid gap-4 lg:grid-cols-3 [&>*]:min-w-0">
             <x-ui.card :title="__('workspace.my_tasks')" :padding="false" class="lg:col-span-2">

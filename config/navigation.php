@@ -35,7 +35,7 @@ return [
             ['label' => 'nav.supporters', 'icon' => 'users', 'route' => 'workspace.supporters.index', 'phase' => 4, 'permission' => 'supporters.view', 'mobile' => true],
             ['label' => 'nav.volunteers', 'icon' => 'hand-heart', 'route' => 'workspace.volunteers.index', 'phase' => 5, 'permission' => 'volunteers.view'],
             ['label' => 'nav.training', 'icon' => 'graduation-cap', 'route' => 'workspace.training.index', 'phase' => 5, 'permission' => ['training.take', 'training.manage']],
-            ['label' => 'nav.polling_agents', 'icon' => 'shield-check', 'route' => null, 'phase' => 11, 'permission' => 'polling-agents.view'],
+            ['label' => 'nav.polling_agents', 'icon' => 'shield-check', 'route' => 'workspace.election.agents', 'phase' => 11, 'permission' => 'polling-agents.view'],
         ],
     ],
 
@@ -62,8 +62,10 @@ return [
     [
         'label' => 'nav.groups.election_day',
         'items' => [
-            ['label' => 'nav.incidents', 'icon' => 'triangle-alert', 'route' => null, 'phase' => 11, 'permission' => 'incidents.view'],
-            ['label' => 'nav.results', 'icon' => 'file-check', 'route' => null, 'phase' => 11, 'permission' => 'results.view'],
+            ['label' => 'nav.my_polling_unit', 'icon' => 'vote', 'route' => 'workspace.election.agent', 'phase' => 11, 'permission' => 'election.report', 'mobile' => true],
+            ['label' => 'nav.election_day', 'icon' => 'layout-dashboard', 'route' => 'workspace.election.hub', 'phase' => 11, 'permission' => ['polling-agents.view', 'incidents.view', 'results.view'], 'also' => ['workspace.election.units.*', 'workspace.election.setup', 'workspace.election.packs']],
+            ['label' => 'nav.incidents', 'icon' => 'triangle-alert', 'route' => 'workspace.election.incidents.index', 'phase' => 11, 'permission' => 'incidents.view'],
+            ['label' => 'nav.results', 'icon' => 'file-check', 'route' => 'workspace.election.results', 'phase' => 11, 'permission' => 'results.view'],
         ],
     ],
 

@@ -16,6 +16,6 @@ class SampleDataSeeder extends Seeder
             throw new RuntimeException('Sample data must never be seeded in production.');
         }
 
-        $this->call([GeographySeeder::class, RolesAndPermissionsSeeder::class, SampleGeographySeeder::class, PlaceholderPrivacyNoticeSeeder::class, SampleSupportersSeeder::class, SampleFieldOperationsSeeder::class, SampleMessagingSeeder::class, SamplePublicSiteSeeder::class]);
+        $this->call([GeographySeeder::class, RolesAndPermissionsSeeder::class, SampleGeographySeeder::class, PlaceholderPrivacyNoticeSeeder::class, SampleSupportersSeeder::class, SampleFieldOperationsSeeder::class, SampleMessagingSeeder::class, SamplePublicSiteSeeder::class, SampleElectionSeeder::class]);
     }
 }
