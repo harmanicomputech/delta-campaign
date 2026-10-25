@@ -80,6 +80,33 @@ final class TaskService
         });
     }
 
+    /**
+     * A task raised by the platform itself (USSD callback requests, SMS field reports). No
+     * person is the creator; the area's coordinators see it and assign it.
+     *
+     * @param  array{title: string, description?: string|null, priority?: string, due_at?: \DateTimeInterface|null, lga_id?: int|null, ward_id?: int|null, polling_unit_id?: int|null}  $data
+     */
+    public function createSystem(array $data, string $source): Task
+    {
+        return DB::transaction(function () use ($data, $source): Task {
+            $task = Task::query()->create([
+                'title' => mb_substr($data['title'], 0, 200),
+                'description' => $data['description'] ?? null,
+                'priority' => TaskPriority::tryFrom($data['priority'] ?? 'normal') ?? TaskPriority::Normal,
+                'status' => TaskStatus::Open,
+                'due_at' => $data['due_at'] ?? null,
+                'lga_id' => $data['lga_id'] ?? null,
+                'ward_id' => $data['ward_id'] ?? null,
+                'polling_unit_id' => $data['polling_unit_id'] ?? null,
+            ]);
+
+            $this->event($task, TaskEventType::Created, null, ['source' => $source]);
+            $this->audit->as($source, fn () => $this->audit->record('task.created', $task, null, ['source' => $source]));
+
+            return $task->refresh();
+        });
+    }
+
     public function assign(Task $task, User $assignee, User $by): void
     {
         $this->assertCanManage($task, $by);

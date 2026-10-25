@@ -33,6 +33,7 @@
         <env name="PHONE_HASH_KEY" value="base64:dGVzdC1vbmx5LXBob25lLWhhc2gta2V5LTMyLWJ5dGU="/>
         <env name="FIELD_ENCRYPTION_KEY" value="base64:dGVzdC1vbmx5LWZpZWxkLWVuY3J5cHRpb24ta2V5MzI="/>
         <env name="SMS_DRIVER" value="outbox"/>
+        <env name="AFRICASTALKING_WEBHOOK_SECRET" value="test-webhook-secret"/>
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>

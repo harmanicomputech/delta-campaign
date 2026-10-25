@@ -160,11 +160,17 @@ Completed 2026-10-24. Security model: `docs/SECURITY.md` (offline field app).
 **Limitations.** Offline capture covers canvassing contacts; other forms need a connection. Background
 Sync (service-worker sync events) is not relied on because support varies; sync runs whenever the app is open.
 
-## Phase 8 — USSD and SMS ☐
+## Phase 8 — USSD and SMS ☑
 
-- Africa's Talking adapter behind interfaces; Redis-backed USSD state machine
-- Menus in English and Pidgin as specified; 182-character limit tests
-- Inbound SMS: STOP, HELP and structured reports; browser USSD simulator
+Completed 2026-10-25. Details: `docs/USSD_AND_SMS.md`.
+
+- ☑ `UssdProvider` interface with the Africa's Talking adapter; secret-protected, rate-limited webhooks outside the web stack
+- ☑ USSD state machine (encrypted cache state, newest-input processing, retry idempotency, expiry) with the specified menu in English and Pidgin: join, volunteer, polling unit (code or browse), projects, callback, preferences/deletion
+- ☑ Pagination, back, home, validation and friendly errors; every screen and closing message ≤ 182 characters, tested with worst-case data in both languages, plus a runtime safety net
+- ☑ Callback requests as LGA tasks (one per number per day) with an audited number reveal on the task page
+- ☑ Inbound SMS: STOP / START / HELP and the new `REPORT <code> <message>` format for staff (scope-checked, becomes a task); hashed sender, encrypted text, queue processing, provider-id de-duplication
+- ☑ Browser USSD simulator running the real menu, with practice mode (rolled back)
+- ☑ Tests: 322 passing; measured callback latency (median 10 ms); browser-verified simulator
 
 ## Phase 9 — Communications engine ☐
 

@@ -112,6 +112,22 @@
                 @endif
             </x-ui.card>
 
+            @if ($callback)
+                <x-ui.card :title="__('callbacks.panel')" :description="__('callbacks.revealed_help')">
+                    <div class="flex items-center justify-between gap-3">
+                        <div>
+                            <p class="font-mono text-sm text-fg">{{ $callbackPhone ?? $callback->maskedPhone() }}</p>
+                            <p class="text-xs text-subtle">{{ $callback->reference }} · {{ $callback->language === 'pcm' ? 'Pidgin' : 'English' }}</p>
+                        </div>
+                        @if ($callbackPhone)
+                            <x-ui.button size="sm" icon="phone" :href="'tel:'.$callbackPhone">{{ __('callbacks.call') }}</x-ui.button>
+                        @elseif ($canWork)
+                            <x-ui.button size="sm" variant="secondary" icon="eye" wire:click="revealCallback" loading="revealCallback">{{ __('callbacks.reveal') }}</x-ui.button>
+                        @endif
+                    </div>
+                </x-ui.card>
+            @endif
+
             <x-ui.card :title="__('tasks.evidence')" :description="__('tasks.evidence_help')" :padding="false">
                 <ul class="divide-y divide-line">
                     @forelse ($evidenceFiles as $file)

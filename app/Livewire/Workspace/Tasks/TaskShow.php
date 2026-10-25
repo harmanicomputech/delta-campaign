@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Livewire\Workspace\Tasks;
 
 use App\Enums\TaskStatus;
+use App\Models\CallbackRequest;
 use App\Models\Task;
 use App\Models\User;
 use App\Services\Authorization\AssignableUsers;
+use App\Services\Callbacks\CallbackService;
 use App\Services\Supporters\StaleRecord;
 use App\Services\Tasks\TaskService;
 use Illuminate\Contracts\View\View;
@@ -42,6 +44,9 @@ final class TaskShow extends Component
     public string $dueAt = '';
 
     public string $escalationReason = '';
+
+    #[Locked]
+    public ?string $callbackPhone = null;
 
     public function mount(Task $task, TaskService $tasks): void
     {
@@ -124,6 +129,12 @@ final class TaskShow extends Component
         $this->dispatch('toast', type: 'success', title: __('tasks.escalated_ok'));
     }
 
+    public function revealCallback(CallbackService $callbacks): void
+    {
+        $request = CallbackRequest::query()->where('task_id', $this->task->id)->firstOrFail();
+        $this->callbackPhone = $callbacks->reveal($request, $this->actor());
+    }
+
     public function render(TaskService $tasks, AssignableUsers $assignable): View
     {
         $actor = $this->actor();
@@ -137,6 +148,7 @@ final class TaskShow extends Component
 
         return view('livewire.workspace.tasks.task-show', [
             'timeline' => $timeline,
+            'callback' => CallbackRequest::query()->where('task_id', $task->id)->first(),
             'evidenceFiles' => $task->evidence()->with('user:id,name')->latest('id')->get(),
             'canManage' => $canManage,
             'canWork' => $tasks->canWork($task, $actor),

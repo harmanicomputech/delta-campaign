@@ -12,6 +12,9 @@ use App\Services\Authentication\DeviceAwareSessionHandler;
 use App\Services\Sms\Contracts\SmsGateway;
 use App\Services\Sms\Drivers\AfricasTalkingSmsGateway;
 use App\Services\Sms\Drivers\OutboxSmsGateway;
+use App\Services\Ussd\Contracts\UssdProvider;
+use App\Services\Ussd\Providers\AfricasTalkingUssdProvider;
+use App\Services\Ussd\UssdSessionStore;
 use App\Support\Crypto\Keys;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;
@@ -38,6 +41,9 @@ class AppServiceProvider extends ServiceProvider
             ),
             default => new OutboxSmsGateway,
         });
+
+        $this->app->bind(UssdProvider::class, AfricasTalkingUssdProvider::class);
+        $this->app->singleton(UssdSessionStore::class, fn (): UssdSessionStore => new UssdSessionStore('ussd'));
     }
 
     public function boot(): void
@@ -123,6 +129,8 @@ class AppServiceProvider extends ServiceProvider
             Limit::perMinute(6)->by('verify-session:'.$request->session()->getId()),
         ]);
         // Offline sync batches: generous for field use, bounded per person.
+        // Provider callbacks (USSD target: 200 requests/second across the gateway's addresses).
+        RateLimiter::for('webhooks', fn (Request $request) => Limit::perMinute(12000)->by($request->ip()));
         RateLimiter::for('sync', fn (Request $request) => Limit::perMinute(30)->by((string) ($request->user()?->id ?? $request->ip())));
         RateLimiter::for('sensitive', fn (Request $request): Limit => Limit::perMinute(30)->by('sensitive:'.($request->user()?->getAuthIdentifier() ?? $request->ip())));
     }

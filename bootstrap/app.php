@@ -24,6 +24,8 @@ return Application::configure(basePath: dirname(__DIR__))
             Route::get('/health', HealthController::class)
                 ->middleware('throttle:health')
                 ->name('health');
+
+            Route::group([], base_path('routes/webhooks.php'));
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {

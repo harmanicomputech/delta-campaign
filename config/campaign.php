@@ -105,6 +105,21 @@ return [
 
     'sms' => [
         'driver' => env('SMS_DRIVER', 'outbox'),
+        // Shown in replies ("Reply STOP to …"); the provider short code or long number.
+        'reply_number' => env('SMS_REPLY_NUMBER'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | USSD
+    |--------------------------------------------------------------------------
+    | Screens are limited to 182 characters (tested). Session state is kept in
+    | the cache (Redis), encrypted, for session_ttl seconds.
+    */
+    'ussd' => [
+        'name' => env('USSD_DISPLAY_NAME', 'Campaign'),
+        'session_ttl' => (int) env('USSD_SESSION_TTL', 300),
+        'max_screen' => 182,
     ],
 
     /*

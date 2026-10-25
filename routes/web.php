@@ -34,6 +34,7 @@ use App\Livewire\Workspace\Training\TrainingIndex;
 use App\Livewire\Workspace\Training\TrainingModuleShow;
 use App\Livewire\Workspace\Users\UserShow;
 use App\Livewire\Workspace\Users\UsersIndex;
+use App\Livewire\Workspace\Ussd\UssdSimulator;
 use App\Livewire\Workspace\Volunteers\VolunteerShow;
 use App\Livewire\Workspace\Volunteers\VolunteersIndex;
 use Illuminate\Support\Facades\Route;
@@ -115,6 +116,7 @@ Route::middleware('workspace')->prefix('workspace')->name('workspace.')->group(f
     Route::get('/tasks/{task}', TaskShow::class)->name('tasks.show');
     Route::get('/tasks/{task}/evidence/{evidence:uuid}', TaskEvidenceController::class)->middleware('throttle:sensitive')->name('tasks.evidence');
     Route::get('/notifications', NotificationsIndex::class)->name('notifications');
+    Route::get('/ussd-simulator', UssdSimulator::class)->middleware('can:ussd.simulate')->name('ussd-simulator');
 
     Route::get('/exports', ExportsIndex::class)->name('exports.index');
     Route::get('/exports/{export}/download', ExportDownloadController::class)->middleware(['signed', 'pin.confirm', 'throttle:sensitive'])->name('exports.download');
