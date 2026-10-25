@@ -42,13 +42,22 @@ Useful pages in local/staging (never served in production):
 
 | URL | What it is |
 | --- | --- |
-| `/` | Public holding page (full public site: Phase 10) |
+| `/` | Public website |
+| `/login` | Staff sign-in (phone + one-time code; codes appear in the developer outbox) |
+| `/workspace` | Staff workspace |
 | `/design-system` | Component and token reference with live examples |
-| `/design-system/shell` | Workspace dashboard shell with live system status |
-| `/design-system/auth/sign-in` | Sign-in screen design (functional in Phase 3) |
-| `/health` | JSON readiness probe (database, PostGIS, Redis, cache, queue) |
+| `/design-system/outbox` | Developer SMS outbox (sign-in codes and all outgoing SMS when `SMS_DRIVER=outbox`) |
+| `/health` | JSON readiness probe (database, PostGIS, Redis, cache, Horizon, scheduler, SMS) |
 | `/up` | Liveness probe |
-| `/ops/horizon` | Horizon dashboard (local only until Phase 3 permissions) |
+| `/horizon` | Horizon dashboard (`system.horizon` permission) |
+
+Sample data for trying everything (never in production):
+
+```bash
+php artisan db:seed --class=SampleDataSeeder
+php artisan campaign:create-admin 08030000001 "Your Name"
+php artisan schedule:work       # scheduled jobs (separate terminal)
+```
 
 ### Docker
 
