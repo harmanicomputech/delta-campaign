@@ -226,9 +226,28 @@ privacy notice is published once the real time is past noon; they now use the ne
 
 **Limitations.** Offline election reporting uses the SMS fallback rather than the PWA queue.
 
-## Phase 12 — Security, performance and launch readiness ☐
+## Phase 12 — Security, performance and launch readiness ☑
 
-*Dependency:* install `larastan/larastan` for static analysis.
+Completed 2026-10-25. Assessment: `docs/LAUNCH_READINESS.md`. **A tested production deployment candidate.
+Launch is blocked on campaign-supplied content and accounts, external reviews, staging load tests and
+the pilot.**
 
-- k6 load tests against the brief's targets; security and accessibility reviews
-- Backup/restore tests, monitoring, deployment hardening, runbook, pilot, launch assessment
+- ☑ Load tests (`docs/LOAD_TESTING.md`):
+  - USSD sustained 200 requests/s with p95 11 ms and no errors (ceiling about 460/s on 4 vCPU);
+  - sync service 37 ms per 10-item batch;
+  - public pages 126–156 requests/s per 4 vCPU, so a cache or replicas are needed for 5,000 visitors;
+  - k6 scripts for staging in `tests/Load/`.
+- ☑ Security review (`docs/SECURITY_REVIEW.md`):
+  - route-protection tests (every workspace, API and webhook route);
+  - XSS and SQL review;
+  - dependency audits clean;
+  - fixed: webhook limit equal to the USSD target, 403 disclosures (now 404), upload limit below the evidence limit, nginx robots.txt.
+- ☑ Accessibility: axe-core WCAG 2.1 AA on 46 pages × light/dark themes. Contrast, link-name and ARIA findings fixed; 0 violations remain (`tests/Browser/accessibility.cjs`).
+- ☑ Integration tests: USSD registration → campaign → STOP; agent SMS reports → photo → verification → official comparison → evidence pack, with the audit chain intact.
+- ☑ Backup and restore: `scripts/ops/backup.sh` (age-encrypted, checksummed, pruned), `restore.sh` (never overwrites), `restore-test.sh`. Test passed: 67 tables match and the audit chain verifies.
+- ☑ Monitoring: `/health` adds a scheduler heartbeat and the SMS circuit breaker.
+- ☑ Deployment hardening: `campaign:launch-check` covers about 35 configuration, secret, content, data and health checks and never prints secret values; added a hardening checklist; `.env.example` completed.
+- ☑ Operational runbook (`docs/RUNBOOK.md`): daily checks, releases and freeze, restores, incident playbooks (including the NDPA 72-hour breach notification), election-day timeline, key management.
+- ☑ Pilot plan and launch assessment (`docs/LAUNCH_READINESS.md`). The pilot itself must be run by the campaign.
+- ☐ Larastan static analysis: still blocked here (GitHub downloads); add it in CI.
+- ☐ Independent penetration test, staging load tests at full scale, and the pilot: these need the campaign's infrastructure and people.

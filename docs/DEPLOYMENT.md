@@ -1,7 +1,6 @@
 # Deployment
 
-> Phase 1 establishes the image and stack. Hardening, backups, restore tests, monitoring and the
-> operational runbook are delivered in Phase 12.
+> Operations are covered in `docs/RUNBOOK.md`, and launch status in `docs/LAUNCH_READINESS.md`.
 
 ## Image
 
@@ -46,10 +45,10 @@ detection are correct.
 
 1. CI green on `main` (style, tests, audits, image build).
 2. Build and push the image tagged with the commit SHA.
-3. **Back up the database** (procedure and restore test: Phase 12).
+3. **Back up** with `scripts/ops/backup.sh` (see `docs/RUNBOOK.md`; the restore test is `scripts/ops/restore-test.sh`).
 4. Run migrations once, as a one-off task: `php artisan migrate --force`.
 5. Roll out `web`, then `horizon` (`php artisan horizon:terminate` lets workers finish), then `scheduler`.
-6. Confirm `GET /health` returns `"status":"ok"`.
+6. Confirm `GET /health` returns `"status":"ok"`. Before go-live and after configuration changes, `php artisan campaign:launch-check` must report no blockers.
 
 ## Rollback
 
@@ -63,4 +62,21 @@ detection are correct.
 | Endpoint | Purpose | Response |
 | --- | --- | --- |
 | `GET /up` | Liveness (framework boots) | 200 |
-| `GET /health` | Readiness: database, PostGIS, Redis, cache, Horizon | 200 `ok`/`degraded`, 503 `failed`; JSON, no internal details, no session |
+| `GET /health` | Readiness: database, PostGIS, Redis, cache, Horizon, scheduler heartbeat, SMS circuit breaker | 200 `ok`/`degraded`, 503 `failed`; JSON, no internal details, no session |
+
+## Hardening checklist
+
+`php artisan campaign:launch-check` verifies most of these:
+
+- `APP_ENV=production` and `APP_DEBUG=false` (boot fails otherwise); HTTPS `APP_URL`;
+  `SESSION_SECURE_COOKIE=true`; `SECURITY_HSTS_ENABLED=true`; `DB_SSLMODE=require`.
+- `LOG_CHANNEL=json`, shipped to the log platform. Uptime monitor on `/health` (alert on 503, or on
+  `degraded` lasting more than 10 minutes).
+- Secrets in the platform's secret manager, never in the image. Strong webhook secret (32+ characters).
+- `EVIDENCE_DISK` and `EXPORTS_DISK` on private storage (S3-compatible, with versioning and object lock if
+  available).
+- `TRUSTED_PROXIES` set to the load balancer.
+- `WEBHOOK_RATE_PER_MINUTE` sized above peak USSD traffic.
+- One `scheduler` replica. Size `web` and `horizon` from `docs/LOAD_TESTING.md`.
+- nginx accepts 25 MB uploads (`client_max_body_size`); PHP `upload_max_filesize=20M`; evidence limit
+  `EVIDENCE_MAX_KB=15360`.

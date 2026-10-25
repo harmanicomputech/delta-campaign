@@ -33,7 +33,7 @@ final class EvidenceFileController extends Controller
         $allowed = ($user->hasPermission('evidence.view') && $inScope)
             || ($subject instanceof Incident && $incidents->canManage($subject, $user))
             || $evidence->uploaded_by === $user->id;
-        abort_unless($allowed, 403);
+        abort_unless($allowed, 404); // Not revealed outside the viewer's area.
 
         $audit->record('evidence.accessed', $subject, null, ['evidence' => $evidence->uuid, 'sha256' => $evidence->sha256], $user);
 

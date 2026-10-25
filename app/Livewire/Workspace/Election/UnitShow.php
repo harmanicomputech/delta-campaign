@@ -67,7 +67,7 @@ final class UnitShow extends Component
         $user = $this->actor();
         $allowed = collect(['polling-agents.view', 'incidents.view', 'results.view'])
             ->contains(fn ($p) => $user->hasPermission($p) && $user->geoScope($p)->contains($unit->senatorial_district_id, $unit->lga_id, $unit->ward_id, $unit->id));
-        abort_unless($allowed, 403);
+        abort_unless($allowed, 404);
         $this->unit = $unit;
     }
 

@@ -34,7 +34,7 @@ final class EventShow extends Component
     public function mount(CampaignEvent $event): void
     {
         $user = $this->actor();
-        abort_unless($event->lga_id === null || $event->isWithin($user->geoScope('events.view')), 403);
+        abort_unless($event->lga_id === null || $event->isWithin($user->geoScope('events.view')), 404); // Out of scope: do not reveal that it exists.
         $this->event = $event;
     }
 

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Services\Health;
 
+use App\Enums\ConsentChannel;
 use App\Enums\HealthStatus;
+use App\Services\Messaging\ProviderHealth;
 use Closure;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -57,7 +59,45 @@ final class HealthChecker
                 return 'Store: '.config('cache.default');
             }),
             $this->queueCheck(),
+            $this->schedulerCheck(),
+            $this->smsCheck(),
         ];
+    }
+
+    /** Key the scheduler refreshes every minute (routes/console.php). */
+    public const string SCHEDULER_HEARTBEAT = 'health:scheduler-heartbeat';
+
+    /**
+     * Scheduled work (sending, publishing, retention) stops silently if the
+     * scheduler dies, so a stale heartbeat degrades readiness.
+     */
+    private function schedulerCheck(): CheckResult
+    {
+        $started = hrtime(true);
+        $beat = Cache::get(self::SCHEDULER_HEARTBEAT);
+        $age = is_int($beat) ? now()->getTimestamp() - $beat : null;
+
+        return match (true) {
+            $age === null => new CheckResult('scheduler', HealthStatus::Degraded, $this->elapsed($started), 'No scheduler heartbeat yet'),
+            $age > 180 => new CheckResult('scheduler', HealthStatus::Degraded, $this->elapsed($started), 'Last heartbeat '.$age.'s ago'),
+            default => new CheckResult('scheduler', HealthStatus::Ok, $this->elapsed($started), 'Heartbeat '.$age.'s ago'),
+        };
+    }
+
+    /** An open SMS circuit breaker means messages are being held, not lost. */
+    private function smsCheck(): CheckResult
+    {
+        $started = hrtime(true);
+
+        try {
+            $tripped = app(ProviderHealth::class)->trippedFor(ConsentChannel::Sms);
+        } catch (Throwable $exception) {
+            return new CheckResult('sms', HealthStatus::Degraded, $this->elapsed($started), class_basename($exception));
+        }
+
+        return $tripped > 0
+            ? new CheckResult('sms', HealthStatus::Degraded, $this->elapsed($started), 'Provider paused for '.$tripped.'s after failures')
+            : new CheckResult('sms', HealthStatus::Ok, $this->elapsed($started), 'Driver: '.config('campaign.sms.driver'));
     }
 
     /**

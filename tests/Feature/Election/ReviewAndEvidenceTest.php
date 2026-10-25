@@ -127,7 +127,7 @@ final class ReviewAndEvidenceTest extends ElectionTestCase
         $this->assertDatabaseHas('audit_logs', ['action' => 'evidence.accessed']);
 
         $outsider = User::factory()->withRole('lga_coordinator', $this->lga('warri-south')->id)->create();
-        $this->signIn($outsider)->get(route('workspace.election.evidence', $file))->assertForbidden();
+        $this->signIn($outsider)->get(route('workspace.election.evidence', $file))->assertNotFound();
     }
 
     public function test_incident_workflow_is_limited_to_the_area(): void
@@ -168,7 +168,7 @@ final class ReviewAndEvidenceTest extends ElectionTestCase
 
         $url = URL::temporarySignedRoute('workspace.election.packs.download', now()->addMinutes(5), $pack);
         $this->signIn($this->director)->get($url)->assertOk();
-        $this->signIn(User::factory()->withRole('super_admin')->withTwoFactor()->create())->get($url)->assertForbidden();
+        $this->signIn(User::factory()->withRole('super_admin')->withTwoFactor()->create())->get($url)->assertNotFound();
     }
 
     public function test_evidence_packs_are_limited_to_the_requesters_area(): void

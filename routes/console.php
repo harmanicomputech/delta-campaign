@@ -1,6 +1,8 @@
 <?php
 
 use App\Services\Exports\SupporterExportService;
+use App\Services\Health\HealthChecker;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schedule;
 
 /*
@@ -27,6 +29,9 @@ Schedule::command('content:publish-due')->everyMinute()->onOneServer()->withoutO
 
 // Election day
 Schedule::command('evidence:verify')->dailyAt('04:15')->onOneServer()->withoutOverlapping();
+
+// Monitoring: /health reports the scheduler as degraded when this stops.
+Schedule::call(fn () => Cache::put(HealthChecker::SCHEDULER_HEARTBEAT, now()->getTimestamp(), 600))->everyMinute()->name('health:heartbeat');
 
 // Queues
 Schedule::command('horizon:snapshot')->everyFiveMinutes();

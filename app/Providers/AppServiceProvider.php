@@ -136,7 +136,8 @@ class AppServiceProvider extends ServiceProvider
         ]);
         // Offline sync batches: generous for field use, bounded per person.
         // Provider callbacks (USSD target: 200 requests/second across the gateway's addresses).
-        RateLimiter::for('webhooks', fn (Request $request) => Limit::perMinute(12000)->by($request->ip()));
+        // Provider callbacks arrive from a few addresses; the limit leaves headroom above the 200/s USSD target.
+        RateLimiter::for('webhooks', fn (Request $request) => Limit::perMinute((int) config('campaign.ussd.webhook_rate_per_minute'))->by($request->ip()));
         RateLimiter::for('sync', fn (Request $request) => Limit::perMinute(30)->by((string) ($request->user()?->id ?? $request->ip())));
         RateLimiter::for('sensitive', fn (Request $request): Limit => Limit::perMinute(30)->by('sensitive:'.($request->user()?->getAuthIdentifier() ?? $request->ip())));
         // Evidence thumbnails load several at once on review screens; still capped per person.

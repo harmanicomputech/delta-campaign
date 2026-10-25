@@ -67,7 +67,12 @@ See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 php artisan test          # PHPUnit on PostgreSQL (database: campaign_test)
 vendor/bin/pint --test    # code style
 composer audit && npm audit
+php artisan campaign:launch-check            # configuration, content, data and health before go-live
+node tests/Browser/accessibility.cjs         # axe-core WCAG 2.1 AA scan (needs a dev server with sample data)
 ```
+
+Load tests (k6, for staging) are in `tests/Load/`; measured results are in
+[`docs/LOAD_TESTING.md`](docs/LOAD_TESTING.md).
 
 CI (`.github/workflows/ci.yml`) runs style, tests on PHP 8.3 and 8.4 against PostGIS and Redis services,
 dependency audits and a Docker image build.
@@ -76,6 +81,12 @@ dependency audits and a Docker image build.
 
 Every environment variable is documented in [`.env.example`](.env.example). Variables for later phases
 (Africa's Talking, WhatsApp, Reverb, data-protection keys) are listed there commented out.
+
+## Operations
+
+- [`docs/RUNBOOK.md`](docs/RUNBOOK.md) — day-to-day operations, incidents, backups and restores, election day
+- [`docs/LAUNCH_READINESS.md`](docs/LAUNCH_READINESS.md) — what is done, what blocks launch, the pilot plan
+- [`docs/SECURITY_REVIEW.md`](docs/SECURITY_REVIEW.md) — Phase 12 security and accessibility review
 
 ## Content and data rules
 

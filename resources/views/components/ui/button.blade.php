@@ -22,7 +22,7 @@
         'secondary' => 'border border-line-strong bg-surface text-fg shadow-xs hover:bg-surface-hover hover:border-ink-400 dark:hover:border-white/25',
         'soft' => 'bg-primary-soft text-primary-soft-fg hover:bg-primary-soft/70 dark:hover:bg-primary-soft/80',
         'ghost' => 'text-muted hover:bg-surface-sunken hover:text-fg',
-        'danger' => 'bg-danger text-white shadow-sm hover:bg-danger-hover',
+        'danger' => 'bg-danger text-on-danger shadow-sm hover:bg-danger-hover',
     ];
 
     $sizes = $square

@@ -19,7 +19,7 @@ final class EvidencePackDownloadController extends Controller
     {
         $user = $request->user();
         assert($user instanceof User);
-        abort_unless($pack->requested_by === $user->id && $user->hasPermission('evidence.export'), 403);
+        abort_unless($pack->requested_by === $user->id && $user->hasPermission('evidence.export'), 404);
         abort_unless($pack->status === 'ready' && $pack->path !== null, 404);
 
         $packs->recordDownload($pack, $user);

@@ -25,7 +25,7 @@
                 <button type="button" class="-ml-1.5 rounded-md p-2 text-muted hover:bg-surface-sunken hover:text-fg lg:hidden" x-on:click="$store.sidebar.mobileOpen = true">
                     <x-icon name="menu" class="size-5" /><span class="sr-only">{{ __('ui.open_navigation') }}</span>
                 </button>
-                <a href="{{ $home }}" class="min-w-0 lg:hidden"><x-shell.brand compact /></a>
+                <a href="{{ $home }}" class="min-w-0 lg:hidden" aria-label="{{ config('app.name') }}"><x-shell.brand compact /></a>
 
                 <div class="hidden min-w-0 flex-1 lg:block">
                     @if ($breadcrumbs) <x-ui.breadcrumbs :items="$breadcrumbs" /> @endif

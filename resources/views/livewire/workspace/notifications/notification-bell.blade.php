@@ -4,7 +4,7 @@
         <x-icon name="bell" class="size-[1.125rem]" />
         <span class="sr-only">{{ trans_choice('notifications.unread_count', $unread, ['count' => $unread]) }}</span>
         @if ($unread > 0)
-            <span class="absolute top-1 right-1 flex min-w-4 items-center justify-center rounded-full bg-danger px-1 text-[0.625rem] leading-4 font-semibold text-white tabular-nums" aria-hidden="true">{{ $unread > 9 ? '9+' : $unread }}</span>
+            <span class="absolute top-1 right-1 flex min-w-4 items-center justify-center rounded-full bg-danger px-1 text-[0.625rem] leading-4 font-semibold text-on-danger tabular-nums" aria-hidden="true">{{ $unread > 9 ? '9+' : $unread }}</span>
         @endif
     </button>
     <div x-show="open" x-cloak x-anchor.bottom-end.offset.6="$refs.trigger" x-on:click.outside="open = false"

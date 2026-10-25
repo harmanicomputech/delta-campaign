@@ -3,7 +3,7 @@
         <x-slot:header>
             <div class="w-full space-y-2"><x-ui.skeleton class="h-4 w-32" /><x-ui.skeleton class="h-3 w-56" /></div>
         </x-slot:header>
-        <div class="divide-y divide-line" aria-busy="true" aria-label="{{ __('ui.loading') }}">
+        <div class="divide-y divide-line" role="status" aria-busy="true" aria-label="{{ __('ui.loading') }}">
             @for ($i = 0; $i < 5; $i++)
                 <div class="flex items-center gap-4 px-5 py-3.5">
                     <x-ui.skeleton class="size-8 rounded-lg" />

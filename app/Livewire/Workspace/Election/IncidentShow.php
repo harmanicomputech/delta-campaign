@@ -33,7 +33,7 @@ final class IncidentShow extends Component
 
     public function mount(Incident $incident, IncidentService $incidents): void
     {
-        abort_unless($incidents->canView($incident, $this->actor()), 403);
+        abort_unless($incidents->canView($incident, $this->actor()), 404);
         $this->incident = $incident;
     }
 

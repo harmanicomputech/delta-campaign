@@ -108,13 +108,14 @@
     --c-line-strong: var(--color-ink-300);
     --c-fg: var(--color-ink-900);
     --c-muted: var(--color-ink-600);
-    --c-subtle: var(--color-ink-500);
+    --c-subtle: #5f6964; /* 4.9:1 on sunken surfaces (WCAG AA) */
 
     --c-primary: var(--color-brand-600);
     --c-primary-hover: var(--color-brand-700);
     --c-primary-soft: var(--color-brand-50);
     --c-primary-soft-fg: var(--color-brand-800);
     --c-on-primary: #ffffff;
+    --c-on-danger: #ffffff;
     --c-ring: var(--color-brand-500);
 
     --c-success: #157347;
@@ -159,11 +160,13 @@
     --c-muted: var(--color-ink-300);
     --c-subtle: var(--color-ink-400);
 
-    --c-primary: var(--color-brand-500);
-    --c-primary-hover: var(--color-brand-400);
+    /* Lighter green in dark mode so it reads as text (6.2:1); fills carry dark text. */
+    --c-primary: var(--color-brand-400);
+    --c-primary-hover: var(--color-brand-300);
     --c-primary-soft: rgb(35 145 95 / 0.14);
     --c-primary-soft-fg: var(--color-brand-200);
-    --c-on-primary: #ffffff;
+    --c-on-primary: #04130c;
+    --c-on-danger: #1a0705;
     --c-ring: var(--color-brand-400);
 
     --c-success: #4cc38a;
@@ -204,6 +207,7 @@
     --color-primary-soft: var(--c-primary-soft);
     --color-primary-soft-fg: var(--c-primary-soft-fg);
     --color-on-primary: var(--c-on-primary);
+    --color-on-danger: var(--c-on-danger);
     --color-ring: var(--c-ring);
 
     --color-success: var(--c-success);

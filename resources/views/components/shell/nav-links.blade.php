@@ -3,7 +3,7 @@
 <nav aria-label="{{ __('ui.main_navigation') }}" class="space-y-6">
     @foreach ($groups as $group)
         <div>
-            <p @class(['mb-1.5 px-3 text-[0.6875rem] font-semibold tracking-[0.08em] text-nav-muted/80 uppercase', 'sidebar-collapsed:hidden' => $collapsible])>{{ $group['label'] }}</p>
+            <p @class(['mb-1.5 px-3 text-[0.6875rem] font-semibold tracking-[0.08em] text-nav-muted uppercase', 'sidebar-collapsed:hidden' => $collapsible])>{{ $group['label'] }}</p>
             @if ($collapsible) <div class="mx-3 mb-2 hidden border-t border-nav-line sidebar-collapsed:block" aria-hidden="true"></div> @endif
             <ul class="space-y-0.5">
                 @foreach ($group['items'] as $item)

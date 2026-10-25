@@ -133,6 +133,8 @@ return [
     ],
 
     'ussd' => [
+        // Per provider IP. 30,000/min = 500/s, 2.5x the 200/s target, so bursts are not rejected.
+        'webhook_rate_per_minute' => (int) env('WEBHOOK_RATE_PER_MINUTE', 30000),
         'name' => env('USSD_DISPLAY_NAME', 'Campaign'),
         'session_ttl' => (int) env('USSD_SESSION_TTL', 300),
         'max_screen' => 182,
