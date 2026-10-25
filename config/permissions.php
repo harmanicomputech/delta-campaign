@@ -81,6 +81,7 @@ return [
             'rapid-response.view' => 'View rapid-response cases',
             'rapid-response.manage' => 'Create and work rapid-response cases',
             'rapid-response.approve' => 'Approve rapid-response publication (incl. legal stage)',
+            'contact.manage' => 'Read and answer messages from the public contact form',
             'ussd.simulate' => 'Use the USSD simulator',
         ],
         'election' => [
@@ -142,7 +143,7 @@ return [
                 'users.view', 'users.manage', 'roles.assign', 'supporters.view', 'supporters.create', 'supporters.update',
                 'supporters.verify', 'supporters.export', 'volunteers.view', 'volunteers.manage', 'volunteers.approve',
                 'training.manage', 'tasks.view', 'tasks.manage', 'canvassing.view', 'canvassing.manage', 'events.view',
-                'events.manage', 'messaging.view', 'messaging.create', 'messaging.approve', 'content.view', 'polling-agents.view',
+                'events.manage', 'messaging.view', 'messaging.create', 'messaging.approve', 'content.view', 'contact.manage', 'polling-agents.view',
                 'polling-agents.manage', 'incidents.view', 'incidents.manage', 'results.view', 'results.verify', 'evidence.view',
                 'evidence.export', 'ussd.simulate',
             ],
@@ -204,7 +205,7 @@ return [
             'scope_level' => 'state',
             'privileged' => false,
             'description' => 'Drafts public content and project records.',
-            'permissions' => ['dashboard.view', 'content.view', 'content.create', 'projects.manage', 'events.view', 'events.manage', 'geography.view'],
+            'permissions' => ['dashboard.view', 'content.view', 'content.create', 'projects.manage', 'events.view', 'events.manage', 'contact.manage', 'geography.view'],
         ],
         'rapid_response' => [
             'name' => 'Rapid-response officer',

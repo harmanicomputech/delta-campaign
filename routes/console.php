@@ -22,5 +22,8 @@ Schedule::command('tasks:process-overdue')->hourlyAt(7)->onOneServer()->withoutO
 // Messaging
 Schedule::command('messaging:tick')->everyMinute()->onOneServer()->withoutOverlapping();
 
+// Public website
+Schedule::command('content:publish-due')->everyMinute()->onOneServer()->withoutOverlapping();
+
 // Queues
 Schedule::command('horizon:snapshot')->everyFiveMinutes();

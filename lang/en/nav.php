@@ -22,6 +22,7 @@ return [
     'messaging' => 'Messaging',
     'content' => 'Content',
     'rapid_response' => 'Rapid response',
+    'contact_inbox' => 'Contact inbox',
     'ussd_simulator' => 'USSD simulator',
     'incidents' => 'Incidents',
     'results' => 'Result documents',

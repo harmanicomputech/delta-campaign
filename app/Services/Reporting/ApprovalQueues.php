@@ -4,15 +4,21 @@ declare(strict_types=1);
 
 namespace App\Services\Reporting;
 
+use App\Enums\CaseStatus;
+use App\Enums\ContentStatus;
 use App\Enums\DsrStatus;
 use App\Enums\ImportStatus;
+use App\Enums\ProjectStatus;
 use App\Enums\QualityFlag;
 use App\Enums\VerificationStatus;
 use App\Enums\VolunteerStatus;
 use App\Models\ContactAttempt;
+use App\Models\ContentItem;
 use App\Models\DataSubjectRequest;
 use App\Models\ImportJob;
 use App\Models\MessageCampaign;
+use App\Models\Project;
+use App\Models\RapidResponseCase;
 use App\Models\Supporter;
 use App\Models\Task;
 use App\Models\User;
@@ -21,7 +27,7 @@ use App\Services\Messaging\CampaignService;
 
 /**
  * Everything waiting for a decision by this person, limited to their
- * permissions and area. Later phases add message, content and result queues.
+ * permissions and area. Reviewers never see their own work in a queue.
  */
 final class ApprovalQueues
 {
@@ -98,6 +104,39 @@ final class ApprovalQueues
                     'meta' => $c->creator?->name.' · '.trans_choice('messaging.recipients_count', $c->estimated_recipients, ['count' => number_format($c->estimated_recipients)]).' · ₦'.number_format((float) $c->estimated_cost, 2),
                     'url' => route('workspace.messaging.show', $c),
                     'urgent' => $c->scheduled_at !== null && $c->scheduled_at->lt(now()->addHours(6)),
+                ])->all());
+        }
+
+        if ($user->can('content.review')) {
+            $query = ContentItem::query()->where('status', ContentStatus::InReview)->where('created_by', '!=', $user->id);
+            $queues[] = $this->queue('content', __('approvals.content'), 'newspaper', (clone $query)->count(), route('workspace.content.index', ['status' => ContentStatus::InReview->value, 'type' => (clone $query)->oldest('updated_at')->value('type') ?? 'news']),
+                $query->with('creator:id,name')->oldest('updated_at')->limit($items)->get()->map(fn (ContentItem $c) => [
+                    'title' => $c->title_en,
+                    'meta' => $c->type->label().' · '.$c->creator?->name,
+                    'url' => route('workspace.content.show', $c),
+                    'urgent' => $c->updated_at->lt(now()->subDay()),
+                ])->all());
+        }
+
+        if ($user->can('projects.approve')) {
+            $query = Project::query()->where('status', ProjectStatus::InReview)->where('created_by', '!=', $user->id);
+            $queues[] = $this->queue('projects', __('approvals.projects'), 'building-2', (clone $query)->count(), route('workspace.projects.index', ['status' => ProjectStatus::InReview->value]),
+                $query->with('creator:id,name')->oldest('updated_at')->limit($items)->get()->map(fn (Project $p) => [
+                    'title' => $p->title,
+                    'meta' => __('projects.category_'.$p->category).' · '.$p->creator?->name,
+                    'url' => route('workspace.projects.show', $p),
+                    'urgent' => false,
+                ])->all());
+        }
+
+        if ($user->can('rapid-response.approve')) {
+            $query = RapidResponseCase::query()->whereIn('status', [CaseStatus::LegalReview, CaseStatus::AwaitingApproval])->where('created_by', '!=', $user->id);
+            $queues[] = $this->queue('rapid', __('approvals.rapid'), 'siren', (clone $query)->count(), route('workspace.rapid-response.index'),
+                $query->orderByRaw('deadline_at asc nulls last')->limit($items)->get()->map(fn (RapidResponseCase $c) => [
+                    'title' => $c->reference.' · '.$c->title,
+                    'meta' => $c->status->label().($c->deadline_at ? ' · '.__('approvals.due', ['date' => $c->deadline_at->timezone($tz)->format('j M, H:i')]) : ''),
+                    'url' => route('workspace.rapid-response.show', $c),
+                    'urgent' => $c->isOverdue() || ($c->deadline_at !== null && $c->deadline_at->lt(now()->addHours(2))),
                 ])->all());
         }
 

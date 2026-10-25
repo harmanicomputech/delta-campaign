@@ -185,10 +185,25 @@ Completed 2026-10-25. Details: `docs/MESSAGING.md`.
 - ☑ Monthly spending limit and cost tracking; provider health tab
 - ☑ Tests: 337 passing; browser-verified templates, editor estimate, approval and send via Horizon, campaign results
 
-## Phase 10 — Public website and CMS ☐
+## Phase 10 — Public website and CMS ☑
 
-- All 15 public pages, English/Pidgin, SEO, sitemap, social metadata, accessible forms, anti-spam
-- CMS workflow with preview, scheduling, versions
+Completed 2026-10-25. Details: `docs/PUBLIC_SITE.md`.
+
+- ☑ Public pages: home, about, manifesto, projects (list and record), LGAs (list and page), news, fact-checks, events (list, page, ticket), register, volunteer, polling-unit lookup, contact, privacy notice, message preferences; English and Pidgin (Pidgin draft pending native review)
+- ☑ SEO: per-page title, description, canonical URL, Open Graph / Twitter cards, JSON-LD, dynamic sitemap, RSS feed for news; robots.txt blocks everything outside production
+- ☑ Forms (Livewire): one-time-code phone verification, honeypot, minimum fill time, per-IP rate limits; no third-party captcha or trackers
+- ☑ CMS (pages, news, fact-checks): draft → review by someone other than the author → approve → publish now or schedule (`content:publish-due` every minute) → withdraw / archive; versions with restore; the live site serves the approved snapshot while edits are reviewed
+- ☑ Media: images re-encoded to WebP at three widths (removes EXIF/location data), alt text in both languages
+- ☑ Project directory: every record needs a source and a verification status; two-person approval; edits take a record off the site until re-approved
+- ☑ Events: area-limited organisers, capacity with locking, SMS ticket with an opaque QR token, door check-in (GET never changes data), walk-ins, cancellation SMS to registrants
+- ☑ Rapid response: cases with priority and deadline, assignment, notes, hashed private evidence (audited downloads), verdict and finding, optional legal review, approval (not by the creator) that only creates a draft fact-check for the normal CMS review
+- ☑ Contact inbox (`contact.manage`, new permission): encrypted messages, every opening audited, handled / spam states
+- ☑ Approvals inbox: content, project and rapid-response queues (reviewers never see their own work)
+- ☑ SAMPLE seeder: About/Manifesto stay unpublished placeholders; sample news, fact-check, project, event, case and message are flagged SAMPLE
+- ☑ Tests: 385 passing; browser-verified home, project directory, event registration with OTP → ticket → staff check-in (and repeat scan), contact form → inbox, CMS self-approval block, rapid-response workflow, mobile layouts (no horizontal overflow)
+
+**Changes.** The super-administrator exemption from content self-approval was removed: no one approves
+their own content, project records, rapid-response cases or message campaigns.
 
 ## Phase 11 — Election-day operations ☐
 

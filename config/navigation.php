@@ -44,7 +44,7 @@ return [
         'items' => [
             ['label' => 'nav.tasks', 'icon' => 'list-checks', 'route' => 'workspace.tasks.index', 'phase' => 5, 'permission' => ['tasks.view', 'tasks.work'], 'mobile' => true],
             ['label' => 'nav.canvassing', 'icon' => 'map-pinned', 'route' => 'workspace.canvassing.index', 'phase' => 5, 'permission' => ['canvassing.view', 'canvassing.record'], 'mobile' => true],
-            ['label' => 'nav.events', 'icon' => 'calendar-days', 'route' => null, 'phase' => 10, 'permission' => 'events.view'],
+            ['label' => 'nav.events', 'icon' => 'calendar-days', 'route' => 'workspace.events.index', 'phase' => 10, 'permission' => 'events.view'],
         ],
     ],
 
@@ -52,8 +52,9 @@ return [
         'label' => 'nav.groups.communications',
         'items' => [
             ['label' => 'nav.messaging', 'icon' => 'send', 'route' => 'workspace.messaging.index', 'phase' => 9, 'permission' => 'messaging.view'],
-            ['label' => 'nav.content', 'icon' => 'newspaper', 'route' => null, 'phase' => 10, 'permission' => 'content.view'],
-            ['label' => 'nav.rapid_response', 'icon' => 'siren', 'route' => null, 'phase' => 10, 'permission' => 'rapid-response.view'],
+            ['label' => 'nav.content', 'icon' => 'newspaper', 'route' => 'workspace.content.index', 'phase' => 10, 'permission' => ['content.view', 'projects.manage', 'projects.approve'], 'also' => ['workspace.projects.*']],
+            ['label' => 'nav.rapid_response', 'icon' => 'siren', 'route' => 'workspace.rapid-response.index', 'phase' => 10, 'permission' => 'rapid-response.view'],
+            ['label' => 'nav.contact_inbox', 'icon' => 'inbox', 'route' => 'workspace.contact.index', 'phase' => 10, 'permission' => 'contact.manage'],
             ['label' => 'nav.ussd_simulator', 'icon' => 'smartphone', 'route' => 'workspace.ussd-simulator', 'phase' => 8, 'permission' => 'ussd.simulate'],
         ],
     ],

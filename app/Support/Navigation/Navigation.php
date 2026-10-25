@@ -91,7 +91,8 @@ final class Navigation
             icon: (string) $item['icon'],
             url: $exists ? route($route) : null,
             // An index route also stays highlighted on its detail pages (workspace.tasks.index → workspace.tasks.*).
-            active: $exists && $this->request->routeIs($route, ...(str_ends_with($route, '.index') ? [substr($route, 0, -5).'*'] : [])),
+            // 'also' lists further route patterns that belong to the same section.
+            active: $exists && $this->request->routeIs($route, ...(str_ends_with($route, '.index') ? [substr($route, 0, -5).'*'] : []), ...(array) ($item['also'] ?? [])),
             phase: (int) ($item['phase'] ?? 0),
             mobile: (bool) ($item['mobile'] ?? false),
         );

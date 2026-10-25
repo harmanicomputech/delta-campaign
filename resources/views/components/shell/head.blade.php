@@ -6,7 +6,7 @@
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#052418">
 @if ($description) <meta name="description" content="{{ $description }}"> @endif
-<title>{{ $title ? $title.' · ' : '' }}{{ config('app.name') }}</title>
+<title>{{ $title && $title !== config('app.name') ? $title.' · ' : '' }}{{ config('app.name') }}</title>
 <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
 <link rel="manifest" href="{{ route('pwa.manifest') }}">
 <link rel="apple-touch-icon" href="{{ asset('icons/apple-touch-icon.png') }}">

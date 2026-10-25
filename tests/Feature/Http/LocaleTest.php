@@ -18,7 +18,7 @@ final class LocaleTest extends TestCase
             ->assertSessionHas('locale', 'pcm')
             ->assertCookie(SetLocale::COOKIE, 'pcm');
 
-        $this->get('/')->assertSee('lang="pcm"', false)->assertSee(__('public.holding_title', [], 'pcm'));
+        $this->get('/')->assertSee('lang="pcm"', false)->assertSee(__('public.nav_contact', [], 'pcm'));
     }
 
     public function test_unsupported_locales_are_rejected(): void

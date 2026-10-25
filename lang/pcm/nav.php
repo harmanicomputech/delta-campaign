@@ -24,6 +24,7 @@ return [
     'messaging' => 'Send message',
     'content' => 'Content',
     'rapid_response' => 'Quick response',
+    'contact_inbox' => 'Message box',
     'ussd_simulator' => 'USSD simulator',
     'incidents' => 'Wahala report',
     'results' => 'Result papers',

@@ -8,21 +8,21 @@ use Tests\TestCase;
 
 final class PublicPagesTest extends TestCase
 {
-    public function test_holding_page_renders_and_is_indexable(): void
+    public function test_home_page_renders_and_is_indexable(): void
     {
         $this->get('/')
             ->assertOk()
             ->assertSee('<meta name="robots" content="index, follow">', false)
             ->assertSee('<meta name="description"', false)
-            ->assertSee(__('public.holding_title'));
+            ->assertSee(__('public.cta_join'));
     }
 
-    public function test_holding_page_marks_unsupplied_candidate_content_as_placeholder(): void
+    public function test_home_page_marks_unsupplied_candidate_content_as_placeholder(): void
     {
-        $this->get('/')->assertSee('[PLACEHOLDER: approved candidate introduction]');
+        $this->get('/')->assertSee('[PLACEHOLDER: candidate name]');
     }
 
-    public function test_holding_page_has_a_skip_link_and_landmarks(): void
+    public function test_home_page_has_a_skip_link_and_landmarks(): void
     {
         $this->get('/')
             ->assertSee('href="#main"', false)

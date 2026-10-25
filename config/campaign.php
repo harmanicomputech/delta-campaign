@@ -116,6 +116,22 @@ return [
     | Screens are limited to 182 characters (tested). Session state is kept in
     | the cache (Redis), encrypted, for session_ttl seconds.
     */
+    /*
+    | Public website identity. Use only approved wording; the defaults are
+    | visible placeholders so nothing is ever invented.
+    */
+    'public' => [
+        'candidate_name' => env('PUBLIC_CANDIDATE_NAME', '[PLACEHOLDER: candidate name]'),
+        'office' => env('PUBLIC_OFFICE', '[PLACEHOLDER: office sought]'),
+        'tagline' => env('PUBLIC_TAGLINE', '[PLACEHOLDER: approved campaign message]'),
+        'contact_email' => env('PUBLIC_CONTACT_EMAIL'),
+    ],
+
+    // Public images (resized, metadata stripped). Must be a publicly readable disk.
+    'media' => [
+        'disk' => env('MEDIA_DISK', 'public'),
+    ],
+
     'ussd' => [
         'name' => env('USSD_DISPLAY_NAME', 'Campaign'),
         'session_ttl' => (int) env('USSD_SESSION_TTL', 300),
