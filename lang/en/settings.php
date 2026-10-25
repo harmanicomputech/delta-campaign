@@ -4,6 +4,7 @@ return [
     'title' => 'Settings',
     'intro' => 'Platform settings that authorised staff can change. Every change is recorded in the audit log.',
     'group_privacy' => 'Data protection',
+    'group_messaging' => 'Messaging',
     'default' => 'Default: :value',
     'range' => 'allowed :min–:max',
     'on' => 'on',

@@ -19,5 +19,8 @@ Schedule::call(fn () => app(SupporterExportService::class)->prune())->hourly()->
 // Field operations
 Schedule::command('tasks:process-overdue')->hourlyAt(7)->onOneServer()->withoutOverlapping();
 
+// Messaging
+Schedule::command('messaging:tick')->everyMinute()->onOneServer()->withoutOverlapping();
+
 // Queues
 Schedule::command('horizon:snapshot')->everyFiveMinutes();

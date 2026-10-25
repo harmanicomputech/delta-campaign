@@ -15,6 +15,7 @@ return [
     'quality' => 'Contacts to review',
     'tasks' => 'Escalated tasks',
     'dsr' => 'Data-subject requests',
+    'messaging' => 'Message campaigns to approve',
     'imports' => 'Geography imports to confirm',
     'due' => 'due :date',
     'import_rows' => ':valid valid, :invalid invalid rows',

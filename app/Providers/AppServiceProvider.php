@@ -9,6 +9,9 @@ use App\Http\Middleware\EnsureTwoFactorEnrolled;
 use App\Http\Middleware\RequirePinConfirmation;
 use App\Models\User;
 use App\Services\Authentication\DeviceAwareSessionHandler;
+use App\Services\Messaging\Contracts\WhatsAppGateway;
+use App\Services\Messaging\Drivers\CloudApiWhatsAppGateway;
+use App\Services\Messaging\Drivers\OutboxWhatsAppGateway;
 use App\Services\Sms\Contracts\SmsGateway;
 use App\Services\Sms\Drivers\AfricasTalkingSmsGateway;
 use App\Services\Sms\Drivers\OutboxSmsGateway;
@@ -42,6 +45,9 @@ class AppServiceProvider extends ServiceProvider
             default => new OutboxSmsGateway,
         });
 
+        $this->app->singleton(WhatsAppGateway::class, fn (): WhatsAppGateway => config('services.whatsapp.driver') === 'cloud_api'
+            ? new CloudApiWhatsAppGateway((string) config('services.whatsapp.phone_number_id'), (string) config('services.whatsapp.access_token'), (string) config('services.whatsapp.api_version'))
+            : new OutboxWhatsAppGateway);
         $this->app->bind(UssdProvider::class, AfricasTalkingUssdProvider::class);
         $this->app->singleton(UssdSessionStore::class, fn (): UssdSessionStore => new UssdSessionStore('ussd'));
     }

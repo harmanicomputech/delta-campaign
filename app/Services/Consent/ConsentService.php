@@ -65,7 +65,7 @@ final class ConsentService
                 // A fresh, explicit grant lifts an earlier opt-out for that channel. An erasure suppression is
                 // lifted only when the person themselves comes back and consents (never by staff entry);
                 // objections stay until the Data Protection Officer reviews them.
-                $this->suppressions->liftOptOut($phoneHash, $channel, $by, selfService: in_array($source, [RequestChannel::Web, RequestChannel::Ussd, RequestChannel::Sms], true));
+                $this->suppressions->liftOptOut($phoneHash, $channel, $by, selfService: in_array($source, [RequestChannel::Web, RequestChannel::Ussd, RequestChannel::Sms, RequestChannel::Whatsapp], true));
             }
 
             if ($supporter !== null) {

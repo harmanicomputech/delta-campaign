@@ -51,7 +51,7 @@ return [
     [
         'label' => 'nav.groups.communications',
         'items' => [
-            ['label' => 'nav.messaging', 'icon' => 'send', 'route' => null, 'phase' => 9, 'permission' => 'messaging.view'],
+            ['label' => 'nav.messaging', 'icon' => 'send', 'route' => 'workspace.messaging.index', 'phase' => 9, 'permission' => 'messaging.view'],
             ['label' => 'nav.content', 'icon' => 'newspaper', 'route' => null, 'phase' => 10, 'permission' => 'content.view'],
             ['label' => 'nav.rapid_response', 'icon' => 'siren', 'route' => null, 'phase' => 10, 'permission' => 'rapid-response.view'],
             ['label' => 'nav.ussd_simulator', 'icon' => 'smartphone', 'route' => 'workspace.ussd-simulator', 'phase' => 8, 'permission' => 'ussd.simulate'],

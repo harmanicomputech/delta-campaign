@@ -12,10 +12,12 @@ use App\Enums\VolunteerStatus;
 use App\Models\ContactAttempt;
 use App\Models\DataSubjectRequest;
 use App\Models\ImportJob;
+use App\Models\MessageCampaign;
 use App\Models\Supporter;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\Volunteer;
+use App\Services\Messaging\CampaignService;
 
 /**
  * Everything waiting for a decision by this person, limited to their
@@ -83,6 +85,19 @@ final class ApprovalQueues
                     'meta' => __('approvals.due', ['date' => $r->due_at->timezone($tz)->format('j M')]),
                     'url' => route('workspace.privacy.requests.show', $r),
                     'urgent' => $r->due_at->lt(now()->addDays(3)),
+                ])->all());
+        }
+
+        if ($user->can('messaging.approve')) {
+            $campaigns = app(CampaignService::class);
+            $pending = MessageCampaign::query()->where('status', 'pending_approval')->with('creator:id,name')->oldest('submitted_at')->get()
+                ->filter(fn ($c) => $c->created_by !== $user->id && $campaigns->canApproveScope($c, $user))->values();
+            $queues[] = $this->queue('messaging', __('approvals.messaging'), 'send', $pending->count(), route('workspace.messaging.index', ['status' => 'pending_approval']),
+                $pending->take($items)->map(fn ($c) => [
+                    'title' => $c->name,
+                    'meta' => $c->creator?->name.' · '.trans_choice('messaging.recipients_count', $c->estimated_recipients, ['count' => number_format($c->estimated_recipients)]).' · ₦'.number_format((float) $c->estimated_cost, 2),
+                    'url' => route('workspace.messaging.show', $c),
+                    'urgent' => $c->scheduled_at !== null && $c->scheduled_at->lt(now()->addHours(6)),
                 ])->all());
         }
 

@@ -22,6 +22,9 @@ use App\Livewire\Workspace\Exports\ExportsIndex;
 use App\Livewire\Workspace\Geography\GeographyIndex;
 use App\Livewire\Workspace\Geography\ImportShow;
 use App\Livewire\Workspace\Geography\ImportsIndex;
+use App\Livewire\Workspace\Messaging\CampaignEditor;
+use App\Livewire\Workspace\Messaging\CampaignShow;
+use App\Livewire\Workspace\Messaging\MessagingIndex;
 use App\Livewire\Workspace\Notifications\NotificationsIndex;
 use App\Livewire\Workspace\Privacy\PrivacyCentre;
 use App\Livewire\Workspace\Privacy\RequestShow;
@@ -116,6 +119,10 @@ Route::middleware('workspace')->prefix('workspace')->name('workspace.')->group(f
     Route::get('/tasks/{task}', TaskShow::class)->name('tasks.show');
     Route::get('/tasks/{task}/evidence/{evidence:uuid}', TaskEvidenceController::class)->middleware('throttle:sensitive')->name('tasks.evidence');
     Route::get('/notifications', NotificationsIndex::class)->name('notifications');
+    Route::get('/messaging', MessagingIndex::class)->middleware('can:messaging.view')->name('messaging.index');
+    Route::get('/messaging/new', CampaignEditor::class)->middleware('can:messaging.create')->name('messaging.create');
+    Route::get('/messaging/{campaign}', CampaignShow::class)->name('messaging.show');
+    Route::get('/messaging/{campaign}/edit', CampaignEditor::class)->middleware('can:messaging.create')->name('messaging.edit');
     Route::get('/ussd-simulator', UssdSimulator::class)->middleware('can:ussd.simulate')->name('ussd-simulator');
 
     Route::get('/exports', ExportsIndex::class)->name('exports.index');

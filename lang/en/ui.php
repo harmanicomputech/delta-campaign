@@ -15,6 +15,7 @@ return [
     'no_results' => 'No matching pages.',
     'command_hint' => 'Use ↑ ↓ to move, Enter to open, Esc to close',
     'close' => 'Close',
+    'edit' => 'Edit',
     'save' => 'Save',
     'saved' => 'Changes saved',
     'cancel' => 'Cancel',

@@ -7,4 +7,5 @@ return array_replace(require __DIR__.'/../en/approvals.php', [
     'intro' => 'Everything wey dey wait for your decision, for your role and your area.',
     'none' => 'Nothing dey wait for decision',
     'queue_empty' => 'Everything clear',
+    'messaging' => 'Message campaigns to approve',
 ]);

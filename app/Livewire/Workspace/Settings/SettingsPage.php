@@ -44,6 +44,7 @@ final class SettingsPage extends Component
         $rules = match ($definition['type']) {
             'integer' => ['required', 'integer', 'min:'.($definition['min'] ?? PHP_INT_MIN), 'max:'.($definition['max'] ?? PHP_INT_MAX)],
             'boolean' => ['boolean'],
+            'decimal' => ['required', 'numeric', 'min:'.($definition['min'] ?? 0), 'max:'.($definition['max'] ?? PHP_INT_MAX)],
             default => ['required', 'string', 'max:500'],
         };
         $this->validate([$field => $rules], [], [$field => $definition['label']]);

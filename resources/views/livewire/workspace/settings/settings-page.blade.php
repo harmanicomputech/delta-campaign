@@ -22,7 +22,7 @@
                                         @if ($setting['type'] === 'boolean')
                                             <input id="setting-{{ $setting['field'] }}" type="checkbox" wire:model="values.{{ $setting['field'] }}" class="size-5 accent-[var(--c-primary)]">
                                         @else
-                                            <input id="setting-{{ $setting['field'] }}" type="{{ $setting['type'] === 'integer' ? 'number' : 'text' }}" @isset($setting['min']) min="{{ $setting['min'] }}" max="{{ $setting['max'] }}" @endisset
+                                            <input id="setting-{{ $setting['field'] }}" type="{{ in_array($setting['type'], ['integer', 'decimal'], true) ? 'number' : 'text' }}" @if ($setting['type'] === 'decimal') step="0.01" @endif @isset($setting['min']) min="{{ $setting['min'] }}" max="{{ $setting['max'] }}" @endisset
                                                    wire:model="values.{{ $setting['field'] }}" class="form-control w-32 tabular-nums" @error('values.'.$setting['field']) aria-invalid="true" @enderror>
                                         @endif
                                         <x-ui.button type="submit" variant="secondary" loading="save('{{ $setting['key'] }}')">{{ __('ui.save') }}</x-ui.button>

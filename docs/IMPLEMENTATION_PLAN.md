@@ -172,11 +172,18 @@ Completed 2026-10-25. Details: `docs/USSD_AND_SMS.md`.
 - ☑ Browser USSD simulator running the real menu, with practice mode (rolled back)
 - ☑ Tests: 322 passing; measured callback latency (median 10 ms); browser-verified simulator
 
-## Phase 9 — Communications engine ☐
+## Phase 9 — Communications engine ☑
 
-- Templates and language variants; eligibility, consent and suppression at send time
-- Scheduling, quiet hours, provider rate limits, retries, receipts, costs and caps
-- Two-person approval for large sends; provider health
+Completed 2026-10-25. Details: `docs/MESSAGING.md`.
+
+- ☑ Templates (SMS / WhatsApp, English and Pidgin, whitelisted placeholders, opt-out wording required for SMS, approved provider template required for WhatsApp); segment counting (GSM-7 / Unicode)
+- ☑ Campaigns with audiences limited to the creator's area; live estimate of eligible recipients, segments and cost
+- ☑ Independent approval above a configurable threshold, scope-checked; creator and approver recorded, audited and notified; approvals inbox queue
+- ☑ Queue-based sending that re-checks consent, suppression, record state, quiet hours, budget, provider health and rate limit for every message immediately before sending
+- ☑ Retries with backoff (max 3), no retries for permanent failures, provider circuit breaker, pause/resume/cancel, scheduling (`messaging:tick` every minute)
+- ☑ SMS delivery reports and WhatsApp Cloud API (template sends, signed status webhooks, STOP replies)
+- ☑ Monthly spending limit and cost tracking; provider health tab
+- ☑ Tests: 337 passing; browser-verified templates, editor estimate, approval and send via Horizon, campaign results
 
 ## Phase 10 — Public website and CMS ☐
 

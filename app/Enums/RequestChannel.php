@@ -13,6 +13,7 @@ enum RequestChannel: string
     case Field = 'field';
     case Staff = 'staff';
     case Event = 'event';
+    case Whatsapp = 'whatsapp';
 
     public function label(): string
     {
@@ -23,6 +24,7 @@ enum RequestChannel: string
             self::Field => 'Field',
             self::Staff => 'Staff',
             self::Event => 'Event',
+            self::Whatsapp => 'WhatsApp',
         };
     }
 

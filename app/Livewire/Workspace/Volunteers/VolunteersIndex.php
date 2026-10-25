@@ -127,7 +127,7 @@ final class VolunteersIndex extends Component
     {
         $this->rejectId = $id;
         $this->rejectReason = '';
-        $this->dispatch('open-modal', 'reject-volunteer');
+        $this->dispatch('open-modal', name: 'reject-volunteer');
     }
 
     public function reject(VolunteerService $volunteers): void
