@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy · Campaign Field App</title>
+<meta name="description" content="How the campaign collects, uses and protects personal data in its field app, website, USSD and SMS services.">
+<meta name="robots" content="index, follow">
+<style>
+  :root {
+    --bg: #f5f7f6; --surface: #ffffff; --fg: #17201c; --muted: #4d5752; --line: #dfe5e2;
+    --brand: #0f7a4b; --brand-soft: #e6f4ec; --accent: #c98a1a; --warn-bg: #fdf3e1; --warn-fg: #7a4605;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0e1210; --surface: #181c1a; --fg: #ecf0ee; --muted: #b3bbb7; --line: #2a302d;
+      --brand: #4aad7c; --brand-soft: rgb(74 173 124 / .12); --accent: #eabd57; --warn-bg: rgb(240 180 90 / .12); --warn-fg: #f0c27a; }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.65 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  header.top { background: #052418; color: #fff; }
+  header.top .wrap { padding-top: 40px; padding-bottom: 36px; }
+  .eyebrow { color: #eabd57; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+  h1 { font-family: Fraunces, Georgia, serif; font-size: clamp(30px, 6vw, 44px); line-height: 1.1; margin: 10px 0 8px; font-weight: 650; }
+  header.top p { margin: 0; color: #cfe2d7; }
+  .wrap { max-width: 860px; margin: 0 auto; padding-left: 20px; padding-right: 20px; }
+  .layout { display: grid; gap: 32px; padding-top: 32px; padding-bottom: 64px; }
+  @media (min-width: 1100px) { .wrap.wide { max-width: 1120px; } .layout { grid-template-columns: 240px minmax(0, 1fr); } nav.toc { position: sticky; top: 20px; align-self: start; } }
+  nav.toc { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; font-size: 14px; }
+  nav.toc strong { display: block; margin-bottom: 8px; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  nav.toc ol { margin: 0; padding-left: 18px; }
+  nav.toc a { color: var(--fg); text-decoration: none; }
+  nav.toc a:hover, nav.toc a.active { color: var(--brand); text-decoration: underline; }
+  main { min-width: 0; }
+  section { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 22px 24px; margin-bottom: 16px; }
+  h2 { font-size: 20px; margin: 0 0 10px; scroll-margin-top: 16px; }
+  h3 { font-size: 16px; margin: 18px 0 6px; }
+  p, li { color: var(--fg); }
+  ul { padding-left: 20px; margin: 8px 0; }
+  li { margin: 4px 0; }
+  a { color: var(--brand); }
+  .note { background: var(--brand-soft); border-radius: 10px; padding: 12px 14px; margin: 12px 0; }
+  .ph { background: var(--warn-bg); color: var(--warn-fg); border-radius: 4px; padding: 0 4px; font-weight: 600; }
+  #draft-banner { display: none; background: var(--warn-bg); color: var(--warn-fg); border: 1px solid currentColor; border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; font-size: 15px; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; margin: 8px 0; }
+  th, td { text-align: left; vertical-align: top; padding: 9px 10px; border-top: 1px solid var(--line); }
+  th { color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: .05em; border-top: 0; }
+  .table-scroll { overflow-x: auto; }
+  .meta { color: var(--muted); font-size: 14px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+  button { font: inherit; font-size: 14px; border: 1px solid #ffffff55; color: #fff; background: transparent; border-radius: 8px; padding: 7px 14px; cursor: pointer; }
+  button:hover { background: #ffffff1a; }
+  button:focus-visible, a:focus-visible { outline: 3px solid #eabd57; outline-offset: 2px; }
+  #top-link { position: fixed; right: 18px; bottom: 18px; background: var(--brand); color: #fff; border: 0; display: none; box-shadow: 0 6px 20px rgb(0 0 0 / .25); }
+  footer { color: var(--muted); font-size: 14px; padding-bottom: 40px; }
+  @media print { header.top { background: none; color: #000; } header.top p { color: #000; } .actions, nav.toc, #top-link { display: none !important; } section { border: 0; padding: 0; } body { background: #fff; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap wide">
+    <div class="eyebrow">Your data</div>
+    <h1>Privacy Policy</h1>
+    <p>For the campaign field app on Android, the campaign website, and its USSD and SMS services.</p>
+    <p class="meta" style="color:#cfe2d7;margin-top:10px">Effective date: <span data-effective="2026-11-08"></span> · Version 1.0</p>
+    <div class="actions">
+      <button type="button" id="print">Print or save as PDF</button>
+      <button type="button" id="copy-link">Copy link</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap wide layout">
+  <nav class="toc" aria-label="Contents"><strong>Contents</strong><ol id="toc-list"></ol></nav>
+
+  <main>
+    <div id="draft-banner" role="alert"></div>
+
+    <section id="who-we-are">
+      <h2>Who we are</h2>
+      <p><span class="ph">[PLACEHOLDER: full legal name of the campaign organisation]</span> ("the campaign", "we") is the data controller for personal data collected through this app, the campaign website, and the campaign's USSD and SMS services.</p>
+      <ul>
+        <li>Address: <span class="ph">[PLACEHOLDER: registered address]</span></li>
+        <li>Data Protection Officer: <span class="ph">[PLACEHOLDER: name]</span>, <a href="mailto:privacy@example.org" class="ph" data-contact>[PLACEHOLDER: dpo email address]</a></li>
+      </ul>
+      <p>This app is a campaign tool. It is not an app of the Independent National Electoral Commission (INEC) or of any government agency. Election results are declared only by INEC.</p>
+    </section>
+
+    <section id="who-it-covers">
+      <h2>Who this policy covers</h2>
+      <ul>
+        <li><strong>Supporters:</strong> people who register to receive campaign updates or attend events.</li>
+        <li><strong>Volunteers and staff:</strong> people with an account, including coordinators.</li>
+        <li><strong>Polling agents:</strong> people assigned by the campaign to observe a polling unit on election day.</li>
+        <li><strong>Visitors:</strong> anyone who uses the website or contact form.</li>
+      </ul>
+      <p>The app is for adults. You must be 18 or older to register or hold an account.</p>
+    </section>
+
+    <section id="what-we-collect">
+      <h2>What we collect</h2>
+      <div class="table-scroll"><table>
+        <thead><tr><th scope="col">Who</th><th scope="col">Data</th><th scope="col">Where it comes from</th></tr></thead>
+        <tbody>
+          <tr><td>Supporters</td><td>Name, mobile number, local government area and ward, preferred language, your choices about SMS and WhatsApp messages, whether you want to volunteer, confirmation that you are 18 or older, and how you registered (website, USSD, SMS or a volunteer)</td><td>You, or a volunteer who registers you with your agreement</td></tr>
+          <tr><td>Event attendees</td><td>Name, mobile number, and whether you checked in</td><td>You</td></tr>
+          <tr><td>Contact form</td><td>Your name, the topic, your message, your LGA if you choose to give it, and a reply email or phone number if you want a reply</td><td>You</td></tr>
+          <tr><td>Volunteers and staff</td><td>Name, mobile number, role and assigned area, skills and availability, training results, tasks, and the outcome of canvassing visits you record</td><td>You and your coordinator</td></tr>
+          <tr><td>Polling agents</td><td>Your assignment, arrival time, your location at arrival if you allow the app to use it, checklist answers, turnout counts, incident reports, and photos of result sheets or incidents</td><td>You</td></tr>
+          <tr><td>Account security</td><td>Sign-in history (time, IP address, browser or device type), a device cookie that recognises your device, an optional PIN (stored only as a one-way hash) and, for leadership roles, an authenticator-app secret (stored encrypted)</td><td>Your use of the app</td></tr>
+        </tbody>
+      </table></div>
+      <div class="note"><strong>We never collect</strong> your National Identification Number (NIN), Bank Verification Number (BVN), voter card number, religion or ethnicity. Canvassing records do not capture how anyone intends to vote.</div>
+      <p>The app has no advertising and no third-party analytics or tracking tools. It uses only the cookies needed to sign you in, keep you secure and remember your language and display settings.</p>
+    </section>
+
+    <section id="how-we-use">
+      <h2>How we use it</h2>
+      <ul>
+        <li>To send campaign updates by SMS or WhatsApp, only on the channels you agreed to.</li>
+        <li>To organise volunteers: approving applications, training, assigning walk lists and tasks.</li>
+        <li>To run events: registration, tickets sent by SMS, and check-in at the door.</li>
+        <li>To support polling agents on election day: checklists, incident reports and result-sheet records, reviewed by campaign staff.</li>
+        <li>To answer your messages and data-protection requests.</li>
+        <li>To keep the service secure: sign-in codes, fraud and abuse prevention, rate limiting and audit records.</li>
+      </ul>
+      <p>We do not sell personal data, and we do not use it for automated decisions with legal or similarly significant effects.</p>
+    </section>
+
+    <section id="legal-basis">
+      <h2>Our legal basis</h2>
+      <p>We process personal data under the Nigeria Data Protection Act 2023 on these grounds:</p>
+      <ul>
+        <li><strong>Consent:</strong> for campaign messages. Consent is recorded separately for SMS and WhatsApp, together with the version of this policy you saw, and you can withdraw it at any time.</li>
+        <li><strong>Legitimate interests:</strong> for organising volunteers, staff and polling agents who have chosen to take part, and for keeping the service secure.</li>
+        <li><strong>Legal obligation:</strong> where the law requires us to keep or disclose information.</li>
+      </ul>
+    </section>
+
+    <section id="sharing">
+      <h2>Who we share it with</h2>
+      <ul>
+        <li><strong>SMS and USSD provider</strong> (<span class="ph">[PLACEHOLDER: e.g. Africa's Talking Ltd]</span>): to deliver messages, sign-in codes and USSD menus.</li>
+        <li><strong>WhatsApp</strong> (WhatsApp LLC / Meta Platforms): only if you choose to receive updates on WhatsApp.</li>
+        <li><strong>Hosting provider</strong> (<span class="ph">[PLACEHOLDER: hosting company and data-centre location]</span>): stores the platform's data under contract.</li>
+        <li><strong>Authorities:</strong> when the law requires it.</li>
+      </ul>
+      <p>Inside the campaign, access depends on role and area. A ward coordinator sees only their own ward. Supporters' phone numbers are masked on screen, and revealing one is logged.</p>
+      <p>Some providers may process data outside Nigeria. Where they do, we rely on the safeguards the NDPA requires. <span class="ph">[PLACEHOLDER: confirm transfer safeguards with counsel]</span></p>
+    </section>
+
+    <section id="retention">
+      <h2>How long we keep it</h2>
+      <ul>
+        <li><strong>Supporter records:</strong> anonymised 36 months after your last contact with the campaign or your last renewal of consent, unless you ask us to delete them sooner.</li>
+        <li><strong>Sign-in history:</strong> 12 months. Sign-in codes expire after a few minutes and are then deleted.</li>
+        <li><strong>Data exports and evidence packs</strong> made by staff: deleted automatically after 24 hours.</li>
+        <li><strong>Election-day records and evidence</strong> (result-sheet photos, incident reports): kept while they may be needed for an election petition or other legal process, then deleted. <span class="ph">[PLACEHOLDER: retention period agreed with counsel]</span></li>
+        <li><strong>Audit records:</strong> kept as a tamper-evident log for accountability.</li>
+      </ul>
+    </section>
+
+    <section id="security">
+      <h2>How we protect it</h2>
+      <ul>
+        <li>All traffic uses encrypted connections (HTTPS/TLS).</li>
+        <li>Phone numbers and other sensitive fields are encrypted in the database. Duplicates are found using a keyed fingerprint rather than the number itself.</li>
+        <li>Sign-in uses one-time SMS codes. Leadership roles also need an authenticator app, and idle sessions lock themselves.</li>
+        <li>Records you save offline in the app are encrypted on your phone until they sync.</li>
+        <li>Photos used as evidence are stored privately and unchanged, with a fingerprint (SHA-256) that shows they have not been altered. Every view is logged.</li>
+        <li>Important actions are recorded in a tamper-evident audit log.</li>
+      </ul>
+    </section>
+
+    <section id="your-rights">
+      <h2>Your rights and choices</h2>
+      <p>You have the right to:</p>
+      <ul>
+        <li>see the data we hold about you;</li>
+        <li>correct it;</li>
+        <li>have it deleted;</li>
+        <li>withdraw consent;</li>
+        <li>object to processing;</li>
+        <li>receive a copy of your data;</li>
+        <li>complain to the Nigeria Data Protection Commission (NDPC).</li>
+      </ul>
+      <h3>How to use them</h3>
+      <ul>
+        <li><strong>Stop messages:</strong> reply <strong>STOP</strong> to any campaign SMS. This stops all channels at once.</li>
+        <li><strong>Message preferences and data requests:</strong> use the <a href="/preferences">message preferences page</a>. You confirm your number with a code, then choose your channels or request a copy, correction or deletion.</li>
+        <li><strong>On a basic phone:</strong> dial the campaign USSD code <span class="ph">[PLACEHOLDER: USSD code]</span> and choose <em>Messages &amp; my data</em>.</li>
+        <li><strong>By email:</strong> write to the Data Protection Officer at the address above.</li>
+      </ul>
+      <p>We respond within 30 days. We may need to confirm that you control the phone number before we act.</p>
+    </section>
+
+    <section id="account-deletion">
+      <h2>Deleting your account</h2>
+      <ul>
+        <li><strong>Supporters:</strong> request deletion on the <a href="/preferences">message preferences page</a>, through the USSD menu, or by emailing the Data Protection Officer. Your record is anonymised. Only a one-way fingerprint of your number is kept, on a do-not-contact list, so that we never message you again.</li>
+        <li><strong>Volunteers, staff and polling agents:</strong> ask your coordinator, or email the Data Protection Officer. Your sign-in access ends immediately. Records you created as part of campaign work, such as audit and election-day records, may be kept for the periods above.</li>
+      </ul>
+    </section>
+
+    <section id="changes">
+      <h2>Changes to this policy</h2>
+      <p>When this policy changes, we update the effective date and version number. If a change affects how we use data you gave consent for, we will ask for your consent again before relying on it.</p>
+    </section>
+
+    <section id="contact">
+      <h2>Contact us</h2>
+      <p>For questions or complaints about your data, contact the Data Protection Officer: <a href="mailto:privacy@example.org" class="ph" data-contact>[PLACEHOLDER: dpo email address]</a>.</p>
+      <p>If you are not satisfied with our response, you can contact the Nigeria Data Protection Commission at <a href="https://ndpc.gov.ng" rel="noopener">ndpc.gov.ng</a>.</p>
+    </section>
+
+    <footer class="meta">This policy covers the campaign field app on Android, the campaign website, and its USSD and SMS services.</footer>
+  </main>
+</div>
+<button type="button" id="top-link" aria-label="Back to top">↑ Top</button>
+
+<script>
+(function () {
+  // Contents list built from the section headings.
+  var list = document.getElementById('toc-list');
+  var sections = Array.prototype.slice.call(document.querySelectorAll('main section[id]'));
+  sections.forEach(function (s) {
+    var li = document.createElement('li'), a = document.createElement('a');
+    a.href = '#' + s.id; a.textContent = s.querySelector('h2').textContent;
+    li.appendChild(a); list.appendChild(li);
+  });
+
+  // Highlight the section in view.
+  if ('IntersectionObserver' in window) {
+    var links = list.querySelectorAll('a');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        links.forEach(function (l) { l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id); });
+      });
+    }, { rootMargin: '0px 0px -70% 0px' });
+    sections.forEach(function (s) { io.observe(s); });
+  }
+
+  // Effective date in a readable form.
+  document.querySelectorAll('[data-effective]').forEach(function (el) {
+    var d = new Date(el.getAttribute('data-effective') + 'T00:00:00');
+    el.textContent = isNaN(d) ? el.getAttribute('data-effective') : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  });
+
+  // Warn while placeholders remain, so an unfinished policy is never mistaken for the final one.
+  var placeholders = document.querySelectorAll('.ph');
+  if (placeholders.length) {
+    var banner = document.getElementById('draft-banner');
+    banner.textContent = 'Draft: this policy still has ' + placeholders.length + ' placeholder(s), highlighted below. They must be completed and approved by the Data Protection Officer and legal counsel before publication.';
+    banner.style.display = 'block';
+  }
+
+  document.getElementById('print').addEventListener('click', function () { window.print(); });
+  document.getElementById('copy-link').addEventListener('click', function (e) {
+    var btn = e.currentTarget, url = location.href.split('#')[0];
+    var done = function () { btn.textContent = 'Link copied'; setTimeout(function () { btn.textContent = 'Copy link'; }, 2000); };
+    if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, function () { prompt('Copy this link:', url); });
+    else prompt('Copy this link:', url);
+  });
+
+  var top = document.getElementById('top-link');
+  window.addEventListener('scroll', function () { top.style.display = window.scrollY > 600 ? 'block' : 'none'; }, { passive: true });
+  top.addEventListener('click', function () { window.scrollTo({ top: 0 }); });
+})();
+</script>
+</body>
+</html>
